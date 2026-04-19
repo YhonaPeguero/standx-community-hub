@@ -1,0 +1,308 @@
+{
+  "metadata": {
+    "layout": {
+      "title": "StandX Community Hub",
+      "titleSuffix": "StandX Community Hub",
+      "description": "Преміальний багатомовний хаб спільноти для онбордингу StandX Perpetuals DEX, пояснення DUSD та зростання спільноти.",
+      "ogTitle": "StandX Community Hub",
+      "ogDescription": "Швидко зрозумійте StandX, дізнайтесь як працює DUSD і приєднайтесь до активної Trading-спільноти."
+    },
+    "home": {
+      "title": "Головна",
+      "description": "Дізнайтесь про StandX простою мовою: Trading Перпетуалів, роль stablecoin DUSD та онбординг через спільноту.",
+      "ogTitle": "StandX Community Hub | Перпетуали та користь DUSD",
+      "ogDescription": "Преміальний онбординг-хаб для StandX: зрозумілі пояснення, фокус на DUSD та корисні посилання спільноти."
+    },
+    "howItWorks": {
+      "title": "Як це працює",
+      "description": "Покроковий візуальний онбординг StandX: підключіть wallet, поповніть через DUSD та торгуйте Перпетуалами впевнено.",
+      "ogTitle": "Як працює StandX | Підключення, Поповнення, Trading",
+      "ogDescription": "Простий візуальний гайд, щоб зрозуміти Перпетуали, DUSD і потік прибутковості на StandX."
+    }
+  },
+  "links": {
+    "startTrading": "https://standx.com/",
+    "standxOfficial": "https://x.com/StandX_Official",
+    "discord": "https://discord.gg/QkjVSetrup",
+    "docs": "https://www.notion.so/2e70211f3ef7804aa4dcce5d4dd23404?v=2e70211f3ef780a78b44000c30776e6d"
+  },
+  "common": {
+    "brand": "StandX Community Hub",
+    "brandShort": "StandX Hub",
+    "languageNameEn": "Англійська",
+    "languageNameEs": "Іспанська",
+    "languageNamePtBr": "Португальська (Бразилія)",
+    "languageNameUk": "Українська",
+    "languageNameKo": "Корейська",
+    "languageCodeEn": "EN",
+    "languageCodeEs": "ES",
+    "languageCodePtBr": "PT-BR",
+    "languageCodeUk": "UK",
+    "languageCodeKo": "KO",
+    "languageSwitcherAria": "Змінити мову. Поточна мова: {locale}.",
+    "startTradingAria": "Почати Trading на StandX у новій вкладці",
+    "learnHowAria": "Відкрити сторінку Як це працює",
+    "visitStandX": "Відкрити офіційний профіль StandX",
+    "joinDiscord": "Приєднатися до Discord спільноти StandX",
+    "openDocs": "Відкрити ресурси спільноти StandX",
+    "openNavigation": "Відкрити меню навігації",
+    "closeNavigation": "Закрити меню навігації",
+    "approximateValues": "Показані орієнтовні значення"
+  },
+  "navbar": {
+    "home": "Головна",
+    "howItWorks": "Як це працює",
+    "community": "Спільнота",
+    "resources": "Ресурси",
+    "about": "Про хаб",
+    "primaryCta": "Почати Trading",
+    "languageLabel": "Мова",
+    "drawerTitle": "Навігація по хабу",
+    "drawerDescription": "Доступ до гайдів онбордингу, каналів спільноти та ключових ресурсів."
+  },
+  "homeTabs": {
+    "gettingStarted": "Початок",
+    "whyTrade": "Чому тут",
+    "howItWorks": "Як це працює",
+    "community": "Спільнота",
+    "resources": "Ресурси",
+    "about": "Про хаб"
+  },
+  "hero": {
+    "eyebrow": "StandX · Інфраструктура спільноти",
+    "title": "Торгуйте Перпетуалами впевнено. Нехай DUSD працює між угодами.",
+    "titlePartOne": "Твоя точка",
+    "titlePartTwo": "входу в",
+    "titleHighlight": "StandX.",
+    "description": "Шаблони, ресурси, посібники та реальні приклади. Відкритий хаб для всіх, хто хоче зрозуміти, брати участь та робити внесок в екосистему StandX.",
+    "ctaPrimary": "Почати Trading",
+    "ctaSecondary": "Дізнатися як це працює",
+    "ctaCommunity": "Приєднатись до Discord",
+    "mobileStickyCta": "Почати Trading на StandX",
+    "badges": {
+      "free": "Безкоштовно",
+      "noLogin": "Без логіну",
+      "languages": "EN · ES · PT-BR · UK · KO"
+    },
+    "trustLabel": "Офіційні посилання",
+    "trustStandx": "StandX Official",
+    "trustDiscord": "Discord спільноти",
+    "trustDocs": "Відкрити ресурси",
+    "stats": {
+      "onboarding": {
+        "label": "Growth Path",
+        "value": "SEED -> SPROUT -> FLOWER",
+        "hint": "3 рівні · чиста меритократія"
+      },
+      "dusd": {
+        "label": "5 доступних squads",
+        "value": "Content · Creative · Tech · Outreach · Offline",
+        "hint": "Обери формат, що підходить тобі"
+      },
+      "activity": {
+        "label": "Де все відбувається",
+        "value": "StandX Discord",
+        "hint": "discord.gg/QkjVSetrup"
+      }
+    },
+    "ticker": {
+      "one": "Перпетуали, пояснені просто",
+      "two": "Роль stablecoin DUSD до цілей по Yield",
+      "three": "Long / Short без перевантаження інтерфейсу",
+      "four": "Ресурси спільноти, якими зручно ділитися"
+    }
+  },
+  "whatIsStandX": {
+    "eyebrow": "Що таке StandX",
+    "title": "Perpetuals DEX, створений для ясності, швидкості та постійного навчання",
+    "sentenceOne": "StandX - це децентралізована біржа Перпетуалів, де ви торгуєте напрямок ринку через позиції Long і Short.",
+    "sentenceTwo": "Замість простою капіталу StandX пов'язує потік вашого colateral із користю DUSD у форматі, який легше зрозуміти, ніж на більшості платформ.",
+    "sentenceThree": "Цей хаб дає новачкам простий шлях швидко розібратися в продукті без вимоги глибокого DeFi-бекграунду.",
+    "cards": {
+      "perpetuals": {
+        "title": "Контракти Перпетуали",
+        "description": "Торгівля рухом ціни без дати експірації з прозорим розумінням ризику."
+      },
+      "dusd": {
+        "title": "Stablecoin DUSD",
+        "description": "DUSD - нативний stablecoin-орієнтир у всьому досвіді StandX."
+      },
+      "selfCustody": {
+        "title": "Self-custody за замовчуванням",
+        "description": "Ваша wallet залишається вашим рівнем доступу під час взаємодії з DEX."
+      }
+    }
+  },
+  "whyTradeHere": {
+    "eyebrow": "Чому торгувати тут",
+    "title": "Три причини, чому трейдери повертаються в StandX",
+    "subtitle": "Ви отримуєте сфокусоване Trading-середовище, користь DUSD для кращого планування та децентралізовану архітектуру, де контроль залишається у користувача.",
+    "cards": {
+      "perpetualContracts": {
+        "title": "Perpetual Contracts",
+        "description": "Виконуйте Long і Short стратегії в інтерфейсі, створеному для швидких рішень, а не для шуму."
+      },
+      "dusdYield": {
+        "title": "DUSD Yield Gains",
+        "description": "Зрозумійте, як DUSD підтримує потік прибутковості, щоб періоди без позицій теж працювали на вас."
+      },
+      "decentralizedSecure": {
+        "title": "Децентралізовано і безпечно",
+        "description": "Зберігайте контроль на рівні wallet і працюйте в прозорому середовищі DEX."
+      }
+    }
+  },
+  "howItWorksSection": {
+    "eyebrow": "Як це працює",
+    "title": "Від нуля до першої угоди у трьох зрозумілих кроках",
+    "subtitle": "Без здогадок. Це типовий шлях, яким іде більшість користувачів при старті в StandX.",
+    "steps": {
+      "connect": {
+        "number": "01",
+        "title": "Підключіть Wallet",
+        "description": "Отримайте доступ до StandX за секунди через вашу wallet."
+      },
+      "deposit": {
+        "number": "02",
+        "title": "Депозит / Отримати DUSD",
+        "description": "Підготуйте ваш colateral і спочатку розберіться з роллю DUSD."
+      },
+      "trade": {
+        "number": "03",
+        "title": "Trading та контроль Yield",
+        "description": "Відкривайте Long/Short позиції та керуйте потоком прибутковості прозоро."
+      }
+    }
+  },
+  "dusdSpotlight": {
+    "eyebrow": "Фокус на DUSD",
+    "title": "Чому DUSD важливий ще до будь-яких цифр Yield",
+    "description": "DUSD - це не другорядна опція. Це нативний stablecoin-контекст, який допомагає зрозуміти потік colateral, темп ризику та те, як генерується прибутковість навколо Trading-активності.",
+    "callout": "Спочатку зрозумій stablecoin. Yield має сенс після розуміння основ.",
+    "ctaDocs": "Читати ресурси",
+    "ctaGuide": "Відкрити візуальний гайд",
+    "panel": {
+      "title": "DUSD на практиці",
+      "pointOne": "DUSD дає орієнтир stablecoin під час взаємодії з ринками Перпетуалів.",
+      "pointTwo": "Потенціал прибутковості легше оцінити, коли поведінка DUSD зрозуміла у вашому потоці дій.",
+      "pointThree": "Розуміння механіки DUSD на старті зменшує емоційні рішення та надмірний leverage."
+    }
+  },
+  "communitySection": {
+    "eyebrow": "Спільнота",
+    "title": "Хаб, який залишається живим після першого візиту",
+    "subtitle": "Приєднуйтесь до активних каналів, слідкуйте за оновленнями екосистеми та знаходьте шляхи внеску, які роблять вашу роботу помітною.",
+    "cards": {
+      "discord": {
+        "title": "Приєднатись до Discord",
+        "description": "Події, підтримка, Trading-дискусії та координація контриб'юторів відбуваються в реальному часі.",
+        "cta": "Увійти в Discord"
+      },
+      "social": {
+        "title": "Слідкувати в X / Twitter",
+        "description": "Відстежуйте анонси StandX, треди спільноти та освітні матеріали.",
+        "cta": "Відкрити профіль X"
+      },
+      "resources": {
+        "title": "Ресурси та FAQ",
+        "description": "Використовуйте docs і матеріали від спільноти, щоб швидко закривати питання без зайвого тертя.",
+        "cta": "Відкрити Docs"
+      }
+    },
+    "milestone": {
+      "label": "Майлстоун спільноти",
+      "value": "Креатори StandX продовжують публікувати багатомовні освітні матеріали, які допомагають новим користувачам стартувати швидше."
+    }
+  },
+  "statsSection": {
+    "eyebrow": "Соціальний доказ",
+    "title": "Показники, які сигналізують про зростання екосистеми",
+    "subtitle": "Ці значення є орієнтовними плейсхолдерами, поки live-інтеграції поза межами поточної фази.",
+    "items": {
+      "totalVolume": {
+        "label": "Загальний обсяг",
+        "value": "$1.2B+",
+        "note": "Активність Перпетуалів у різних ринкових циклах"
+      },
+      "activeTraders": {
+        "label": "Активні трейдери",
+        "value": "48K+",
+        "note": "Wallets, що торгують Long / Short стратегії"
+      },
+      "communityMembers": {
+        "label": "Учасники спільноти",
+        "value": "92K+",
+        "note": "Discord та соціальні канали разом"
+      }
+    }
+  },
+  "finalCta": {
+    "title": "Готові відчути StandX з більшою ясністю?",
+    "subtitle": "Почніть з офіційного застосунку, а потім повертайтесь у хаб за онбордингом, ресурсами та маршрутами спільноти.",
+    "cta": "Почати Trading на StandX"
+  },
+  "footer": {
+    "description": "Онбординг та освітній хаб, створений спільнотою для StandX Perpetuals DEX.",
+    "navigationLabel": "Навігація",
+    "connectLabel": "Зв'язок",
+    "social": {
+      "discord": "Discord",
+      "x": "X / Twitter",
+      "docs": "Docs"
+    },
+    "attribution": "Built on the original community initiative by @TARZANWEB3 · Redesign by @Thisnotmeeme ❤️",
+    "legal": "Лише освітній контент. Сайт не є офіційною фінансовою порадою."
+  },
+  "howItWorksPage": {
+    "eyebrow": "Онбординг StandX",
+    "title": "Як працює StandX у трьох практичних кроках",
+    "description": "Цей процес створено для нових користувачів. Ви побачите, як поєднуються Trading Перпетуалів, DUSD та прибутковість до того, як брати зайвий ризик.",
+    "primaryCta": "Почати Trading",
+    "secondaryCta": "Повернутися на головну",
+    "steps": {
+      "connect": {
+        "number": "01",
+        "title": "Підключіть вашу wallet",
+        "description": "Використайте зручну wallet, щоб увійти в інтерфейс StandX.",
+        "whyItMatters": "Ваша wallet - це ваш рівень акаунта, тому ви контролюєте доступ і дозволи."
+      },
+      "deposit": {
+        "number": "02",
+        "title": "Поповніть colateral і зрозумійте DUSD",
+        "description": "Підготуйте капітал і розберіться з DUSD до відкриття leverage.",
+        "whyItMatters": "Коли механіка DUSD зрозуміла, розмір позиції та темп ризику керуються значно простіше."
+      },
+      "trade": {
+        "number": "03",
+        "title": "Торгуйте Перпетуалами та відстежуйте Yield",
+        "description": "Відкривайте Long/Short позиції та контролюйте результат дисципліновано.",
+        "whyItMatters": "Якісне виконання поєднує точність входу, контроль leverage та регулярний перегляд рішень."
+      }
+    },
+    "terms": {
+      "title": "Короткий глосарій перед Trading",
+      "subtitle": "Ці терміни часто зустрічаються в DeFi та Перпетуалах. Зрозумійте їх зараз, щоб уникнути плутанини потім.",
+      "perpetuals": {
+        "label": "Перпетуали",
+        "definition": "Контракти, що дозволяють торгувати напрямок ціни без дати експірації."
+      },
+      "collateral": {
+        "label": "Colateral",
+        "definition": "Кошти, які забезпечують вашу позицію. Якщо ризик надто зростає, саме цей баланс під загрозою."
+      },
+      "yield": {
+        "label": "Yield",
+        "definition": "Дохід, що накопичується з часом завдяки активності та внутрішнім механікам протоколу."
+      },
+      "risk": {
+        "label": "Leverage і ризик",
+        "definition": "Leverage може посилити як прибутки, так і збитки. Правила сайзингу мають бути обов'язковими."
+      }
+    },
+    "finalBlock": {
+      "title": "Потрібна допомога під час старту?",
+      "description": "Спільнота StandX допоможе з питаннями setup, навігацією по платформі та практичними наступними кроками.",
+      "cta": "Приєднатись до спільноти"
+    }
+  }
+}

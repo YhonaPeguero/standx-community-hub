@@ -1,0 +1,308 @@
+{
+  "metadata": {
+    "layout": {
+      "title": "StandX Community Hub",
+      "titleSuffix": "StandX Community Hub",
+      "description": "Hub comunitario premium y multilingüe para onboarding de StandX Perpetuals DEX, educación sobre DUSD y crecimiento de la comunidad.",
+      "ogTitle": "StandX Community Hub",
+      "ogDescription": "Entiende StandX rápido, aprende cómo funciona DUSD y entra a una comunidad de Trading activa."
+    },
+    "home": {
+      "title": "Inicio",
+      "description": "Descubre StandX en lenguaje simple: Trading de Contratos Perpetuos, utilidad de la stablecoin DUSD y onboarding comunitario.",
+      "ogTitle": "StandX Community Hub | Contratos Perpetuos con utilidad de DUSD",
+      "ogDescription": "Un hub premium para onboarding de StandX con explicaciones claras, enfoque en DUSD y enlaces de comunidad."
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "description": "Onboarding visual paso a paso para StandX: conecta tu wallet, fondea con DUSD y haz Trading de Contratos Perpetuos con confianza.",
+      "ogTitle": "Cómo funciona StandX | Conectar, Fondear, Operar",
+      "ogDescription": "Guía visual simple para entender Contratos Perpetuos, DUSD y flujo de rendimiento en StandX."
+    }
+  },
+  "links": {
+    "startTrading": "https://standx.com/",
+    "standxOfficial": "https://x.com/StandX_Official",
+    "discord": "https://discord.gg/QkjVSetrup",
+    "docs": "https://www.notion.so/2e70211f3ef7804aa4dcce5d4dd23404?v=2e70211f3ef780a78b44000c30776e6d"
+  },
+  "common": {
+    "brand": "StandX Community Hub",
+    "brandShort": "StandX Hub",
+    "languageNameEn": "Inglés",
+    "languageNameEs": "Español",
+    "languageNamePtBr": "Portugués (Brasil)",
+    "languageNameUk": "Ucraniano",
+    "languageNameKo": "Coreano",
+    "languageCodeEn": "EN",
+    "languageCodeEs": "ES",
+    "languageCodePtBr": "PT-BR",
+    "languageCodeUk": "UK",
+    "languageCodeKo": "KO",
+    "languageSwitcherAria": "Cambiar idioma. Idioma actual: {locale}.",
+    "startTradingAria": "Comenzar Trading en StandX en una nueva pestaña",
+    "learnHowAria": "Abrir la página de Cómo Funciona",
+    "visitStandX": "Visitar el perfil oficial de StandX",
+    "joinDiscord": "Unirse al Discord de StandX",
+    "openDocs": "Abrir recursos comunitarios de StandX",
+    "openNavigation": "Abrir menú de navegación",
+    "closeNavigation": "Cerrar menú de navegación",
+    "approximateValues": "Valores aproximados mostrados como referencia"
+  },
+  "navbar": {
+    "home": "Inicio",
+    "howItWorks": "Cómo Funciona",
+    "community": "Comunidad",
+    "resources": "Recursos",
+    "about": "Acerca de",
+    "primaryCta": "Comenzar Trading",
+    "languageLabel": "Idioma",
+    "drawerTitle": "Navega el hub",
+    "drawerDescription": "Accede a guías de onboarding, canales de comunidad y recursos clave."
+  },
+  "homeTabs": {
+    "gettingStarted": "Cómo Empezar",
+    "whyTrade": "Por Qué Operar",
+    "howItWorks": "Cómo Funciona",
+    "community": "Comunidad",
+    "resources": "Recursos",
+    "about": "Acerca de"
+  },
+  "hero": {
+    "eyebrow": "StandX · Infraestructura de Comunidad",
+    "title": "Opera Contratos Perpetuos con confianza. Mantén DUSD activo entre trades.",
+    "titlePartOne": "Tu punto de",
+    "titlePartTwo": "entrada a",
+    "titleHighlight": "StandX.",
+    "description": "Plantillas, recursos, guías y referencias reales. Un hub abierto para quienes quieran entender, participar y contribuir al ecosistema StandX.",
+    "ctaPrimary": "Comenzar Trading",
+    "ctaSecondary": "Aprende Cómo Funciona",
+    "ctaCommunity": "Unirme a Discord",
+    "mobileStickyCta": "Comenzar Trading en StandX",
+    "badges": {
+      "free": "Gratis",
+      "noLogin": "Sin registro",
+      "languages": "EN · ES · PT-BR · UK · KO"
+    },
+    "trustLabel": "Enlaces oficiales",
+    "trustStandx": "StandX Oficial",
+    "trustDiscord": "Discord Comunidad",
+    "trustDocs": "Recursos Abiertos",
+    "stats": {
+      "onboarding": {
+        "label": "Growth Path",
+        "value": "SEED → SPROUT → FLOWER",
+        "hint": "3 niveles · meritocracia pura"
+      },
+      "dusd": {
+        "label": "5 squads disponibles",
+        "value": "Content · Creative · Tech · Outreach · Offline",
+        "hint": "Elige el que más te encaje"
+      },
+      "activity": {
+        "label": "Dónde pasa todo",
+        "value": "Discord de StandX",
+        "hint": "discord.gg/QkjVSetrup"
+      }
+    },
+    "ticker": {
+      "one": "Contratos Perpetuos explicados en lenguaje claro",
+      "two": "Utilidad de la stablecoin DUSD antes de metas de rendimiento",
+      "three": "Ejecución long / short sin sobrecarga visual",
+      "four": "Recursos comunitarios listos para compartir"
+    }
+  },
+  "whatIsStandX": {
+    "eyebrow": "Qué es StandX",
+    "title": "Un Perpetuals DEX diseñado para claridad, velocidad y aprendizaje continuo",
+    "sentenceOne": "StandX es un exchange descentralizado de Contratos Perpetuos donde puedes operar dirección de mercado con posiciones long y short.",
+    "sentenceTwo": "En lugar de dejar fondos inactivos, StandX conecta tu flujo de colateral con la utilidad de DUSD de forma más simple que la mayoría de plataformas.",
+    "sentenceThree": "Este hub da a nuevos usuarios una ruta directa para entender el producto rápido, sin asumir experiencia profunda en DeFi.",
+    "cards": {
+      "perpetuals": {
+        "title": "Contratos Perpetuos",
+        "description": "Opera movimiento de precio sin fecha de vencimiento, con riesgo claro."
+      },
+      "dusd": {
+        "title": "Stablecoin DUSD",
+        "description": "DUSD es la referencia de stablecoin nativa dentro de la experiencia StandX."
+      },
+      "selfCustody": {
+        "title": "Self-custody por defecto",
+        "description": "Tu wallet sigue siendo tu capa de acceso cuando interactúas con el DEX."
+      }
+    }
+  },
+  "whyTradeHere": {
+    "eyebrow": "Por qué operar aquí",
+    "title": "Tres razones por las que los traders vuelven a StandX",
+    "subtitle": "Tienes un entorno de Trading enfocado, utilidad de DUSD para planificar mejor y una arquitectura descentralizada que mantiene el control en manos del usuario.",
+    "cards": {
+      "perpetualContracts": {
+        "title": "Contratos Perpetuos",
+        "description": "Ejecuta estrategias long y short con una interfaz pensada para decidir rápido, sin ruido."
+      },
+      "dusdYield": {
+        "title": "Rendimiento con DUSD",
+        "description": "Entiende cómo DUSD soporta el flujo de rendimiento para que los periodos sin operación sigan siendo productivos."
+      },
+      "decentralizedSecure": {
+        "title": "Descentralizado y Seguro",
+        "description": "Mantienes propiedad a nivel wallet mientras participas en un entorno DEX transparente."
+      }
+    }
+  },
+  "howItWorksSection": {
+    "eyebrow": "Cómo funciona",
+    "title": "De cero a tu primera operación en tres pasos claros",
+    "subtitle": "Sin adivinanzas. Sigue el mismo camino que usa la mayoría cuando inicia en StandX.",
+    "steps": {
+      "connect": {
+        "number": "01",
+        "title": "Conecta tu Wallet",
+        "description": "Accede a StandX en segundos con tu wallet."
+      },
+      "deposit": {
+        "number": "02",
+        "title": "Deposita / Obtén DUSD",
+        "description": "Prepara tu colateral y entiende primero el rol de DUSD."
+      },
+      "trade": {
+        "number": "03",
+        "title": "Opera y Gestiona Rendimiento",
+        "description": "Abre long o short y gestiona el flujo de rendimiento con claridad."
+      }
+    }
+  },
+  "dusdSpotlight": {
+    "eyebrow": "Enfoque en DUSD",
+    "title": "Por qué DUSD importa antes de cualquier número de rendimiento",
+    "description": "DUSD no es una función secundaria. Es el contexto de stablecoin nativa que te ayuda a entender el flujo de colateral, el ritmo del riesgo y cómo se genera el rendimiento alrededor de la actividad de Trading.",
+    "callout": "Primero entiende la stablecoin. El rendimiento viene después del entendimiento.",
+    "ctaDocs": "Leer Recursos",
+    "ctaGuide": "Abrir Guía Visual",
+    "panel": {
+      "title": "DUSD en términos prácticos",
+      "pointOne": "DUSD da una referencia de stablecoin mientras interactúas con mercados perpetuos.",
+      "pointTwo": "El potencial de rendimiento se evalúa mejor cuando el comportamiento de DUSD está claro en tu flujo.",
+      "pointThree": "Entender primero DUSD ayuda a reducir decisiones emocionales con exceso de apalancamiento."
+    }
+  },
+  "communitySection": {
+    "eyebrow": "Comunidad",
+    "title": "Un hub que sigue vivo después de tu primera visita",
+    "subtitle": "Entra a canales activos, sigue actualizaciones del ecosistema y encuentra rutas de contribución para que tu trabajo sea visible.",
+    "cards": {
+      "discord": {
+        "title": "Únete a Discord",
+        "description": "Eventos, soporte, discusiones de Trading y coordinación de contribuciones en tiempo real.",
+        "cta": "Entrar a Discord"
+      },
+      "social": {
+        "title": "Sigue X / Twitter",
+        "description": "Sigue anuncios de StandX, hilos de comunidad y desgloses educativos.",
+        "cta": "Abrir perfil en X"
+      },
+      "resources": {
+        "title": "Recursos y FAQ",
+        "description": "Usa docs y material escrito por la comunidad para resolver dudas sin fricción.",
+        "cta": "Abrir Docs"
+      }
+    },
+    "milestone": {
+      "label": "Hito comunitario",
+      "value": "Los creadores de StandX siguen publicando educación multilingüe para acelerar el inicio de nuevos usuarios."
+    }
+  },
+  "statsSection": {
+    "eyebrow": "Prueba social",
+    "title": "Números que muestran un ecosistema en crecimiento",
+    "subtitle": "Estos placeholders son una referencia mientras las integraciones en vivo quedan fuera del alcance de esta fase.",
+    "items": {
+      "totalVolume": {
+        "label": "Volumen Total",
+        "value": "$1.2B+",
+        "note": "Actividad de Contratos Perpetuos en distintos ciclos"
+      },
+      "activeTraders": {
+        "label": "Traders Activos",
+        "value": "48K+",
+        "note": "Wallets operando estrategias long / short"
+      },
+      "communityMembers": {
+        "label": "Miembros de la Comunidad",
+        "value": "92K+",
+        "note": "Discord y canales sociales combinados"
+      }
+    }
+  },
+  "finalCta": {
+    "title": "¿Listo para vivir StandX con una ventaja más clara?",
+    "subtitle": "Empieza en la app oficial y vuelve al hub cuando necesites onboarding, recursos o rutas de comunidad.",
+    "cta": "Comenzar Trading en StandX"
+  },
+  "footer": {
+    "description": "Hub comunitario de onboarding y educación para StandX Perpetuals DEX.",
+    "navigationLabel": "Navegación",
+    "connectLabel": "Conectar",
+    "social": {
+      "discord": "Discord",
+      "x": "X / Twitter",
+      "docs": "Docs"
+    },
+    "attribution": "Construido sobre la iniciativa comunitaria original de @TARZANWEB3 · Rediseño por @Thisnotmeeme ❤️",
+    "legal": "Contenido educativo. Este sitio no constituye asesoría financiera oficial."
+  },
+  "howItWorksPage": {
+    "eyebrow": "Onboarding de StandX",
+    "title": "Cómo funciona StandX en tres pasos prácticos",
+    "description": "Este flujo está hecho para usuarios nuevos. Verás cómo se conectan el Trading de Contratos Perpetuos, DUSD y el rendimiento antes de tomar riesgo innecesario.",
+    "primaryCta": "Comenzar Trading",
+    "secondaryCta": "Volver al Inicio",
+    "steps": {
+      "connect": {
+        "number": "01",
+        "title": "Conecta tu wallet",
+        "description": "Usa tu wallet preferida para entrar a la interfaz de StandX.",
+        "whyItMatters": "Tu wallet es la capa de cuenta, así mantienes control de acceso y permisos."
+      },
+      "deposit": {
+        "number": "02",
+        "title": "Deposita colateral y entiende DUSD",
+        "description": "Prepara el flujo de capital y conoce DUSD antes de abrir apalancamiento.",
+        "whyItMatters": "Cuando las mecánicas de DUSD están claras, el tamaño de posición y el ritmo de riesgo se gestionan mejor."
+      },
+      "trade": {
+        "number": "03",
+        "title": "Opera Contratos Perpetuos y monitorea el rendimiento",
+        "description": "Abre posiciones long o short y revisa el rendimiento con disciplina.",
+        "whyItMatters": "La buena ejecución combina calidad de entrada, control de apalancamiento y revisión constante."
+      }
+    },
+    "terms": {
+      "title": "Glosario rápido antes de operar",
+      "subtitle": "Estos términos aparecen seguido en conversaciones de DeFi y Contratos Perpetuos. Entenderlos ahora reduce confusión después.",
+      "perpetuals": {
+        "label": "Perpetuos",
+        "definition": "Contratos que permiten operar la dirección del precio sin fecha de vencimiento."
+      },
+      "collateral": {
+        "label": "Colateral",
+        "definition": "Fondos que respaldan tu posición. Si el riesgo sube demasiado, ese balance queda expuesto."
+      },
+      "yield": {
+        "label": "Rendimiento",
+        "definition": "Retorno generado en el tiempo por la actividad y las mecánicas del protocolo."
+      },
+      "risk": {
+        "label": "Apalancamiento y riesgo",
+        "definition": "El apalancamiento puede multiplicar ganancias y pérdidas. Define reglas de tamaño y respétalas."
+      }
+    },
+    "finalBlock": {
+      "title": "¿Necesitas apoyo mientras exploras?",
+      "description": "La comunidad de StandX puede ayudarte con dudas de setup, navegación de plataforma y los siguientes pasos prácticos.",
+      "cta": "Unirme a la comunidad"
+    }
+  }
+}

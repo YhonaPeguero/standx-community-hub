@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StandX 커뮤니티 허브 — Tarzan Web3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,300&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f3ee;--bg2:#eceae4;--bg3:#e2dfd8;--card:#ffffff;--border:#d8d4cb;--border2:#c8c3b8;
+    --ink:#1a1a18;--ink2:#5a5750;--ink3:#9c9890;--accent:#1a6b3c;--accent2:#14522e;
+    --accentbg:#e8f3ec;--accentbd:#b8dbc6;--tag-blue:#1a3a6b;--tag-bluebg:#e8eef3;
+    --tag-org:#6b3a1a;--tag-orgbg:#f3ebe8;--mono:'DM Mono',monospace;--sans:'Noto Sans KR','DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  .hero{background:var(--ink);color:#f5f3ee;padding:64px 40px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 41px);}
+  .hero-inner{max-width:900px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:center;}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#7a9980;margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:#7a9980;}
+  .hero-title{font-size:clamp(36px,5vw,58px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:22px;}
+  .hero-title span{color:#4dff7c;}
+  .hero-desc{font-size:15px;color:#a0a09a;line-height:1.75;margin-bottom:30px;font-weight:300;}
+  .hero-bottom{display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .hero-tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.04em;}
+  .hero-stats{display:flex;flex-direction:column;gap:12px;}
+  .hero-stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px 18px;}
+  .hero-stat-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#7a9980;margin-bottom:6px;}
+  .hero-stat-value{font-size:14px;font-weight:700;color:#f5f3ee;line-height:1.4;}
+  .hero-stat-sub{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;}
+  .discord-hero-btn{display:inline-flex;align-items:center;gap:8px;background:#5865F2;color:white;font-family:var(--mono);font-size:12px;font-weight:700;padding:10px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;white-space:nowrap;}
+  .discord-hero-btn:hover{background:#4752C4;transform:translateY(-1px);}
+  .sticky-nav{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 40px;gap:0;}
+  .nav-btn{font-size:12px;padding:16px 16px;background:none;border:none;border-bottom:2px solid transparent;color:var(--ink3);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .nav-btn:hover{color:var(--ink2);}
+  .nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .page{display:none;max-width:900px;margin:0 auto;padding:48px 40px;animation:up 0.25s ease;}
+  .page.active{display:block;}
+  @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .page-title{font-size:24px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px;}
+  .page-sub{font-family:var(--mono);font-size:12px;color:var(--ink3);letter-spacing:0.04em;margin-bottom:36px;}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .card-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+  .card-title{font-size:14px;font-weight:700;margin-bottom:8px;}
+  .card-body{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:14px;}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:0.05em;margin-right:4px;margin-bottom:4px;}
+  .tag-green{background:var(--accentbg);color:var(--accent);border:1px solid var(--accentbd);}
+  .tag-blue{background:var(--tag-bluebg);color:var(--tag-blue);border:1px solid #c8d4e3;}
+  .tag-org{background:var(--tag-orgbg);color:var(--tag-org);border:1px solid #e3cdc8;}
+  .btn-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--accent);text-decoration:none;padding:7px 12px;border:1px solid var(--accentbd);border-radius:6px;background:var(--accentbg);transition:all 0.2s;letter-spacing:0.04em;}
+  .btn-link:hover{background:#d4ede0;border-color:var(--accent);}
+  .divider{border:none;border-top:1px solid var(--border);margin:32px 0;}
+  .notice{background:var(--accentbg);border:1px solid var(--accentbd);border-radius:8px;padding:14px 18px;font-size:13px;color:var(--accent2);line-height:1.6;margin-bottom:24px;}
+  .notice-warn{background:var(--tag-orgbg);border-color:#e3cdc8;color:var(--tag-org);}
+  .squads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px;}
+  .squad-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .squad-card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .squad-card.featured{border-color:var(--accentbd);background:linear-gradient(135deg,var(--card),var(--accentbg));}
+  .squad-icon{font-size:20px;margin-bottom:10px;}
+  .squad-name{font-size:14px;font-weight:700;margin-bottom:6px;}
+  .squad-desc{font-size:12px;color:var(--ink2);line-height:1.65;}
+  .featured-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;background:var(--accentbg);color:var(--accent);border:1px solid var(--accentbd);border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;margin-left:8px;vertical-align:middle;}
+  .step{display:grid;grid-template-columns:40px 1fr;gap:16px;margin-bottom:28px;align-items:flex-start;}
+  .step-num{width:40px;height:40px;background:var(--ink);color:#f5f3ee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:500;flex-shrink:0;}
+  .step-title{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .step-body{font-size:13px;color:var(--ink2);line-height:1.65;}
+  .portfolio-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:14px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .portfolio-card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .portfolio-type{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+  .portfolio-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:10px;}
+  .portfolio-excerpt{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:14px;font-style:italic;border-left:3px solid var(--border2);padding-left:14px;}
+  .portfolio-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .creators-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+  .creator-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s,box-shadow 0.2s;display:flex;gap:16px;align-items:flex-start;}
+  .creator-card:hover{border-color:var(--border2);box-shadow:0 2px 14px rgba(0,0,0,0.07);}
+  .creator-img{width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border);}
+  .creator-info{flex:1;min-width:0;}
+  .creator-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+  .creator-handle{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:8px;}
+  .creator-squad{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;}
+  .creator-bio{font-size:12px;color:var(--ink2);line-height:1.6;}
+  .discord-cta{background:var(--ink);border-radius:12px;padding:32px;text-align:center;margin-bottom:32px;position:relative;overflow:hidden;}
+  .discord-cta::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 31px);}
+  .discord-cta-inner{position:relative;}
+  .discord-cta-label{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a9980;margin-bottom:12px;}
+  .discord-cta-title{font-size:22px;font-weight:800;color:#f5f3ee;margin-bottom:8px;}
+  .discord-cta-desc{font-size:13px;color:#a0a09a;margin-bottom:22px;line-height:1.6;}
+  .discord-btn{display:inline-flex;align-items:center;gap:8px;background:#5865F2;color:white;font-family:var(--mono);font-size:13px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;}
+  .discord-btn:hover{background:#4752C4;transform:translateY(-1px);box-shadow:0 4px 16px rgba(88,101,242,0.4);}
+  .author-card{background:var(--ink);color:#f5f3ee;border-radius:12px;padding:28px 32px;display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;}
+  .author-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(77,255,124,0.5);flex-shrink:0;}
+  .author-name{font-size:18px;font-weight:800;margin-bottom:4px;}
+  .author-handle{font-family:var(--mono);font-size:12px;color:#7a9980;margin-bottom:10px;}
+  .author-bio{font-size:13px;color:#a0a09a;line-height:1.65;margin-bottom:14px;font-weight:300;}
+  .author-links{display:flex;gap:10px;flex-wrap:wrap;}
+  .author-link{font-family:var(--mono);font-size:11px;padding:6px 12px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:rgba(255,255,255,0.7);text-decoration:none;transition:all 0.2s;}
+  .author-link:hover{border-color:#4dff7c;color:#4dff7c;}
+  footer{background:var(--ink);color:rgba(255,255,255,0.4);padding:28px 40px;font-family:var(--mono);font-size:11px;letter-spacing:0.06em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  footer strong{color:rgba(255,255,255,0.7);}
+  .footer-links{display:flex;gap:16px;}
+  .footer-link{color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+  .footer-link:hover{color:rgba(255,255,255,0.7);}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#f5f3ee;font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:8px;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:999;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  .lang-switcher{position:fixed;top:14px;right:20px;z-index:999;}
+  .lang-select{background:rgba(26,26,24,0.88);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;font-family:var(--mono);font-size:11px;color:#4dff7c;cursor:pointer;backdrop-filter:blur(8px);appearance:none;-webkit-appearance:none;outline:none;transition:border-color 0.2s;}
+  .lang-select:hover{border-color:rgba(255,255,255,0.3);}
+  .lang-select option{background:#1a1a18;color:#f5f3ee;}
+  @media(max-width:680px){
+    .hero{padding:40px 20px;}.hero-inner{grid-template-columns:1fr;gap:32px;}.hero-right{display:none;}
+    .sticky-nav{padding:0 16px;}.page{padding:32px 20px;}.grid-2,.creators-grid{grid-template-columns:1fr;}
+    .author-card{flex-direction:column;align-items:center;text-align:center;}
+    .creator-card{flex-direction:column;align-items:center;text-align:center;}
+    footer{flex-direction:column;text-align:center;padding:24px 20px;}
+  }
+
+  /* INSIGHTS REDIRECT */
+  .insights-redirect {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .insights-redirect-icon { font-size: 40px; line-height: 1; }
+  .insights-redirect-title { font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+  .insights-redirect-desc { font-size: 13px; color: var(--ink2); line-height: 1.65; max-width: 420px; }
+  .insights-redirect-notice {
+    background: var(--accentbg); border: 1px solid var(--accentbd);
+    border-radius: 8px; padding: 12px 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--accent2);
+    line-height: 1.6; max-width: 480px; letter-spacing: 0.02em;
+  }
+  .insights-redirect-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: #f5f3ee;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    padding: 12px 24px; border-radius: 8px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: opacity 0.2s; margin-top: 4px;
+  }
+  .insights-redirect-btn:hover { opacity: 0.85; }
+
+
+  /* GAME CARD */
+  .game-card {
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .game-card:hover {
+    border-color: rgba(77,255,124,0.3);
+    box-shadow: 0 4px 24px rgba(77,255,124,0.08);
+  }
+  .game-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .game-card-body {
+    padding: 20px 24px 22px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .game-card-info { flex: 1; min-width: 0; }
+  .game-card-eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #4dff7c; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .game-author-link {
+    color: #4dff7c; text-decoration: none; font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .game-author-link:hover { opacity: 0.75; text-decoration: underline; }
+  .game-card-title {
+    font-size: 18px; font-weight: 800; color: #f5f3ee;
+    letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2;
+  }
+  .game-card-desc {
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    line-height: 1.65; font-weight: 300;
+  }
+  .game-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .game-card-tag {
+    font-family: var(--mono); font-size: 10px; padding: 3px 9px;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+  }
+  .game-play-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #4dff7c; color: #1a1a18;
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 12px 22px; border-radius: 8px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    align-self: center;
+  }
+  .game-play-btn:hover { background: #3de06a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(77,255,124,0.3); }
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+  <select class="lang-select" onchange="if(this.value)window.location.href=this.value">
+    <option value="">🇰🇷 한국어</option>
+    <option value="index.html">🇺🇸 EN</option>
+    <option value="pt-br.html">🇧🇷 PT-BR</option>
+    <option value="es.html">🇪🇸 ES</option>
+    <option value="uk.html">🇺🇦 UK</option>
+  </select>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">StandX · 커뮤니티 인프라</div>
+      <h1 class="hero-title"><span>StandX</span>로<br>가는<br>입구.</h1>
+      <p class="hero-desc">템플릿, 에셋, 가이드, 실제 레퍼런스. StandX 생태계를 이해하고, 참여하고, 기여하고 싶은 모든 사람을 위한 오픈 허브.</p>
+      <div class="hero-bottom">
+        <div class="hero-tags">
+          <span class="hero-tag">무료</span>
+          <span class="hero-tag">로그인 불필요</span>
+          <span class="hero-tag">KO · EN · PT-BR</span>
+        </div>
+        <a class="discord-hero-btn" href="https://discord.gg/QkjVSetrup" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Discord 참여
+        </a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="hero-stat-card"><div class="hero-stat-label">Growth Path</div><div class="hero-stat-value">SEED → SPROUT → FLOWER</div><div class="hero-stat-sub">3단계 · 순수 실력제</div></div>
+        <div class="hero-stat-card"><div class="hero-stat-label">5개 스쿼드 운영</div><div class="hero-stat-value">Content · Creative · Tech · Outreach · Offline</div><div class="hero-stat-sub">나에게 맞는 스쿼드 선택</div></div>
+        <div class="hero-stat-card"><div class="hero-stat-label">모든 것이 일어나는 곳</div><div class="hero-stat-value">StandX Discord</div><div class="hero-stat-sub">discord.gg/QkjVSetrup</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="switchPage('guide')">시작하기</button>
+  <button class="nav-btn" onclick="switchPage('assets')">브랜드 키트</button>
+  <button class="nav-btn" onclick="switchPage('templates')">템플릿</button>
+  <button class="nav-btn" onclick="switchPage('portfolio')">레퍼런스</button>
+  <button class="nav-btn" onclick="switchPage('community')">커뮤니티</button>
+  <button class="nav-btn" onclick="switchPage('about')">제작자 소개</button>
+  <button class="nav-btn" onclick="switchPage('insights')">Standers Insights</button>
+</nav>
+
+<div class="page active" id="page-guide">
+  <div class="page-title">StandX 시작하는 법</div>
+  <div class="page-sub">트레이더, 크리에이터, 연구자, 그리고 궁금한 모든 분들을 위한 가이드</div>
+  <div class="notice">📌 이 허브는 모두를 위한 것입니다. 배경에 상관없이, 여기서 StandX 생태계에 참여하고 기여하는 길을 찾을 수 있습니다.</div>
+  <div class="section-label">Growth Path</div>
+  <div class="card" style="margin-bottom:28px"><div class="card-body" style="margin-bottom:0">StandX Growth Path는 커뮤니티 성장 시스템입니다 — 모든 것이 StandX Discord에서 일어납니다. 활성 멤버들에게 독점 역할과 점점 커지는 보상을 부여합니다. 기여 방법은 하나가 아닙니다: 콘텐츠 크리에이터, 개발자, 이벤트 주최자, 연구자, 지역 앰배서더 등 다양한 프로필을 인정합니다.</div></div>
+  <div class="section-label">단계별 가이드</div>
+  <div class="step"><div class="step-num">1</div><div><div class="step-title">3,000 Engage Points 쌓기</div><div class="step-body">주간 이벤트 참여, 공지 반응, 채팅과 VC 참여하기. 하지만 가장 빠른 길은 콘텐츠 만들기입니다: StandX에는 X에서의 매일 창작 프로그램이 있습니다 — 시장 인사이트, 튜토리얼, 밈, 동영상, 분석. X에 게시하고, Discord의 #content-creation에 링크를 공유하면 품질에 따라 포인트를 받습니다. 상위 크리에이터는 하루 20~40포인트와 주간 커뮤니티 셔라웃을 받습니다. 3,000포인트로 #marketplace에서 @Stander 역할을 구매하세요.</div></div></div>
+  <div class="step"><div class="step-num">2</div><div><div class="step-title">@SEED 신청</div><div class="step-body">@Stander가 생기면 #seed-application 채널에서 @SEED를 신청하세요. 팀이 활동을 검토합니다. 수락되면 공식 기여자로 합류합니다. 아니라면 2주 후 재신청할 수 있습니다.</div></div></div>
+  <div class="step"><div class="step-num">3</div><div><div class="step-title">스쿼드 선택</div><div class="step-body">#support-ticket에서 티켓을 열고 맞는 스쿼드를 선언하세요. 각 스쿼드에는 특정 업무가 있습니다. 아래에서 이용 가능한 스쿼드를 확인하세요 — 스쿼드를 넘어 협력할 수도 있습니다.</div></div></div>
+  <div class="step"><div class="step-num">4</div><div><div class="step-title">업무 완료 후 @SPROUT로 레벨업</div><div class="step-body">업무는 #task-board에 있습니다. #task-submission에 제출하세요. 업그레이드를 위해 Engage ≥ 4,000 + 스쿼드 기준이 필요합니다. 모더레이터도 서버 활동을 평가합니다.</div></div></div>
+  <div class="step"><div class="step-num">5</div><div><div class="step-title">@FLOWER — 최고 단계</div><div class="step-body">이니셔티브를 주도하고, 커뮤니티 기준을 높이고, 요청받지 않은 것들을 만드는 사람들을 위해 예약됩니다. 순수 실력제.</div></div></div>
+  <hr class="divider">
+  <div class="section-label">스쿼드 — 나에게 맞는 것 선택</div>
+  <div class="notice" style="margin-bottom:20px">💡 가장 쉬워 보이는 것이 아니라 즐기는 것을 기준으로 선택하세요. 최고의 스쿼드는 당신을 활발하고 일관되게 유지시킬 것입니다.</div>
+  <div class="squads-grid">
+    <div class="squad-card featured"><div class="squad-icon">✍️</div><div class="squad-name">Content / Research <span class="featured-badge">허브 제작자</span></div><div class="squad-desc">기사, 튜토리얼, FAQ, 시장 분석, DEX 비교, 신규 멤버 가이드. 글쓰기, 연구, 설명을 즐기는 분들을 위해.</div></div>
+    <div class="squad-card"><div class="squad-icon">🎨</div><div class="squad-name">Creative Squad</div><div class="squad-desc">포스터, 스티커, 동영상, 시각적 자료. 디자인 감각이 있고 작업이 모두에게 사용되길 원하는 분들을 위해.</div></div>
+    <div class="squad-card"><div class="squad-icon">🔧</div><div class="squad-name">Tech Support Squad</div><div class="squad-desc">기술 질문 답변, 온체인 등록 도움, 튜토리얼 작성. 제품을 알고 가르치는 걸 즐기는 분들을 위해.</div></div>
+    <div class="squad-card"><div class="squad-icon">🤝</div><div class="squad-name">Outreach Squad</div><div class="squad-desc">지역 KOL 연락, 파트너 커뮤니티, 파트너십 조율. 네트워크가 있고 협상할 줄 아는 분들을 위해.</div></div>
+    <div class="squad-card"><div class="squad-icon">📍</div><div class="squad-name">Offline Squad</div><div class="squad-desc">밋업, 오프라인 이벤트, 지역 앰배서더 활동 조직. StandX를 물리적 세계로 가져갈 에너지가 있는 분들을 위해.</div></div>
+  </div>
+  <hr class="divider">
+  <div class="discord-cta"><div class="discord-cta-inner"><div class="discord-cta-label">모든 것이 일어나는 곳</div><div class="discord-cta-title">StandX Discord 참여</div><div class="discord-cta-desc">이벤트, 업무, 스쿼드, 셔라웃, 전체 커뮤니티가 공식 서버에 있습니다. 모든 것이 시작되는 곳입니다.</div><a class="discord-btn" href="https://discord.gg/QkjVSetrup" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>discord.gg/QkjVSetrup 참여</a></div></div>
+</div>
+
+<div class="page" id="page-assets">
+  <div class="page-title">브랜드 키트 · 시각적 에셋</div>
+  <div class="page-sub">시각적으로 어디서 시작할지 모르는 분들을 위해</div>
+  <div class="notice">💡 브랜드 키트는 창의적 마찰을 없애기 위해 존재합니다. 어떤 이미지를 사용할지, 어떻게 레이아웃을 구성할지, 어떤 스타일이 효과적인지 막힌다면 — 이 에셋들이 해결합니다. 콘텐츠에 집중하세요, 시각적 자료는 준비되어 있습니다.</div>
+  <div class="notice" style="margin-top:-12px">📘 <a href="https://www.notion.so/StandX-Community-Brand-Kit-2cf509c0f89780c9a435f005e8afdc08" target="_blank" style="color:var(--accent)">Notion</a>에 전체 문서 — 사용 가이드라인, 조합 방법, 버전 관리.</div>
+  <div class="section-label">에셋 유형 선택</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-eyebrow">모듈식 · 투명 배경</div><div class="card-title">🧩 마스코트 에셋 (베이스)</div><div class="card-body">전신, 반신, 분리된 머리와 기능적 포즈. 투명 배경 PNG. 자신의 레이아웃에서 마스코트를 조합하거나 재배치할 때 사용하세요.</div><div style="margin-bottom:14px"><span class="tag tag-green">교육 포스트</span><span class="tag tag-green">튜토리얼</span><span class="tag tag-green">썸네일</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1ToCqBkjKhASrsp6_ZmK2BbqwLXpmXpww?usp=drive_link" target="_blank">↗ Drive 열기</a></div>
+    <div class="card"><div class="card-eyebrow">반응 · 빠른 표현</div><div class="card-title">🎭 감정 & 반응</div><div class="card-body">빠른 반응용 표현들. 기본 감정과 트레이딩 반응 포함: Bullish, Bearish, GG, Loss, Alert, Idea.</div><div style="margin-bottom:14px"><span class="tag tag-blue">Discord 답글</span><span class="tag tag-blue">X 댓글</span><span class="tag tag-blue">가이드 마커</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1iO8iKhDP_QJAWZ1az3PPUevsGl-HabBX?usp=drive_link" target="_blank">↗ Drive 열기</a></div>
+    <div class="card"><div class="card-eyebrow">스토리텔링 · 시각 교육</div><div class="card-title">🎬 마스코트 씬 & 일러스트레이션</div><div class="card-body">시각적 스토리텔링을 위한 완성 일러스트레이션. 모듈식 아님 — 그대로 사용. 컬러와 B&W 버전 제공.</div><div style="margin-bottom:14px"><span class="tag tag-org">긴 서사</span><span class="tag tag-org">개념적 콘텐츠</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1lXJ2A_tSld00dq4eP50n1g55eVLwpG3D?usp=drive_link" target="_blank">↗ Drive 열기</a></div>
+    <div class="card"><div class="card-eyebrow">바로 게시 가능</div><div class="card-title">📣 마케팅 지원 에셋</div><div class="card-body">배경과 구성이 완성된 에셋. 편집 없이, 자르기 없이 — 바로 게시하세요.</div><div style="margin-bottom:14px"><span class="tag tag-green">빠른 소셜</span><span class="tag tag-green">편집 불필요</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/13cLiJ2XjHvHLzx_44ZVqI4tNPFVJqN0m?usp=drive_link" target="_blank">↗ Drive 열기</a></div>
+  </div>
+  <hr class="divider">
+  <div class="card"><div class="card-title">📥 전체 키트 — 루트 폴더</div><div class="card-body">모든 카테고리 한 곳에. 유형별로 찾아보거나 일괄 다운로드할 때 사용하세요.</div><br><a class="btn-link" href="https://drive.google.com/drive/folders/1XQbI-u8HCbYtkBHw4VX7QDvduEBu1Wzw?usp=drive_link" target="_blank">↗ Drive 루트 폴더 열기</a></div>
+  <hr class="divider">
+  <div class="notice notice-warn">⚠️ 에셋은 커뮤니티가 제작하며 StandX 공식 커뮤니케이션을 대표하지 않습니다. 공식 자료나 오해를 불러일으키는 콘텐츠 모방에 사용하지 마세요.</div>
+</div>
+
+<div class="page" id="page-templates">
+  <div class="page-title">콘텐츠 템플릿</div>
+  <div class="page-sub">준비된 구조 — 필드를 채우고 스타일에 맞게 조정하세요</div>
+  <div class="notice">💡 템플릿은 콘텐츠의 뼈대입니다. <span style="color:var(--accent);font-weight:600">녹색</span> 필드가 텍스트를 삽입할 위치를 보여줍니다. 주제와 목소리는 여러분이 정합니다 — 구조는 템플릿이 담당합니다.</div>
+  <div class="card"><div class="card-title">📄 교육적 기사 템플릿</div><div class="card-body">[제목]<br><br>[맥락 — StandX 트레이더에게 왜 중요한지]<br>1단락. 직접적으로. 일반적인 도입부 없이.<br><br>---<br><br>[주요 개념 — 간단하게 설명]<br>불필요한 전문 용어 없이. 초보 트레이더가 이해할 수 있어야 합니다.<br><br>---<br><br>[실제로 어떻게 작동하는가]<br>실제 또는 가상의 예시. 메커니즘을 실제로 보여주세요.<br><br>---<br><br>[일반적인 실수 — 대부분이 잘못 이해하는 것]<br>솔직하게. 직접적으로.<br><br>---<br><br>[결론 — 2~3줄]<br>플랫폼 칭찬이 아닌 인사이트로 마무리하세요.</div></div>
+</div>
+
+<div class="page" id="page-portfolio">
+  <div class="page-title">실제 레퍼런스</div>
+  <div class="page-sub">StandX 생태계를 위해 만들어진 것들의 예시</div>
+  <div class="notice">💡 다양한 형식, 다양한 언어, 다양한 접근법. StandX를 위해 무엇을 만들 수 있는지 확인하세요.</div>
+  <div class="portfolio-card"><div class="portfolio-type">기사 · X Articles · EN</div><div class="portfolio-title">Why StandX? The structural answer for traders who take execution seriously</div><div class="portfolio-excerpt">대부분의 퍼프 플랫폼은 같은 질문에 잘못된 방식으로 답합니다: 포지션에 없을 때 자본에 무슨 일이 일어나나요? StandX는 다른 전제에서 시작합니다 — 거래를 하지 않을 때도 자본이 왜 일을 멈춰야 하나요?</div><div class="portfolio-footer"><div><span class="tag tag-green">EN</span><span class="tag tag-blue">기사</span><span class="tag tag-org">포지셔닝</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2034354336025690256" target="_blank">↗ X에서 보기</a></div></div>
+  <div class="portfolio-card"><div class="portfolio-type">시장 분석 · 실시간 나레이션 · StandX 플랫폼</div><div class="portfolio-title">StandX 플랫폼에서의 시장 분석 — 트레이더 본인이 직접 나레이션</div><div class="portfolio-excerpt">StandX 인터페이스에서 직접 진행된 실제 분석으로 Tarzan Web3가 나레이션합니다. 단순한 이론이 아닌 라이브 실행으로 플랫폼 사용을 보여주는 콘텐츠.</div><div class="portfolio-footer"><div><span class="tag tag-org">실제 분석</span><span class="tag tag-blue">트레이딩</span><span class="tag tag-green">StandX</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2023113800002793878" target="_blank">↗ X에서 보기</a></div></div>
+</div>
+
+<div class="page" id="page-community">
+  <div class="page-title">커뮤니티</div>
+  <div class="page-sub">모든 것이 일어나는 곳 — 함께 만들어가는 사람들</div>
+  
+  <div class="section-label">Community Project</div>
+  <div class="game-card">
+    <img class="game-card-img" src="data:image/png;base64,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" alt="StandX Flappy Candle">
+    <div class="game-card-body">
+      <div class="game-card-info">
+        <div class="game-card-eyebrow">🎮 <a class="game-author-link" href="https://x.com/victordesouza96" target="_blank">@victordesouza96</a> &amp; <a class="game-author-link" href="https://x.com/JovanNeves" target="_blank">@JovanNeves</a> 제작</div>
+        <div class="game-card-title">StandX Flappy Candle</div>
+        <div class="game-card-desc">StandX 마스코트가 되어 시장을 탐색하세요 — DUSD를 수집하고, 캔들을 피하며 글로벌 리더보드에 오르세요. 커뮤니티가 만든 Standers를 위한 아케이드 게임.</div>
+        <div class="game-card-tags"><span class="game-card-tag">무료 플레이</span><span class="game-card-tag">글로벌 랭킹</span><span class="game-card-tag">Practice · Yield · Challenge</span></div>
+      </div>
+      <a class="game-play-btn" href="https://standx-flappy.vercel.app/" target="_blank">▶ 지금 플레이</a>
+    </div>
+  </div>
+
+  <div class="discord-cta" style="margin-bottom:36px"><div class="discord-cta-inner"><div class="discord-cta-label">공식 서버</div><div class="discord-cta-title">StandX Discord</div><div class="discord-cta-desc">Discord는 업무, 이벤트, 토론, 모든 Growth Path 진행이 일어나는 곳입니다. 진정으로 참여하고 싶다면 여기서 시작하세요.</div><a class="discord-btn" href="https://discord.gg/QkjVSetrup" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>discord.gg/QkjVSetrup</a></div></div>
+  <div class="section-label">영감을 주는 크리에이터</div>
+  <div class="creators-grid">
+    <div class="creator-card"><div class="creator-info"><div class="creator-name">Aifilho</div><a class="creator-handle" href="https://x.com/FilhoIsmae" target="_blank">@FilhoIsmae</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">Creative Squad의 뛰어난 크리에이터. 능숙하고 혁신적이며 항상 도움을 줍니다 — 커뮤니티의 시각적 수준을 높이는 사람.</div></div></div>
+    <div class="creator-card"><div class="creator-info"><div class="creator-name">Jovan</div><a class="creator-handle" href="https://x.com/JovanNeves" target="_blank">@JovanNeves</a><div class="creator-squad">Content Squad</div><div class="creator-bio">다재다능하고 역동적이며 항상 함께합니다. 형식 사이를 쉽게 이동하는 크리에이터 — Content Squad 입문자들의 지속적인 레퍼런스.</div></div></div>
+    <div class="creator-card"><div class="creator-info"><div class="creator-name">Dias</div><a class="creator-handle" href="https://x.com/diaserdropes" target="_blank">@diaserdropes</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">존재감, 회복력, 동료애의 가장 큰 예시. 주변에 있고 싶은 사람 — 창의적이고 도움이 되며 항상 기꺼이 합니다.</div></div></div>
+    <div class="creator-card"><div class="creator-info"><div class="creator-name">Dan</div><a class="creator-handle" href="https://x.com/DanielAnge9499" target="_blank">@DanielAnge9499</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">타고난 예술가. 완벽한 아트, 동영상, 콘텐츠 — Dan은 창작과 품질의 최고 레퍼런스 중 하나입니다.</div></div></div>
+  </div>
+</div>
+
+<div class="page" id="page-about">
+  <div class="page-title">제작자 소개</div>
+  <div class="page-sub">이 허브를 만든 사람과 이유</div>
+  <div class="author-card">
+    <img class="author-img" src="https://pbs.twimg.com/profile_images/1751021179651489792/8wsPvwAb_400x400.jpg" alt="Tarzan Web3" onerror="this.style.display='none'">
+    <div>
+      <div class="author-name">Tarzan Web3</div>
+      <div class="author-handle">@victordesouza96</div>
+      <div class="author-bio">시장 사이클을 항해하는 트레이더. 차트, 실수, 그리고 작은 검은 마스코트에서 배우는 중.<br><br>DeFi 및 퍼프 DEX에 관한 기술 교육 콘텐츠 크리에이터. StandX Growth Path Sprout, Content / Research Squad. CEX(Binance, Bybit) 배경, DeFi 퍼프로 마이그레이션. 실행 메커니즘, DUSD, 시장 분석, 모든 레벨의 트레이더를 위한 접근 가능한 교육에 집중.</div>
+      <div class="author-links"><a class="author-link" href="https://x.com/victordesouza96" target="_blank">↗ X @victordesouza96</a></div>
+    </div>
+  </div>
+  <div class="section-label">이 허브가 존재하는 이유</div>
+  <div class="card" style="margin-bottom:24px"><div class="card-body" style="margin-bottom:0">StandX는 활발한 커뮤니티와 밀도 있는 기술 생태계를 가지고 있습니다. 하지만 처음 오는 사람들에게는 무료로, 로그인 없이, 장벽 없이 접근할 수 있는 레퍼런스 포인트가 없었습니다.<br><br>이 허브가 그 인프라입니다. 템플릿, 에셋, 스쿼드 가이드, 실제 예시 — 브라우저에서 실행되는 HTML 파일 하나에. 유료 Notion 없이, 회원가입 없이. 열린 기여. 도움이 되었다면 그것으로 충분합니다.</div></div>
+  <div class="notice notice-warn">⚠️ 이 자료는 StandX의 공식 커뮤니케이션을 대표하지 않습니다. 커뮤니티 이니셔티브입니다.</div>
+</div>
+
+
+<!-- ═══ STANDERS INSIGHTS REDIRECT ═══ -->
+<div class="page" id="page-insights">
+  <div class="page-title">Standers Insights</div>
+  <div class="page-sub">커뮤니티 큐레이션 아티클</div>
+
+  <div class="insights-redirect">
+    <div class="insights-redirect-icon">📚</div>
+    <div class="insights-redirect-title">Standers Insights</div>
+    <div class="insights-redirect-notice">📚 이 섹션은 영어로만 제공됩니다. 글로벌 커뮤니티 구성원이 작성하고 편집 검토를 거친 아티클입니다.</div>
+    <div class="insights-redirect-desc">아래 버튼을 클릭하여 영어 전체 버전에 접근하세요.</div>
+    <a class="insights-redirect-btn" href="index.html#" onclick="localStorage.setItem('standx-nav','insights'); return true;">↗ 영어로 읽기</a>
+  </div>
+</div>
+
+
+<footer>
+  <div><strong>StandX Community Hub</strong> &nbsp;<span style="opacity:0.5;font-weight:400">v1 · 2026년 4월</span><br>제작: Tarzan Web3 · @victordesouza96 · 커뮤니티 이니셔티브</div>
+  <div class="footer-links"><a class="footer-link" href="https://discord.gg/QkjVSetrup" target="_blank">StandX Discord</a><a class="footer-link" href="https://x.com/StandX_Official" target="_blank">X @StandX_Official</a><a class="footer-link" href="https://x.com/victordesouza96" target="_blank">X @victordesouza96</a></div>
+</footer>
+<div class="toast" id="toast"></div>
+<script>
+  function switchPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');event.target.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+</script>
+</body>
+</html>

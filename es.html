@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StandX Community Hub — by Tarzan Web3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f5f3ee;--bg2:#eceae4;--bg3:#e2dfd8;--card:#ffffff;--border:#d8d4cb;--border2:#c8c3b8;
+    --ink:#1a1a18;--ink2:#5a5750;--ink3:#9c9890;--accent:#1a6b3c;--accent2:#14522e;
+    --accentbg:#e8f3ec;--accentbd:#b8dbc6;--tag-blue:#1a3a6b;--tag-bluebg:#e8eef3;
+    --tag-org:#6b3a1a;--tag-orgbg:#f3ebe8;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;}
+  .hero{background:var(--ink);color:#f5f3ee;padding:64px 40px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(255,255,255,0.02) 40px,rgba(255,255,255,0.02) 41px);}
+  .hero-inner{max-width:900px;margin:0 auto;position:relative;display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:center;}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#7a9980;margin-bottom:22px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:#7a9980;}
+  .hero-title{font-size:clamp(38px,5.5vw,62px);font-weight:800;line-height:1.05;letter-spacing:-0.03em;margin-bottom:22px;}
+  .hero-title span{color:#4dff7c;}
+  .hero-desc{font-size:16px;color:#a0a09a;line-height:1.75;margin-bottom:30px;font-weight:300;}
+  .hero-bottom{display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .hero-tag{font-family:var(--mono);font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.04em;}
+  .hero-stats{display:flex;flex-direction:column;gap:12px;}
+  .hero-stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px 18px;}
+  .hero-stat-label{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#7a9980;margin-bottom:6px;}
+  .hero-stat-value{font-size:15px;font-weight:700;color:#f5f3ee;line-height:1.4;}
+  .hero-stat-sub{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;}
+  .discord-hero-btn{display:inline-flex;align-items:center;gap:8px;background:#5865F2;color:white;font-family:var(--mono);font-size:12px;font-weight:700;padding:10px 18px;border-radius:8px;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;white-space:nowrap;}
+  .discord-hero-btn:hover{background:#4752C4;transform:translateY(-1px);}
+  .sticky-nav{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:0 40px;gap:0;}
+  .nav-btn{font-family:var(--mono);font-size:12px;letter-spacing:0.05em;text-transform:uppercase;padding:16px 18px;background:none;border:none;border-bottom:2px solid transparent;color:var(--ink3);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+  .nav-btn:hover{color:var(--ink2);}
+  .nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .page{display:none;max-width:900px;margin:0 auto;padding:48px 40px;animation:up 0.25s ease;}
+  .page.active{display:block;}
+  @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .page-title{font-size:26px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px;}
+  .page-sub{font-family:var(--mono);font-size:12px;color:var(--ink3);letter-spacing:0.04em;margin-bottom:36px;}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .card-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
+  .card-title{font-size:14px;font-weight:700;margin-bottom:8px;}
+  .card-body{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:14px;}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:4px;letter-spacing:0.05em;margin-right:4px;margin-bottom:4px;}
+  .tag-green{background:var(--accentbg);color:var(--accent);border:1px solid var(--accentbd);}
+  .tag-blue{background:var(--tag-bluebg);color:var(--tag-blue);border:1px solid #c8d4e3;}
+  .tag-org{background:var(--tag-orgbg);color:var(--tag-org);border:1px solid #e3cdc8;}
+  .btn-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--accent);text-decoration:none;padding:7px 12px;border:1px solid var(--accentbd);border-radius:6px;background:var(--accentbg);transition:all 0.2s;letter-spacing:0.04em;}
+  .btn-link:hover{background:#d4ede0;border-color:var(--accent);}
+  .divider{border:none;border-top:1px solid var(--border);margin:32px 0;}
+  .notice{background:var(--accentbg);border:1px solid var(--accentbd);border-radius:8px;padding:14px 18px;font-family:var(--mono);font-size:12px;color:var(--accent2);line-height:1.6;margin-bottom:24px;letter-spacing:0.02em;}
+  .notice-warn{background:var(--tag-orgbg);border-color:#e3cdc8;color:var(--tag-org);}
+  .squads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px;}
+  .squad-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .squad-card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .squad-card.featured{border-color:var(--accentbd);background:linear-gradient(135deg,var(--card),var(--accentbg));}
+  .squad-icon{font-size:20px;margin-bottom:10px;}
+  .squad-name{font-size:14px;font-weight:700;margin-bottom:6px;}
+  .squad-desc{font-size:12px;color:var(--ink2);line-height:1.65;font-family:var(--mono);}
+  .featured-badge{font-family:var(--mono);font-size:9px;padding:2px 7px;background:var(--accentbg);color:var(--accent);border:1px solid var(--accentbd);border-radius:4px;letter-spacing:0.08em;text-transform:uppercase;margin-left:8px;vertical-align:middle;}
+  .step{display:grid;grid-template-columns:40px 1fr;gap:16px;margin-bottom:28px;align-items:flex-start;}
+  .step-num{width:40px;height:40px;background:var(--ink);color:#f5f3ee;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:500;flex-shrink:0;}
+  .step-title{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .step-body{font-size:13px;color:var(--ink2);line-height:1.65;}
+  .portfolio-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:14px;transition:border-color 0.2s,box-shadow 0.2s;}
+  .portfolio-card:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+  .portfolio-type{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;}
+  .portfolio-title{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:10px;}
+  .portfolio-excerpt{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:14px;font-style:italic;border-left:3px solid var(--border2);padding-left:14px;}
+  .portfolio-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .tmpl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden;}
+  .tmpl-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;transition:background 0.2s;user-select:none;}
+  .tmpl-header:hover{background:var(--bg);}
+  .tmpl-left{display:flex;align-items:center;gap:12px;}
+  .tmpl-name{font-size:14px;font-weight:700;}
+  .tmpl-arrow{color:var(--ink3);transition:transform 0.2s;font-size:12px;}
+  .tmpl-card.open .tmpl-arrow{transform:rotate(180deg);}
+  .tmpl-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);}
+  .tmpl-card.open .tmpl-body{display:block;}
+  .tmpl-block{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:16px;font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--ink2);white-space:pre-wrap;}
+  .tmpl-block .ph{color:var(--accent);font-weight:500;}
+  .copy-btn{margin-top:12px;font-family:var(--mono);font-size:11px;padding:7px 14px;background:var(--accentbg);border:1px solid var(--accentbd);border-radius:6px;color:var(--accent);cursor:pointer;transition:all 0.2s;letter-spacing:0.04em;}
+  .copy-btn:hover{background:#d4ede0;border-color:var(--accent);}
+  .creators-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+  .creator-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s,box-shadow 0.2s;display:flex;gap:16px;align-items:flex-start;}
+  .creator-card:hover{border-color:var(--border2);box-shadow:0 2px 14px rgba(0,0,0,0.07);}
+  .creator-img{width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border);}
+  .creator-info{flex:1;min-width:0;}
+  .creator-name{font-size:14px;font-weight:700;margin-bottom:2px;}
+  .creator-handle{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:8px;letter-spacing:0.03em;}
+  .creator-squad{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;}
+  .creator-bio{font-size:12px;color:var(--ink2);line-height:1.6;}
+  .discord-cta{background:var(--ink);border-radius:12px;padding:32px;text-align:center;margin-bottom:32px;position:relative;overflow:hidden;}
+  .discord-cta::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 31px);}
+  .discord-cta-inner{position:relative;}
+  .discord-cta-label{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7a9980;margin-bottom:12px;}
+  .discord-cta-title{font-size:22px;font-weight:800;color:#f5f3ee;margin-bottom:8px;letter-spacing:-0.02em;}
+  .discord-cta-desc{font-size:13px;color:#a0a09a;margin-bottom:22px;line-height:1.6;}
+  .discord-btn{display:inline-flex;align-items:center;gap:8px;background:#5865F2;color:white;font-family:var(--mono);font-size:13px;font-weight:700;padding:12px 24px;border-radius:8px;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;}
+  .discord-btn:hover{background:#4752C4;transform:translateY(-1px);box-shadow:0 4px 16px rgba(88,101,242,0.4);}
+  .author-card{background:var(--ink);color:#f5f3ee;border-radius:12px;padding:28px 32px;display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;}
+  .author-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:2px solid rgba(77,255,124,0.5);flex-shrink:0;}
+  .author-name{font-size:18px;font-weight:800;margin-bottom:4px;}
+  .author-handle{font-family:var(--mono);font-size:12px;color:#7a9980;margin-bottom:10px;letter-spacing:0.04em;}
+  .author-bio{font-size:13px;color:#a0a09a;line-height:1.65;margin-bottom:14px;font-weight:300;}
+  .author-links{display:flex;gap:10px;flex-wrap:wrap;}
+  .author-link{font-family:var(--mono);font-size:11px;padding:6px 12px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:rgba(255,255,255,0.7);text-decoration:none;transition:all 0.2s;letter-spacing:0.04em;}
+  .author-link:hover{border-color:#4dff7c;color:#4dff7c;}
+  footer{background:var(--ink);color:rgba(255,255,255,0.4);padding:28px 40px;font-family:var(--mono);font-size:11px;letter-spacing:0.06em;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  footer strong{color:rgba(255,255,255,0.7);}
+  .footer-links{display:flex;gap:16px;}
+  .footer-link{color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;}
+  .footer-link:hover{color:rgba(255,255,255,0.7);}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#f5f3ee;font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:8px;letter-spacing:0.04em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:999;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  /* LANG SWITCHER */
+  .lang-switcher{position:fixed;top:14px;right:20px;z-index:999;}
+  .lang-select{background:rgba(26,26,24,0.88);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;font-family:var(--mono);font-size:11px;letter-spacing:0.06em;color:#4dff7c;cursor:pointer;backdrop-filter:blur(8px);appearance:none;-webkit-appearance:none;outline:none;transition:border-color 0.2s;}
+  .lang-select:hover{border-color:rgba(255,255,255,0.3);}
+  .lang-select option{background:#1a1a18;color:#f5f3ee;}
+  @media(max-width:680px){
+    .hero{padding:40px 20px;}
+    .hero-inner{grid-template-columns:1fr;gap:32px;}
+    .hero-right{display:none;}
+    .sticky-nav{padding:0 16px;}
+    .page{padding:32px 20px;}
+    .grid-2,.creators-grid{grid-template-columns:1fr;}
+    .author-card{flex-direction:column;align-items:center;text-align:center;}
+    .creator-card{flex-direction:column;align-items:center;text-align:center;}
+    footer{flex-direction:column;text-align:center;padding:24px 20px;}
+    .hero-bottom{flex-direction:column;align-items:flex-start;}
+  }
+
+  /* INSIGHTS REDIRECT */
+  .insights-redirect {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .insights-redirect-icon { font-size: 40px; line-height: 1; }
+  .insights-redirect-title { font-size: 18px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+  .insights-redirect-desc { font-size: 13px; color: var(--ink2); line-height: 1.65; max-width: 420px; }
+  .insights-redirect-notice {
+    background: var(--accentbg); border: 1px solid var(--accentbd);
+    border-radius: 8px; padding: 12px 16px;
+    font-family: var(--mono); font-size: 12px; color: var(--accent2);
+    line-height: 1.6; max-width: 480px; letter-spacing: 0.02em;
+  }
+  .insights-redirect-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: #f5f3ee;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    padding: 12px 24px; border-radius: 8px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: opacity 0.2s; margin-top: 4px;
+  }
+  .insights-redirect-btn:hover { opacity: 0.85; }
+
+
+  /* GAME CARD */
+  .game-card {
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .game-card:hover {
+    border-color: rgba(77,255,124,0.3);
+    box-shadow: 0 4px 24px rgba(77,255,124,0.08);
+  }
+  .game-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .game-card-body {
+    padding: 20px 24px 22px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .game-card-info { flex: 1; min-width: 0; }
+  .game-card-eyebrow {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #4dff7c; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .game-author-link {
+    color: #4dff7c; text-decoration: none; font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .game-author-link:hover { opacity: 0.75; text-decoration: underline; }
+  .game-card-title {
+    font-size: 18px; font-weight: 800; color: #f5f3ee;
+    letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1.2;
+  }
+  .game-card-desc {
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    line-height: 1.65; font-weight: 300;
+  }
+  .game-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .game-card-tag {
+    font-family: var(--mono); font-size: 10px; padding: 3px 9px;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
+  }
+  .game-play-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #4dff7c; color: #1a1a18;
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 12px 22px; border-radius: 8px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    align-self: center;
+  }
+  .game-play-btn:hover { background: #3de06a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(77,255,124,0.3); }
+</style>
+</head>
+<body>
+
+<div class="lang-switcher">
+  <select class="lang-select" onchange="if(this.value)window.location.href=this.value">
+    <option value="">🌐 ES</option>
+    <option value="index.html">🇺🇸 EN</option>
+    <option value="pt-br.html">🇧🇷 PT-BR</option>
+    <option value="ko.html">🇰🇷 한국어</option>
+    <option value="uk.html">🇺🇦 UK</option>
+  </select>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">StandX · Infraestructura Comunitaria</div>
+      <h1 class="hero-title">Tu punto de<br>entrada a<br><span>StandX</span>.</h1>
+      <p class="hero-desc">Plantillas, recursos, guías y referencias reales. Un hub abierto para cualquiera que quiera entender, participar y contribuir al ecosistema StandX.</p>
+      <div class="hero-bottom">
+        <div class="hero-tags">
+          <span class="hero-tag">Gratis</span>
+          <span class="hero-tag">Sin registro</span>
+          <span class="hero-tag">ES · EN · PT-BR</span>
+        </div>
+        <a class="discord-hero-btn" href="https://discord.gg/QkjVSetrup" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Unirse al Discord
+        </a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <div class="hero-stat-label">Growth Path</div>
+          <div class="hero-stat-value">SEED → SPROUT → FLOWER</div>
+          <div class="hero-stat-sub">3 niveles · meritocracia pura</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-label">5 Squads disponibles</div>
+          <div class="hero-stat-value">Content · Creative · Tech · Outreach · Offline</div>
+          <div class="hero-stat-sub">Elige el que te encaje</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-label">Donde todo ocurre</div>
+          <div class="hero-stat-value">Discord de StandX</div>
+          <div class="hero-stat-sub">discord.gg/QkjVSetrup</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="switchPage('guide')">Cómo Empezar</button>
+  <button class="nav-btn" onclick="switchPage('assets')">Brand Kit</button>
+  <button class="nav-btn" onclick="switchPage('templates')">Plantillas</button>
+  <button class="nav-btn" onclick="switchPage('portfolio')">Referencias</button>
+  <button class="nav-btn" onclick="switchPage('community')">Comunidad</button>
+  <button class="nav-btn" onclick="switchPage('about')">Sobre el Autor</button>
+  <button class="nav-btn" onclick="switchPage('insights')">Standers Insights</button>
+</nav>
+
+<div class="page active" id="page-guide">
+  <div class="page-title">Cómo Empezar en StandX</div>
+  <div class="page-sub">Una guía para todos — traders, creadores, investigadores y curiosos</div>
+  <div class="notice">📌 Este hub es para todos. Sin importar tu perfil, aquí encontrarás el camino para unirte y contribuir al ecosistema StandX.</div>
+  <div class="section-label">El Growth Path</div>
+  <div class="card" style="margin-bottom:28px">
+    <div class="card-body" style="margin-bottom:0">El Growth Path de StandX es el sistema de progresión comunitaria — y todo ocurre en el Discord de StandX. Reconoce a los miembros activos con roles exclusivos y recompensas crecientes. No hay una única forma de contribuir: el sistema valora diferentes perfiles, desde creadores de contenido hasta desarrolladores, organizadores de eventos, investigadores y embajadores locales.</div>
+  </div>
+  <div class="section-label">Paso a paso</div>
+  <div class="step"><div class="step-num">1</div><div><div class="step-title">Acumula 3.000 Engage Points</div><div class="step-body">Participa en eventos semanales, reacciona a anuncios y participa en chat y VC. Pero el camino más directo es crear contenido: StandX tiene un programa de creación diario en X — insights de mercado, tutoriales, memes, videos y análisis. Publicas en X, compartes el enlace en #content-creation en Discord y ganas puntos según la calidad. Los mejores creadores reciben 20 a 40 puntos por día y un shoutout semanal. Con 3.000 puntos, ve a #marketplace y compra el rol @Stander.</div></div></div>
+  <div class="step"><div class="step-num">2</div><div><div class="step-title">Aplica para @SEED</div><div class="step-body">Con @Stander en mano, aplica para @SEED en el canal #seed-application. El equipo revisa tu actividad. Si eres aceptado, te unes como colaborador oficial. Si no, puedes volver a aplicar en 2 semanas.</div></div></div>
+  <div class="step"><div class="step-num">3</div><div><div class="step-title">Elige tu Squad</div><div class="step-body">Abre un ticket en #support-ticket y declara el squad que te encaje. Cada squad tiene tareas específicas. Ver los squads disponibles abajo — y recuerda que puedes colaborar más allá de tu squad.</div></div></div>
+  <div class="step"><div class="step-num">4</div><div><div class="step-title">Completa tareas y sube a @SPROUT</div><div class="step-body">Las tareas están en #task-board. Envía en #task-submission. Para subir, necesitas Engage ≥ 4.000 + los criterios de tu squad (ver sección abajo). Los mods también evalúan la presencia en el servidor — discusiones, ayuda a nuevos miembros e iniciativas cuentan.</div></div></div>
+  <div class="step"><div class="step-num">5</div><div><div class="step-title">@FLOWER — el nivel más alto</div><div class="step-body">Reservado para quienes lideran iniciativas, elevan los estándares de la comunidad y construyen cosas que no fueron pedidas. Meritocracia pura.</div></div></div>
+  <hr class="divider">
+  <div class="section-label">Los Squads — elige el tuyo</div>
+  <div class="notice" style="margin-bottom:20px">💡 Elige según lo que disfrutas hacer, no lo que parece más fácil. El mejor squad es el que te mantendrá activo y consistente.</div>
+  <div class="squads-grid">
+    <div class="squad-card featured"><div class="squad-icon">✍️</div><div class="squad-name">Content / Research <span class="featured-badge">autor del hub</span></div><div class="squad-desc">Artículos, tutoriales, FAQs, análisis de mercado, comparativas de DEX y guías para nuevos miembros. Para quienes disfrutan escribir, investigar y explicar.</div></div>
+    <div class="squad-card"><div class="squad-icon">🎨</div><div class="squad-name">Creative Squad</div><div class="squad-desc">Posters, stickers, videos y materiales visuales. Para quienes tienen ojo para el diseño y quieren ver su trabajo usado por todos.</div></div>
+    <div class="squad-card"><div class="squad-icon">🔧</div><div class="squad-name">Tech Support Squad</div><div class="squad-desc">Responde preguntas técnicas, ayuda con registros on-chain y escribe tutoriales. Para quienes conocen el producto y disfrutan enseñar.</div></div>
+    <div class="squad-card"><div class="squad-icon">🤝</div><div class="squad-name">Outreach Squad</div><div class="squad-desc">Contacta KOLs locales, comunidades aliadas y coordina partnerships. Para quienes tienen red y saben negociar.</div></div>
+    <div class="squad-card"><div class="squad-icon">📍</div><div class="squad-name">Offline Squad</div><div class="squad-desc">Organiza meetups, eventos presenciales y acciones de embajador local. Para quienes tienen energía para llevar StandX al mundo físico.</div></div>
+  </div>
+  <hr class="divider">
+  <div class="section-label">Requisitos para ser @SPROUT</div>
+  <div class="notice" style="margin-bottom:20px">Para ir de SEED a SPROUT necesitas <strong>Engage ≥ 4.000</strong>, actividad diaria estable, seguir las pautas de la comunidad — y cumplir con los criterios específicos de tu squad abajo.</div>
+  <div class="squads-grid">
+    <div class="squad-card featured"><div class="squad-icon">✍️</div><div class="squad-name">Content / Research</div><div class="squad-desc" style="margin-top:8px"><span style="color:var(--accent);font-weight:600">2 piezas originales en profundidad</span> aprobadas — insights de mercado, análisis de competencia, desglose de producto, guías o FAQs.</div></div>
+    <div class="squad-card"><div class="squad-icon">🎨</div><div class="squad-name">Creative Squad</div><div class="squad-desc" style="margin-top:8px"><span style="font-weight:600">≥ 4 materiales visuales</span> (posters o videos) adoptados oficialmente por la comunidad.</div></div>
+    <div class="squad-card"><div class="squad-icon">🔧</div><div class="squad-name">Tech Support Squad</div><div class="squad-desc" style="margin-top:8px"><span style="font-weight:600">≥ 25 preguntas técnicas</span> respondidas con capturas + <span style="font-weight:600">≥ 1 tutorial completo</span> publicado.</div></div>
+    <div class="squad-card"><div class="squad-icon">🤝</div><div class="squad-name">Outreach Squad</div><div class="squad-desc" style="margin-top:8px"><span style="font-weight:600">3 KOLs o comunidades locales</span> contactadas e invitadas a eventos colaborativos con StandX.</div></div>
+    <div class="squad-card"><div class="squad-icon">📍</div><div class="squad-name">Offline Squad</div><div class="squad-desc" style="margin-top:8px"><span style="font-weight:600">2 eventos presenciales</span> con más de 100 participantes en total + <span style="font-weight:600">1 informe</span> de operaciones locales entregado.</div></div>
+  </div>
+  <hr class="divider">
+  <div class="discord-cta">
+    <div class="discord-cta-inner">
+      <div class="discord-cta-label">Donde todo ocurre</div>
+      <div class="discord-cta-title">Únete al Discord de StandX</div>
+      <div class="discord-cta-desc">Eventos, tareas, squads, shoutouts y toda la comunidad están en el servidor oficial. Ahí es donde todo comienza.</div>
+      <a class="discord-btn" href="https://discord.gg/QkjVSetrup" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Unirse a discord.gg/QkjVSetrup
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-assets">
+  <div class="page-title">Brand Kit · Recursos Visuales</div>
+  <div class="page-sub">Para quienes quieren crear pero no saben por dónde empezar visualmente</div>
+  <div class="notice">💡 El Brand Kit existe para eliminar la fricción creativa. Si tienes contenido que crear pero te quedas bloqueado en lo visual — qué imagen usar, cómo estructurar el layout, qué estilo funciona — estos recursos lo resuelven. Tú te enfocas en el contenido, los visuales ya están listos.</div>
+  <div class="notice" style="margin-top:-12px">📘 Documentación completa en <a href="https://www.notion.so/StandX-Community-Brand-Kit-2cf509c0f89780c9a435f005e8afdc08" target="_blank" style="color:var(--accent)">Notion</a> — guías de uso, qué combinar y qué no, versionado.</div>
+  <div class="section-label">Elige el tipo de recurso</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-eyebrow">Modular · Transparente</div><div class="card-title">🧩 Mascot Assets (Base)</div><div class="card-body">Cuerpo completo, medio cuerpo, cabeza aislada y poses funcionales. PNG con fondo transparente. Úsalo cuando necesites combinar o reposicionar la mascota en tus propios layouts.</div><div style="margin-bottom:14px"><span class="tag tag-green">Posts educativos</span><span class="tag tag-green">Tutoriales</span><span class="tag tag-green">Thumbnails</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1ToCqBkjKhASrsp6_ZmK2BbqwLXpmXpww?usp=drive_link" target="_blank">↗ Abrir Drive</a></div>
+    <div class="card"><div class="card-eyebrow">Reacción · Expresión rápida</div><div class="card-title">🎭 Emotions & Reactions</div><div class="card-body">Expresiones para reacciones rápidas. Incluye emociones básicas y reacciones de trading: Bullish, Bearish, GG, Loss, Alert, Idea.</div><div style="margin-bottom:14px"><span class="tag tag-blue">Respuestas Discord</span><span class="tag tag-blue">Comentarios X</span><span class="tag tag-blue">Marcadores</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1iO8iKhDP_QJAWZ1az3PPUevsGl-HabBX?usp=drive_link" target="_blank">↗ Abrir Drive</a></div>
+    <div class="card"><div class="card-eyebrow">Storytelling · Educación visual</div><div class="card-title">🎬 Mascot Scenes & Illustrations</div><div class="card-body">Ilustraciones completas para storytelling visual. No modulares — úsalas tal cual. Disponibles en color y B&N.</div><div style="margin-bottom:14px"><span class="tag tag-org">Narrativas largas</span><span class="tag tag-org">Contenido conceptual</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/1lXJ2A_tSld00dq4eP50n1g55eVLwpG3D?usp=drive_link" target="_blank">↗ Abrir Drive</a></div>
+    <div class="card"><div class="card-eyebrow">Listo para publicar</div><div class="card-title">📣 Marketing Support Assets</div><div class="card-body">Recursos terminados con fondo y composición listos. Sin edición, sin recorte — publica directo.</div><div style="margin-bottom:14px"><span class="tag tag-green">Social rápido</span><span class="tag tag-green">Sin edición</span></div><a class="btn-link" href="https://drive.google.com/drive/folders/13cLiJ2XjHvHLzx_44ZVqI4tNPFVJqN0m?usp=drive_link" target="_blank">↗ Abrir Drive</a></div>
+  </div>
+  <hr class="divider">
+  <div class="section-label">Descarga completa</div>
+  <div class="card"><div class="card-title">📥 Kit Completo — Carpeta Raíz</div><div class="card-body">Todas las categorías en un solo lugar. Úsalo cuando quieras navegar entre tipos o descargar en bloque.</div><br><a class="btn-link" href="https://drive.google.com/drive/folders/1XQbI-u8HCbYtkBHw4VX7QDvduEBu1Wzw?usp=drive_link" target="_blank">↗ Abrir carpeta raíz en Drive</a></div>
+  <hr class="divider">
+  <div class="notice notice-warn">⚠️ Los recursos son creados por la comunidad y no representan comunicaciones oficiales de StandX. No los uses para simular materiales oficiales o contenido engañoso.</div>
+</div>
+
+<div class="page" id="page-templates">
+  <div class="page-title">Plantillas de Contenido</div>
+  <div class="page-sub">Estructuras listas — rellena los campos, adapta a tu estilo</div>
+  <div class="notice">💡 Las plantillas son esqueletos de contenido. Los campos en <span style="color:var(--accent);font-weight:600">verde</span> muestran dónde insertar tu texto. Tú defines el tema y la voz — la plantilla maneja la estructura.</div>
+  <div class="tmpl-card" id="t-artigo"><div class="tmpl-header" onclick="toggleTmpl('t-artigo')"><div class="tmpl-left"><span class="tag tag-green">Artículo</span><span class="tmpl-name">Artículo Educativo</span></div><span class="tmpl-arrow">▼</span></div><div class="tmpl-body"><div class="tmpl-block" id="tb-artigo"><span class="ph">[TÍTULO]</span>
+
+<span class="ph">[CONTEXTO — por qué esto importa para los traders de StandX]</span>
+1 párrafo. Directo. Sin intro genérica.
+
+---
+
+<span class="ph">[CONCEPTO PRINCIPAL — explicado de forma simple]</span>
+Sin jerga innecesaria. Un trader principiante debe entenderlo.
+
+---
+
+<span class="ph">[CÓMO FUNCIONA EN LA PRÁCTICA]</span>
+Ejemplo real o hipotético. Muestra el mecanismo en acción.
+
+---
+
+<span class="ph">[ERROR COMÚN — lo que la mayoría entiende mal]</span>
+Honesto. Directo.
+
+---
+
+<span class="ph">[CONCLUSIÓN — 2 a 3 líneas]</span>
+Cierra con insight, no con elogios a la plataforma.
+
+---
+📌 <span class="ph">[CONSEJO FINAL o enlace relevante]</span></div><button class="copy-btn" onclick="copyTmpl('tb-artigo')">Copiar plantilla</button></div></div>
+  <div class="tmpl-card" id="t-thread"><div class="tmpl-header" onclick="toggleTmpl('t-thread')"><div class="tmpl-left"><span class="tag tag-blue">Thread X</span><span class="tmpl-name">Thread X — Bilingüe</span></div><span class="tmpl-arrow">▼</span></div><div class="tmpl-body"><div class="tmpl-block" id="tb-thread">1/
+<span class="ph">[HOOK — hecho contraintuitivo o pregunta que genera curiosidad]</span>
+Entra directo. Sin emoji forzado al inicio.
+
+2/
+<span class="ph">[CONTEXTO — por qué esto es relevante ahora]</span>
+Una idea por tweet.
+
+3/
+<span class="ph">[MECANISMO — cómo funciona]</span>
+Si necesitas más de 2 frases, simplifica.
+
+4/
+<span class="ph">[IMPLICACIÓN — qué cambia esto para los traders]</span>
+Práctico, no teórico.
+
+5/
+<span class="ph">[CONCLUSIÓN + qué debe hacer o pensar el lector]</span>
+
+---
+🇧🇷 PT-BR:
+<span class="ph">[Versión en portugués]</span></div><button class="copy-btn" onclick="copyTmpl('tb-thread')">Copiar plantilla</button></div></div>
+</div>
+
+<div class="page" id="page-portfolio">
+  <div class="page-title">Referencias Reales</div>
+  <div class="page-sub">Ejemplos de lo que fue creado para el ecosistema StandX</div>
+  <div class="notice">💡 Diferentes formatos, diferentes idiomas, diferentes enfoques. Ve lo que es posible crear para StandX.</div>
+  <div class="section-label">Artículos & Análisis</div>
+  <div class="portfolio-card"><div class="portfolio-type">Artículo · X Articles · EN</div><div class="portfolio-title">Why StandX? The structural answer for traders who take execution seriously</div><div class="portfolio-excerpt">Most perp platforms answer the same question the wrong way: What happens to your capital when you're not in a position? StandX starts from a different premise — why should capital stop working just because you're not in a trade?</div><div class="portfolio-footer"><div><span class="tag tag-green">EN</span><span class="tag tag-blue">Artículo</span><span class="tag tag-org">Posicionamiento</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2034354336025690256" target="_blank">↗ Ver en X</a></div></div>
+  <hr class="divider">
+  <div class="section-label">Creación Visual & Arte</div>
+  <div class="portfolio-card"><div class="portfolio-type">Creación Manual · Pintura a Mano · EN</div><div class="portfolio-title">Stander dibujado y pintado a mano — de la imaginación al papel</div><div class="portfolio-excerpt">Hubo un día cuando todo esto era solo un dibujo en un papel. Sin gráficos. Sin estrategias. Solo yo, algo de pintura, y un pequeño stander sentado en mi hombro.</div><div class="portfolio-footer"><div><span class="tag tag-green">Arte Manual</span><span class="tag tag-blue">Storytelling</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2033978427724771711" target="_blank">↗ Ver en X</a></div></div>
+  <div class="portfolio-card"><div class="portfolio-type">Video Educativo · Producción IA · Subtítulos Explicativos</div><div class="portfolio-title">Contenido técnico en video con narración integrada y subtítulos explicativos</div><div class="portfolio-excerpt">Video educativo técnico producido con herramientas de IA, con subtítulos explicativos integrados. Un formato que combina profundidad técnica con accesibilidad visual.</div><div class="portfolio-footer"><div><span class="tag tag-org">Video</span><span class="tag tag-blue">Técnico</span><span class="tag tag-green">IA</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2033601219533344977" target="_blank">↗ Ver en X</a></div></div>
+  <hr class="divider">
+  <div class="section-label">Análisis de Mercado</div>
+  <div class="portfolio-card"><div class="portfolio-type">Análisis en Vivo · Narrado en tiempo real · Plataforma StandX</div><div class="portfolio-title">Análisis de mercado en la plataforma StandX — narrado por el propio trader</div><div class="portfolio-excerpt">Análisis real realizado directamente en la interfaz de StandX, narrado por Tarzan Web3. Contenido que muestra el uso de la plataforma en contexto de trading real.</div><div class="portfolio-footer"><div><span class="tag tag-org">Análisis Real</span><span class="tag tag-blue">Trading</span><span class="tag tag-green">StandX</span></div><a class="btn-link" href="https://x.com/victordesouza96/status/2023113800002793878" target="_blank">↗ Ver en X</a></div></div>
+</div>
+
+<div class="page" id="page-community">
+  <div class="page-title">Comunidad</div>
+  <div class="page-sub">Donde todo ocurre — y quiénes están construyendo juntos</div>
+  
+  <div class="section-label">Community Project</div>
+  <div class="game-card">
+    <img class="game-card-img" src="data:image/png;base64,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" alt="StandX Flappy Candle">
+    <div class="game-card-body">
+      <div class="game-card-info">
+        <div class="game-card-eyebrow">🎮 Creado por <a class="game-author-link" href="https://x.com/victordesouza96" target="_blank">@victordesouza96</a> &amp; <a class="game-author-link" href="https://x.com/JovanNeves" target="_blank">@JovanNeves</a></div>
+        <div class="game-card-title">StandX Flappy Candle</div>
+        <div class="game-card-desc">Navega el mercado como la mascota de StandX — recolecta DUSD, esquiva las velas y sube en el ranking global. Un juego arcade creado por la comunidad para los Standers.</div>
+        <div class="game-card-tags"><span class="game-card-tag">Gratis</span><span class="game-card-tag">Ranking Global</span><span class="game-card-tag">Practice · Yield · Challenge</span></div>
+      </div>
+      <a class="game-play-btn" href="https://standx-flappy.vercel.app/" target="_blank">▶ Jugar Ahora</a>
+    </div>
+  </div>
+
+  <div class="discord-cta" style="margin-bottom:36px"><div class="discord-cta-inner"><div class="discord-cta-label">Servidor oficial</div><div class="discord-cta-title">Discord de StandX</div><div class="discord-cta-desc">Discord es donde ocurren las tareas, eventos, discusiones y toda la progresión del Growth Path. Si quieres participar de verdad, empieza aquí.</div><a class="discord-btn" href="https://discord.gg/QkjVSetrup" target="_blank"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.03.056a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>discord.gg/QkjVSetrup</a></div></div>
+  <div class="section-label">Creadores que inspiran</div>
+  <div class="notice" style="margin-bottom:20px">Personas que construyen, crean y se presentan. No es un ranking — es reconocimiento.</div>
+  <div class="creators-grid">
+    <div class="creator-card"><img class="creator-img" src="https://pbs.twimg.com/profile_images/1866272023759564800/s0cMi5E-_400x400.jpg" alt="Aifilho" onerror="this.style.display='none'"><div class="creator-info"><div class="creator-name">Aifilho</div><a class="creator-handle" href="https://x.com/FilhoIsmae" target="_blank">@FilhoIsmae</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">Un creador destacado del Creative Squad. Habilidoso, innovador y siempre dispuesto a ayudar — el tipo de persona que eleva los estándares visuales de la comunidad.</div></div></div>
+    <div class="creator-card"><img class="creator-img" src="https://pbs.twimg.com/profile_images/1902131428943593472/b7pWaODn_400x400.jpg" alt="Jovan" onerror="this.style.display='none'"><div class="creator-info"><div class="creator-name">Jovan</div><a class="creator-handle" href="https://x.com/JovanNeves" target="_blank">@JovanNeves</a><div class="creator-squad">Content Squad</div><div class="creator-bio">Versátil, dinámico y siempre presente. Jovan es el tipo de creador que se mueve entre formatos con facilidad — una referencia constante para quienes comienzan.</div></div></div>
+    <div class="creator-card"><img class="creator-img" src="https://pbs.twimg.com/profile_images/1890140529350733824/HI9bz4hL_400x400.jpg" alt="Dias" onerror="this.style.display='none'"><div class="creator-info"><div class="creator-name">Dias</div><a class="creator-handle" href="https://x.com/diaserdropes" target="_blank">@diaserdropes</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">El mayor ejemplo de presencia, resiliencia y compañerismo. Dias es el tipo de persona que quieres cerca — creativo, servicial y siempre dispuesto.</div></div></div>
+    <div class="creator-card"><img class="creator-img" src="https://pbs.twimg.com/profile_images/1859734800040648704/MzHIr_5x_400x400.jpg" alt="Dan" onerror="this.style.display='none'"><div class="creator-info"><div class="creator-name">Dan</div><a class="creator-handle" href="https://x.com/DanielAnge9499" target="_blank">@DanielAnge9499</a><div class="creator-squad">Creative Squad</div><div class="creator-bio">Un artista natural. Arte, videos y contenido impecables — Dan es una de las principales referencias en creación y calidad.</div></div></div>
+  </div>
+</div>
+
+<div class="page" id="page-about">
+  <div class="page-title">Sobre el autor</div>
+  <div class="page-sub">Quién construyó este hub y por qué</div>
+  <div class="author-card">
+    <img class="author-img" src="https://pbs.twimg.com/profile_images/1751021179651489792/8wsPvwAb_400x400.jpg" alt="Tarzan Web3" onerror="this.style.display='none'">
+    <div>
+      <div class="author-name">Tarzan Web3</div>
+      <div class="author-handle">@victordesouza96</div>
+      <div class="author-bio">Trader navegando ciclos de mercado. Aprendiendo de gráficos, errores y una pequeña mascota negra.<br><br>Creador de contenido educativo técnico sobre DeFi y perp DEXs. Sprout en el Growth Path de StandX, Content / Research Squad. Trayectoria en CEX (Binance, Bybit), migrado a perps DeFi. Enfoque en mecánicas de ejecución, DUSD, análisis de mercado y educación accesible para traders de cualquier nivel.</div>
+      <div class="author-links"><a class="author-link" href="https://x.com/victordesouza96" target="_blank">↗ X @victordesouza96</a></div>
+    </div>
+  </div>
+  <div class="section-label">Por qué existe este hub</div>
+  <div class="card" style="margin-bottom:24px"><div class="card-body" style="margin-bottom:0">StandX tiene una comunidad activa y un ecosistema técnico denso. Pero los recién llegados no tienen un punto de referencia gratuito, sin login, sin barreras.<br><br>Este hub es esa infraestructura. Plantillas, recursos, guía de squads y ejemplos reales — en un archivo HTML que corre en el navegador. Sin Notion de pago, sin registro. Una contribución abierta. Si te ayudó, valió la pena.</div></div>
+  <div class="notice notice-warn">⚠️ Este material no representa comunicaciones oficiales de StandX. Es una iniciativa comunitaria.</div>
+</div>
+
+
+<!-- ═══ STANDERS INSIGHTS REDIRECT ═══ -->
+<div class="page" id="page-insights">
+  <div class="page-title">Standers Insights</div>
+  <div class="page-sub">Artículos curados de la comunidad</div>
+
+  <div class="insights-redirect">
+    <div class="insights-redirect-icon">📚</div>
+    <div class="insights-redirect-title">Standers Insights</div>
+    <div class="insights-redirect-notice">📚 Esta sección está disponible solo en inglés. Los artículos son escritos por la comunidad global y han pasado por revisión editorial.</div>
+    <div class="insights-redirect-desc">Haz clic abajo para acceder a la versión completa en inglés.</div>
+    <a class="insights-redirect-btn" href="index.html#" onclick="localStorage.setItem('standx-nav','insights'); return true;">↗ Leer en inglés</a>
+  </div>
+</div>
+
+
+<footer>
+  <div><strong>StandX Community Hub</strong> &nbsp;<span style="opacity:0.5;font-weight:400">v1 · Abril 2026</span><br>Creado por Tarzan Web3 · @victordesouza96 · Iniciativa comunitaria</div>
+  <div class="footer-links"><a class="footer-link" href="https://discord.gg/QkjVSetrup" target="_blank">StandX Discord</a><a class="footer-link" href="https://x.com/StandX_Official" target="_blank">X @StandX_Official</a><a class="footer-link" href="https://x.com/victordesouza96" target="_blank">X @victordesouza96</a></div>
+</footer>
+<div class="toast" id="toast"></div>
+<script>
+  function switchPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');event.target.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  function toggleTmpl(id){document.getElementById(id).classList.toggle('open');}
+  function copyTmpl(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>showToast('Plantilla copiada'));}
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+</script>
+</body>
+</html>
