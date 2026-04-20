@@ -1246,7 +1246,7 @@ function renderBrandKit(locale: AppLocale) {
         style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
       >
         {localized(locale, uiCopy.openDocumentation)}
-        <ExternalLink className="h-4 w-4" aria-hidden="true" />
+        <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
       </a>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -1275,7 +1275,7 @@ function renderBrandKit(locale: AppLocale) {
               style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
             >
               {localized(locale, uiCopy.openDrive)}
-              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
             </a>
           </article>
         ))}
@@ -1298,7 +1298,7 @@ function renderBrandKit(locale: AppLocale) {
           className="cta-primary focus-ring inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold shadow-glow md:self-auto"
         >
           {localized(locale, uiCopy.openRootFolder)}
-          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
         </a>
       </div>
 
@@ -1392,7 +1392,7 @@ function renderReferences(locale: AppLocale) {
             style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
           >
             {localized(locale, uiCopy.openReference)}
-            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
           </a>
         </article>
       ))}
@@ -1513,7 +1513,7 @@ function renderInsights(locale: AppLocale) {
           className="cta-primary focus-ring inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold shadow-glow md:self-auto"
         >
           {localized(locale, uiCopy.openNotion)}
-          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
         </a>
       </article>
 
@@ -1562,7 +1562,7 @@ function renderInsights(locale: AppLocale) {
               style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
             >
               {localized(locale, uiCopy.openArticle)}
-              <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
             </a>
           </article>
         ))}
@@ -1614,7 +1614,7 @@ function renderAbout(locale: AppLocale) {
           style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
         >
           {localized(locale, uiCopy.openXProfile)}
-          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
         </a>
       </article>
 

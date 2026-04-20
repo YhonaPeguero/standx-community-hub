@@ -66,7 +66,10 @@ export default function CommunitySection() {
             className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-bg-base/60 px-4 py-2 text-sm font-semibold text-text-primary transition hover:border-accent-cyan/40 hover:text-accent-cyan"
           >
             {t("cards.social.cta")}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowUpRight
+              className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]"
+              aria-hidden="true"
+            />
           </a>
         </article>
 
@@ -85,7 +88,10 @@ export default function CommunitySection() {
             className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-bg-base/60 px-4 py-2 text-sm font-semibold text-text-primary transition hover:border-accent-cyan/40 hover:text-accent-cyan"
           >
             {t("cards.resources.cta")}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowUpRight
+              className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]"
+              aria-hidden="true"
+            />
           </a>
         </article>
       </div>

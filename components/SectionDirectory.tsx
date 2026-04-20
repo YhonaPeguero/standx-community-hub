@@ -1,5 +1,15 @@
 import Link from "next/link";
-import {ArrowUpRight} from "lucide-react";
+import {
+  Rocket,
+  Palette,
+  FileText,
+  Library,
+  Users,
+  Activity,
+  Info,
+  ArrowRight,
+  type LucideIcon
+} from "lucide-react";
 import type {AppLocale} from "@/i18n/request";
 import {getHubNavItems, type HubSectionSlug} from "@/lib/hub-navigation";
 import ScrollRevealImage from "@/components/ScrollRevealImage";
@@ -96,6 +106,122 @@ const directoryCopy: Record<AppLocale, DirectoryCopy> = {
   }
 };
 
+// Per-section lucide icon (stand-in for the 3D icons in the design ref).
+const sectionIcons: Record<HubSectionSlug, LucideIcon> = {
+  "getting-started": Rocket,
+  "brand-kit": Palette,
+  templates: FileText,
+  references: Library,
+  community: Users,
+  "standers-insights": Activity,
+  about: Info
+};
+
+// Per-card color theme, cycled by index (preserves the prior 4-color rotation).
+interface BrandTheme {
+  hex: string;
+  rgb: string; // "r,g,b" for rgba() composition
+  edgeBase: string;
+  edgeHover: string;
+  titleHover: string;
+}
+
+const brandThemes: readonly BrandTheme[] = [
+  {
+    hex: "#00ff9d",
+    rgb: "0,255,157",
+    edgeBase:
+      "!shadow-[0_20px_60px_-20px_rgba(0,255,157,0.08),inset_0_0_0_1px_rgba(0,255,157,0.14)]",
+    edgeHover:
+      "hover:!shadow-[0_28px_80px_-24px_rgba(0,255,157,0.22),inset_0_0_0_1px_rgba(0,255,157,0.34)]",
+    titleHover: "group-hover:text-accent-gain"
+  },
+  {
+    hex: "#00d4ff",
+    rgb: "0,212,255",
+    edgeBase:
+      "!shadow-[0_20px_60px_-20px_rgba(0,212,255,0.08),inset_0_0_0_1px_rgba(0,212,255,0.14)]",
+    edgeHover:
+      "hover:!shadow-[0_28px_80px_-24px_rgba(0,212,255,0.22),inset_0_0_0_1px_rgba(0,212,255,0.34)]",
+    titleHover: "group-hover:text-[#00d4ff]"
+  },
+  {
+    hex: "#ff4da6",
+    rgb: "255,77,166",
+    edgeBase:
+      "!shadow-[0_20px_60px_-20px_rgba(255,77,166,0.08),inset_0_0_0_1px_rgba(255,77,166,0.14)]",
+    edgeHover:
+      "hover:!shadow-[0_28px_80px_-24px_rgba(255,77,166,0.22),inset_0_0_0_1px_rgba(255,77,166,0.34)]",
+    titleHover: "group-hover:text-[#ff4da6]"
+  },
+  {
+    hex: "#8a5cff",
+    rgb: "138,92,255",
+    edgeBase:
+      "!shadow-[0_20px_60px_-20px_rgba(138,92,255,0.08),inset_0_0_0_1px_rgba(138,92,255,0.14)]",
+    edgeHover:
+      "hover:!shadow-[0_28px_80px_-24px_rgba(138,92,255,0.22),inset_0_0_0_1px_rgba(138,92,255,0.34)]",
+    titleHover: "group-hover:text-[#8a5cff]"
+  }
+] as const;
+
+// Deterministic HUD-style telemetry readout. Pure aesthetic / SSR-safe.
+function hudCoords(index: number): {x: string; y: string} {
+  const x = (12.34 + index * 3.87) % 100;
+  const y = (7.09 + index * 2.63) % 100;
+  return {x: x.toFixed(2), y: y.toFixed(2)};
+}
+
+// Deterministic sparkline path so every card shows a unique-looking line
+// without hydration mismatches.
+function sparklinePath(index: number, width = 120, height = 26): string {
+  const points = 8;
+  const seed = (index + 1) * 0.73;
+  const step = width / (points - 1);
+  const coords: string[] = [];
+  for (let i = 0; i < points; i += 1) {
+    const t = i / (points - 1);
+    const wave =
+      Math.sin(t * 6 + seed) * 0.35 +
+      Math.sin(t * 11 + seed * 1.7) * 0.25 +
+      Math.cos(t * 3.2 + seed * 0.6) * 0.2;
+    const yNorm = 0.5 - wave * 0.45;
+    const x = i * step;
+    const y = Math.max(2, Math.min(height - 2, yNorm * height));
+    coords.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  return coords.join(" ");
+}
+
+function CornerBrackets({color}: {color: string}) {
+  const base =
+    "pointer-events-none absolute h-3.5 w-3.5 opacity-70 transition-opacity duration-300 group-hover:opacity-100";
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className={`${base} left-2.5 top-2.5 border-l border-t`}
+        style={{borderColor: color}}
+      />
+      <span
+        aria-hidden="true"
+        className={`${base} right-2.5 top-2.5 border-r border-t`}
+        style={{borderColor: color}}
+      />
+      <span
+        aria-hidden="true"
+        className={`${base} bottom-2.5 left-2.5 border-b border-l`}
+        style={{borderColor: color}}
+      />
+      <span
+        aria-hidden="true"
+        className={`${base} bottom-2.5 right-2.5 border-b border-r`}
+        style={{borderColor: color}}
+      />
+    </>
+  );
+}
+
 export default function SectionDirectory({locale}: SectionDirectoryProps) {
   const items = getHubNavItems(locale);
   const copy = directoryCopy[locale];
@@ -169,70 +295,139 @@ export default function SectionDirectory({locale}: SectionDirectoryProps) {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => {
-          const brandProfiles = [
-            // Green (#00ff9d)
-            {
-              baseShadow: "!shadow-[0_20px_60px_-20px_rgba(0,255,157,0.08),inset_0_0_0_1px_rgba(0,255,157,0.12)]",
-              hoverShadow: "hover:!shadow-[0_28px_80px_-24px_rgba(0,255,157,0.22),inset_0_0_0_1px_rgba(0,255,157,0.3)]",
-              iconHover: "group-hover:text-accent-gain group-hover:drop-shadow-[0_0_8px_rgba(0,255,157,0.6)]",
-              titleHover: "group-hover:text-accent-gain",
-              pillHover: "group-hover:border-accent-gain/40 group-hover:bg-accent-gain/10 group-hover:text-accent-gain group-hover:shadow-[0_0_12px_rgba(0,255,157,0.25)]",
-            },
-            // Cyan (#00d4ff)
-            {
-              baseShadow: "!shadow-[0_20px_60px_-20px_rgba(0,212,255,0.08),inset_0_0_0_1px_rgba(0,212,255,0.12)]",
-              hoverShadow: "hover:!shadow-[0_28px_80px_-24px_rgba(0,212,255,0.22),inset_0_0_0_1px_rgba(0,212,255,0.3)]",
-              iconHover: "group-hover:text-[#00d4ff] group-hover:drop-shadow-[0_0_8px_rgba(0,212,255,0.6)]",
-              titleHover: "group-hover:text-[#00d4ff]",
-              pillHover: "group-hover:border-[#00d4ff]/40 group-hover:bg-[#00d4ff]/10 group-hover:text-[#00d4ff] group-hover:shadow-[0_0_12px_rgba(0,212,255,0.25)]",
-            },
-            // Pink (#ff4da6)
-            {
-              baseShadow: "!shadow-[0_20px_60px_-20px_rgba(255,77,166,0.08),inset_0_0_0_1px_rgba(255,77,166,0.12)]",
-              hoverShadow: "hover:!shadow-[0_28px_80px_-24px_rgba(255,77,166,0.22),inset_0_0_0_1px_rgba(255,77,166,0.3)]",
-              iconHover: "group-hover:text-[#ff4da6] group-hover:drop-shadow-[0_0_8px_rgba(255,77,166,0.6)]",
-              titleHover: "group-hover:text-[#ff4da6]",
-              pillHover: "group-hover:border-[#ff4da6]/40 group-hover:bg-[#ff4da6]/10 group-hover:text-[#ff4da6] group-hover:shadow-[0_0_12px_rgba(255,77,166,0.25)]",
-            },
-            // Violet (#8a5cff)
-            {
-              baseShadow: "!shadow-[0_20px_60px_-20px_rgba(138,92,255,0.08),inset_0_0_0_1px_rgba(138,92,255,0.12)]",
-              hoverShadow: "hover:!shadow-[0_28px_80px_-24px_rgba(138,92,255,0.22),inset_0_0_0_1px_rgba(138,92,255,0.3)]",
-              iconHover: "group-hover:text-[#8a5cff] group-hover:drop-shadow-[0_0_8px_rgba(138,92,255,0.6)]",
-              titleHover: "group-hover:text-[#8a5cff]",
-              pillHover: "group-hover:border-[#8a5cff]/40 group-hover:bg-[#8a5cff]/10 group-hover:text-[#8a5cff] group-hover:shadow-[0_0_12px_rgba(138,92,255,0.25)]",
-            }
-          ];
-          const styling = brandProfiles[index % brandProfiles.length];
+          const theme = brandThemes[index % brandThemes.length];
+          const Icon = sectionIcons[item.slug];
+          const {x, y} = hudCoords(index);
+          const number = String(index + 1).padStart(2, "0");
+          const gradientSparkId = `spark-grad-${item.slug}`;
 
           return (
             <Link
               key={item.slug}
               href={item.href}
-              className={`panel panel-edge panel-hover focus-ring group relative flex flex-col gap-3 p-5 transition-all duration-300 md:p-6 ${styling.baseShadow} ${styling.hoverShadow}`}
+              className={`panel panel-edge panel-hover focus-ring group relative flex flex-col overflow-hidden p-5 pt-6 transition-all duration-300 md:p-6 md:pt-7 ${theme.edgeBase} ${theme.edgeHover}`}
+              aria-label={`${item.label} — ${descriptions[locale][item.slug]}`}
             >
-              <div className="flex items-start justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-text-muted">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <ArrowUpRight
-                  className={`h-4 w-4 text-text-muted transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${styling.iconHover}`}
+              <CornerBrackets color={theme.hex} />
+
+              {/* Ambient per-card glow, revealed on hover */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-10 left-1/2 h-36 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-60"
+                style={{background: `radial-gradient(circle, rgba(${theme.rgb},0.35), transparent 70%)`}}
+              />
+
+              {/* HUD header: numbered bracket + coords */}
+              <div className="relative z-10 flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-6 w-3 flex-col justify-between"
+                  >
+                    <span
+                      className="block h-[2px] w-full"
+                      style={{background: theme.hex, boxShadow: `0 0 6px ${theme.hex}`}}
+                    />
+                    <span
+                      className="block h-[2px] w-full"
+                      style={{background: theme.hex, opacity: 0.4}}
+                    />
+                  </span>
+                  <span
+                    className="font-mono text-2xl font-bold leading-none tracking-tight md:text-[28px]"
+                    style={{color: theme.hex, textShadow: `0 0 12px rgba(${theme.rgb},0.45)`}}
+                  >
+                    {number}
+                  </span>
+                </div>
+                <div
+                  className="flex flex-col items-end gap-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted/80"
                   aria-hidden="true"
-                />
+                >
+                  <span>X: {x}</span>
+                  <span>Y: {y}</span>
+                </div>
               </div>
 
-              <p className={`text-lg font-semibold leading-snug text-text-primary transition-colors ${styling.titleHover}`}>
+              {/* Title */}
+              <p
+                className={`relative z-10 mt-4 text-lg font-semibold uppercase leading-tight tracking-wide text-text-primary transition-colors md:text-xl ${theme.titleHover}`}
+              >
                 {item.label}
               </p>
 
-              <p className="text-sm leading-relaxed text-text-secondary">
+              {/* Icon medallion */}
+              <div className="relative z-10 mt-4 flex items-center justify-center">
+                <div
+                  className="relative flex h-16 w-16 items-center justify-center rounded-2xl border transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-[1.03]"
+                  style={{
+                    borderColor: `rgba(${theme.rgb},0.35)`,
+                    background: `linear-gradient(135deg, rgba(${theme.rgb},0.16), rgba(${theme.rgb},0.04))`,
+                    boxShadow: `inset 0 0 0 1px rgba(${theme.rgb},0.12), 0 0 22px -6px rgba(${theme.rgb},0.35)`
+                  }}
+                >
+                  <Icon
+                    className="h-7 w-7"
+                    style={{color: theme.hex, filter: `drop-shadow(0 0 8px rgba(${theme.rgb},0.55))`}}
+                    aria-hidden="true"
+                  />
+                </div>
+              </div>
+
+              {/* Description */}
+              <p className="relative z-10 mt-4 text-center text-[13px] leading-relaxed text-text-secondary md:text-sm">
                 {descriptions[locale][item.slug]}
               </p>
 
-              <div className="mt-auto flex items-center gap-3 pt-4">
-                <div className="hairline flex-1" aria-hidden="true" />
-                <span className={`flex items-center justify-center rounded-full border border-border-strong bg-bg-base/60 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-text-primary transition-all duration-300 ${styling.pillHover}`}>
-                  {copy.openSection}
+              {/* Sparkline readout */}
+              <div className="relative z-10 mt-4 flex items-center gap-2">
+                <span
+                  className="font-mono text-[9px] uppercase tracking-[0.2em] text-text-muted/70"
+                  aria-hidden="true"
+                >
+                  SIG
+                </span>
+                <svg
+                  viewBox="0 0 120 26"
+                  className="h-[22px] flex-1"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id={gradientSparkId} x1="0" x2="1" y1="0" y2="0">
+                      <stop offset="0%" stopColor={theme.hex} stopOpacity="0.05" />
+                      <stop offset="100%" stopColor={theme.hex} stopOpacity="1" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d={sparklinePath(index)}
+                    fill="none"
+                    stroke={`url(#${gradientSparkId})`}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{filter: `drop-shadow(0 0 4px rgba(${theme.rgb},0.55))`}}
+                  />
+                </svg>
+              </div>
+
+              {/* OPEN CTA — unified pink → violet → cyan gradient */}
+              <div className="relative z-10 mt-4">
+                <span
+                  className="relative flex items-center justify-center gap-2 overflow-hidden rounded-lg px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.28em] text-[#05070f] shadow-[0_8px_24px_-8px_rgba(255,77,166,0.55)] transition-transform duration-300 group-hover:translate-y-[-1px]"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #ff4da6 0%, #8a5cff 55%, #00d4ff 100%)"
+                  }}
+                >
+                  <span className="relative z-10">{copy.openSection.toUpperCase()}</span>
+                  <ArrowRight
+                    className="relative z-10 h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full motion-reduce:hidden"
+                  />
                 </span>
               </div>
             </Link>

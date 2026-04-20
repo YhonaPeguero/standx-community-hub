@@ -205,7 +205,10 @@ export default function HowItWorksPage({params}: HowItWorksPageProps) {
               style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.16)"}}
             >
               {t("finalBlock.cta")}
-              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowUpRight
+                className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]"
+                aria-hidden="true"
+              />
             </a>
           </div>
         </div>

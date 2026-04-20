@@ -139,11 +139,11 @@ export default function Navbar({locale}: NavbarProps) {
         <div className="flex items-center gap-2">
           <div className="relative">
             <Globe2
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
               aria-hidden="true"
             />
             <ChevronDown
-              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
               aria-hidden="true"
             />
             <select
@@ -233,11 +233,11 @@ export default function Navbar({locale}: NavbarProps) {
                 </span>
                 <div className="relative">
                   <Globe2
-                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
                     aria-hidden="true"
                   />
                   <ChevronDown
-                    className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+                    className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
                     aria-hidden="true"
                   />
                   <select

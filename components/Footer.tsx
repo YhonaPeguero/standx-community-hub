@@ -174,7 +174,10 @@ export default function Footer({locale}: FooterProps) {
                 className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
                 style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
               >
-                <MessageSquareText className="h-4 w-4" aria-hidden="true" />
+                <MessageSquareText
+                  className="h-4 w-4 text-[#5865f2] drop-shadow-[0_0_6px_rgba(88,101,242,0.55)]"
+                  aria-hidden="true"
+                />
                 {tFooter("social.discord")}
               </a>
 
@@ -186,7 +189,10 @@ export default function Footer({locale}: FooterProps) {
                 className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
                 style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
               >
-                <ChartNoAxesCombined className="h-4 w-4" aria-hidden="true" />
+                <ChartNoAxesCombined
+                  className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
+                  aria-hidden="true"
+                />
                 {tFooter("social.x")}
               </a>
 
@@ -198,7 +204,10 @@ export default function Footer({locale}: FooterProps) {
                 className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
                 style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
               >
-                <BookOpen className="h-4 w-4" aria-hidden="true" />
+                <BookOpen
+                  className="h-4 w-4 text-accent-gain drop-shadow-[0_0_6px_rgba(0,255,157,0.55)]"
+                  aria-hidden="true"
+                />
                 {tFooter("social.docs")}
               </a>
             </div>
@@ -209,11 +218,11 @@ export default function Footer({locale}: FooterProps) {
               </span>
               <div className="relative">
                 <Globe2
-                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
                   aria-hidden="true"
                 />
                 <ChevronDown
-                  className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted"
+                  className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
                   aria-hidden="true"
                 />
                 <select

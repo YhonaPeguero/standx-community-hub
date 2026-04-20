@@ -228,12 +228,27 @@
     animation: pulse-dot 2.4s ease-in-out infinite;
   }
 
-  /* CTA with shimmer on hover */
+  /* CTA with shimmer on hover.
+     Gradient mirrors the OPEN button on the hub section cards (pink -> violet -> cyan)
+     so the primary CTA shares the same visual rhythm. Slightly warmer drop-shadow
+     stack makes it the most eye-catching element without hurting text legibility
+     (dark text on bright gradient). Uses `filter` so it composes with the
+     cyan `shadow-glow` ring applied via Tailwind on CTA usages. */
   .cta-primary {
     position: relative;
-    background: linear-gradient(120deg, #00d4ff 0%, #64e6ff 55%, #8a5cff 140%);
+    background: linear-gradient(95deg, #ff4da6 0%, #8a5cff 52%, #00d4ff 100%);
     color: #05070f;
     overflow: hidden;
+    filter:
+      drop-shadow(0 6px 16px rgba(255, 77, 166, 0.32))
+      drop-shadow(0 12px 30px rgba(138, 92, 255, 0.24));
+    transition: filter 240ms ease, transform 240ms ease;
+  }
+
+  .cta-primary:hover {
+    filter:
+      drop-shadow(0 8px 22px rgba(255, 77, 166, 0.48))
+      drop-shadow(0 14px 36px rgba(138, 92, 255, 0.38));
   }
 
   .cta-primary::after {
@@ -243,7 +258,7 @@
     background: linear-gradient(
       110deg,
       transparent 30%,
-      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0.4) 50%,
       transparent 70%
     );
     background-size: 200% 100%;
@@ -371,6 +386,11 @@
 
   .panel-hover:hover {
     transform: none;
+  }
+
+  .cta-primary,
+  .cta-primary:hover {
+    transition: none;
   }
 
   html {
