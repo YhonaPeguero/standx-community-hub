@@ -207,6 +207,11 @@
         "title": "Recursos e FAQ",
         "description": "Use docs e materiais criados pela comunidade para responder dúvidas sem fricção.",
         "cta": "Abrir Docs"
+      },
+      "sipGuide": {
+        "title": "Guia Visual de SIPs",
+        "description": "Uma experiência educacional criada pela comunidade para tornar os SIPs da StandX mais fáceis de entender. Visual, interativa e feita para você compreender cada proposta com clareza.",
+        "cta": "Explorar SIPs"
       }
     },
     "milestone": {

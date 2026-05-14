@@ -207,6 +207,11 @@
         "title": "리소스 & FAQ",
         "description": "문서와 커뮤니티 작성 자료로 질문을 빠르게 해결하세요.",
         "cta": "Docs 열기"
+      },
+      "sipGuide": {
+        "title": "SIP 비주얼 가이드",
+        "description": "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다.",
+        "cta": "SIP 탐색"
       }
     },
     "milestone": {

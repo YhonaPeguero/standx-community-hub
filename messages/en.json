@@ -207,6 +207,11 @@
         "title": "Resources & FAQ",
         "description": "Use docs and community-written material to answer questions without friction.",
         "cta": "Open Docs"
+      },
+      "sipGuide": {
+        "title": "SIP Visual Guide",
+        "description": "A community-driven educational experience that makes StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
+        "cta": "Explore SIPs"
       }
     },
     "milestone": {

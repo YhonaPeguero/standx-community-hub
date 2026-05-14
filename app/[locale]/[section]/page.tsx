@@ -287,6 +287,13 @@ const uiCopy = {
     "Abrir perfil no X",
     "Відкрити профіль X",
     "X 프로필 열기"
+  ),
+  exploreSIPs: lv(
+    "Explore SIPs",
+    "Explorar SIPs",
+    "Explorar SIPs",
+    "Переглянути SIP",
+    "SIP 탐색"
   )
 };
 
@@ -805,6 +812,15 @@ const communityCopy = {
     "Усі задачі, події, дискусії та прогрес Growth Path відбуваються в Discord.",
     "과제, 이벤트, 토론, Growth Path 진행은 모두 Discord에서 이루어집니다."
   ),
+  sipGuideLabel: lv("Community resource", "Recurso comunitario", "Recurso comunitário", "Community resource", "커뮤니티 리소스"),
+  sipGuideTitle: lv("StandX SIP Visual Guide", "Guía Visual de SIPs", "Guia Visual de SIPs", "Візуальний гайд по SIP", "SIP 비주얼 가이드"),
+  sipGuideDescription: lv(
+    "A community-driven educational experience designed to make StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
+    "Una experiencia educativa impulsada por la comunidad que hace más fácil entender los SIPs de StandX. Visual, interactiva y diseñada para que comprendas cada propuesta con claridad.",
+    "Uma experiência educacional criada pela comunidade para tornar os SIPs da StandX mais fáceis de entender. Visual, interativa e feita para você compreender cada proposta com clareza.",
+    "Освітній досвід від спільноти, що робить SIP StandX простішими для розуміння. Візуальний, інтерактивний і створений, щоб ви чітко розуміли кожну пропозицію.",
+    "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다."
+  ),
   creatorsTitle: lv(
     "Creators who inspire",
     "Creadores que inspiran",
@@ -974,6 +990,20 @@ const aboutCopy = {
     "Este material não representa comunicação oficial da StandX. É uma iniciativa comunitária.",
     "Ці матеріали не є офіційною комунікацією StandX. Це ініціатива спільноти.",
     "이 자료는 StandX의 공식 커뮤니케이션이 아닙니다. 커뮤니티 이니셔티브입니다."
+  ),
+  yhonRole: lv(
+    "Software Engineer & Community Contributor",
+    "Ingeniero de Software & Colaborador Comunitario",
+    "Engenheiro de Software & Colaborador Comunitário",
+    "Інженер-програміст & учасник спільноти",
+    "소프트웨어 엔지니어 & 커뮤니티 기여자"
+  ),
+  yhonBio: lv(
+    "Software Engineer behind the Next.js redesign of the StandX Community Hub. Focused on premium UX, multilingual accessibility, and building a space where anyone can understand, participate, and contribute to the StandX ecosystem.",
+    "Ingeniero de Software detrás del rediseño en Next.js del StandX Community Hub. Enfocado en UX premium, accesibilidad multilingüe y en construir un espacio donde cualquiera pueda entender, participar y contribuir al ecosistema StandX.",
+    "Engenheiro de Software por trás do redesign em Next.js do StandX Community Hub. Focado em UX premium, acessibilidade multilíngue e em criar um espaço onde qualquer pessoa possa entender, participar e contribuir com o ecossistema StandX.",
+    "Інженер-програміст, який розробив редизайн StandX Community Hub на Next.js. Фокус — преміальний UX, багатомовна доступність та створення простору, де кожен може зрозуміти, долучитись і зробити внесок в екосистему StandX.",
+    "StandX Community Hub의 Next.js 리디자인을 담당한 소프트웨어 엔지니어. 프리미엄 UX, 다국어 접근성, 그리고 누구나 StandX 생태계를 이해하고 참여하며 기여할 수 있는 공간 구축에 집중합니다."
   )
 };
 
@@ -1403,7 +1433,7 @@ function renderReferences(locale: AppLocale) {
 function renderCommunity(locale: AppLocale) {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <article className="panel panel-edge flex flex-col gap-3 p-6">
           <p className="eyebrow">{localized(locale, communityCopy.projectLabel)}</p>
           <h3 className="text-xl font-semibold text-text-primary">
@@ -1417,6 +1447,7 @@ function renderCommunity(locale: AppLocale) {
             href="https://standx-flappy.vercel.app/"
             target="_blank"
             rel="noreferrer"
+            aria-label="Play StandX Flappy Candle in a new tab"
             className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-bg-base transition hover:brightness-110"
             style={{
               background: "linear-gradient(120deg, #00ff9d 0%, #64e6ff 100%)",
@@ -1441,6 +1472,7 @@ function renderCommunity(locale: AppLocale) {
             href="https://discord.gg/QkjVSetrup"
             target="_blank"
             rel="noreferrer"
+            aria-label="Join StandX Discord in a new tab"
             className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
             style={{
               background: "linear-gradient(120deg, #5865f2 0%, #7289da 100%)",
@@ -1448,6 +1480,31 @@ function renderCommunity(locale: AppLocale) {
             }}
           >
             {localized(locale, uiCopy.joinDiscord)}
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </article>
+
+        <article className="panel panel-edge flex flex-col gap-3 p-6">
+          <p className="eyebrow">{localized(locale, communityCopy.sipGuideLabel)}</p>
+          <h3 className="text-xl font-semibold text-text-primary">
+            {localized(locale, communityCopy.sipGuideTitle)}
+          </h3>
+          <p className="flex-1 text-sm leading-relaxed text-text-secondary">
+            {localized(locale, communityCopy.sipGuideDescription)}
+          </p>
+
+          <a
+            href="https://standx-sip-guide.vercel.app/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open StandX SIP Visual Guide in a new tab"
+            className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-bg-base transition hover:brightness-110"
+            style={{
+              background: "linear-gradient(120deg, #00d4ff 0%, #8a5cff 100%)",
+              boxShadow: "0 10px 30px -10px rgba(0, 212, 255, 0.5)"
+            }}
+          >
+            {localized(locale, uiCopy.exploreSIPs)}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </article>
@@ -1574,6 +1631,52 @@ function renderInsights(locale: AppLocale) {
 function renderAbout(locale: AppLocale) {
   return (
     <div className="space-y-6">
+      <article className="panel panel-edge p-6 md:p-7">
+        <div className="flex items-center gap-3">
+          <div
+            aria-hidden="true"
+            className="flex h-12 w-12 items-center justify-center rounded-full font-mono text-sm font-semibold text-bg-base"
+            style={{
+              background: "linear-gradient(135deg, #00ff9d 0%, #00d4ff 100%)"
+            }}
+          >
+            YP
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-text-primary">Yhonatan Peguero</h3>
+            <a
+              href="https://x.com/thisnotmeeme"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Visit Yhonatan Peguero's X profile in a new tab"
+              className="focus-ring font-mono text-sm text-accent-cyan transition hover:text-accent-gain"
+            >
+              @thisnotmeeme
+            </a>
+          </div>
+        </div>
+
+        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+          {localized(locale, aboutCopy.yhonRole)}
+        </p>
+
+        <p className="mt-4 text-sm leading-relaxed text-text-secondary">
+          {localized(locale, aboutCopy.yhonBio)}
+        </p>
+
+        <a
+          href="https://x.com/thisnotmeeme"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Visit Yhonatan Peguero's X profile in a new tab"
+          className="focus-ring mt-5 inline-flex min-h-10 items-center gap-2 rounded-xl px-3 py-2 text-sm text-text-primary transition hover:text-accent-cyan"
+          style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
+        >
+          {localized(locale, uiCopy.openXProfile)}
+          <ExternalLink className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]" aria-hidden="true" />
+        </a>
+      </article>
+
       <article className="panel panel-edge p-6 md:p-7">
         <div className="flex items-center gap-3">
           <div
