@@ -1227,7 +1227,7 @@ function renderGettingStarted(locale: AppLocale) {
           </ul>
 
           <a
-            href="https://discord.gg/QkjVSetrup"
+            href="https://discord.gg/standx"
             target="_blank"
             rel="noreferrer"
             className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
@@ -1448,7 +1448,7 @@ function renderCommunity(locale: AppLocale) {
           </p>
 
           <a
-            href="https://discord.gg/QkjVSetrup"
+            href="https://discord.gg/standx"
             target="_blank"
             rel="noreferrer"
             aria-label="Join StandX Discord in a new tab"
