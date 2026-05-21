@@ -1,130 +1,113 @@
 import {ArrowUpRight, BookOpen, FileCode, MessageSquareText, Users} from "lucide-react";
 import {useTranslations} from "next-intl";
-import ScrollRevealImage from "@/components/ScrollRevealImage";
 
 export default function CommunitySection() {
   const t = useTranslations("communitySection");
   const tLinks = useTranslations("links");
 
   return (
-    <div className="section-shell relative" id="community">
-      <ScrollRevealImage
-        src="/assets/standxtradesantibeard.png"
-        alt=""
-        width={360}
-        height={360}
-        direction="right"
-        threshold={0.15}
-        wrapperClassName="pointer-events-none absolute -bottom-12 -right-16 -z-10 hidden select-none lg:block"
-        wrapperStyle={{
-          maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)"
-        }}
-        className="h-[360px] w-[360px] object-contain opacity-[0.14]"
-      />
-
-      <div className="space-y-4">
-        <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent-cyan">
-          {t("eyebrow")}
-        </p>
-        <h2 className="text-2xl font-semibold text-text-primary md:text-3xl">{t("title")}</h2>
-        <p className="max-w-3xl text-base leading-relaxed text-text-secondary">
+    <section className="section-shell border-b border-border-hairline py-16 md:py-24" id="community">
+      <div className="grid gap-12 md:grid-cols-[0.85fr_1.15fr] md:gap-16">
+        <div className="space-y-4">
+          <p className="eyebrow">{t("eyebrow")}</p>
+          <h2 className="text-display-md uppercase text-text-primary">{t("title")}</h2>
+        </div>
+        <p className="text-base leading-relaxed text-text-secondary md:text-lg">
           {t("subtitle")}
         </p>
       </div>
 
-      <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <article className="rounded-2xl border border-border-base/80 bg-bg-surface/70 p-5">
-          <MessageSquareText className="h-5 w-5 text-accent-cyan" aria-hidden="true" />
-          <h3 className="mt-3 text-lg font-semibold text-text-primary">{t("cards.discord.title")}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-            {t("cards.discord.description")}
-          </p>
-          <a
-            href={tLinks("discord")}
-            target="_blank"
-            rel="noreferrer"
-            className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-accent-cyan px-4 py-2 text-sm font-semibold text-bg-base transition hover:bg-accent-cyanSoft"
-          >
-            {t("cards.discord.cta")}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </article>
-
-        <article className="rounded-2xl border border-border-base/80 bg-bg-surface/70 p-5">
-          <Users className="h-5 w-5 text-accent-gain" aria-hidden="true" />
-          <h3 className="mt-3 text-lg font-semibold text-text-primary">{t("cards.social.title")}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-            {t("cards.social.description")}
-          </p>
-          <a
-            href={tLinks("standxOfficial")}
-            target="_blank"
-            rel="noreferrer"
-            className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-bg-base/60 px-4 py-2 text-sm font-semibold text-text-primary transition hover:border-accent-cyan/40 hover:text-accent-cyan"
-          >
-            {t("cards.social.cta")}
-            <ArrowUpRight
-              className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]"
-              aria-hidden="true"
-            />
-          </a>
-        </article>
-
-        <article className="rounded-2xl border border-border-base/80 bg-bg-surface/70 p-5" id="resources">
-          <BookOpen className="h-5 w-5 text-accent-cyan" aria-hidden="true" />
-          <h3 className="mt-3 text-lg font-semibold text-text-primary">
-            {t("cards.resources.title")}
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-            {t("cards.resources.description")}
-          </p>
-          <a
-            href={tLinks("docs")}
-            target="_blank"
-            rel="noreferrer"
-            className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-bg-base/60 px-4 py-2 text-sm font-semibold text-text-primary transition hover:border-accent-cyan/40 hover:text-accent-cyan"
-          >
-            {t("cards.resources.cta")}
-            <ArrowUpRight
-              className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.45)]"
-              aria-hidden="true"
-            />
-          </a>
-        </article>
-
-        <article className="rounded-2xl border border-border-base/80 bg-bg-surface/70 p-5">
-          <FileCode className="h-5 w-5 text-accent-gain" aria-hidden="true" />
-          <h3 className="mt-3 text-lg font-semibold text-text-primary">
-            {t("cards.sipGuide.title")}
-          </h3>
-          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-            {t("cards.sipGuide.description")}
-          </p>
-          <a
-            href="https://standx-sip-guide.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open StandX SIP Visual Guide in a new tab"
-            className="focus-ring mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-bg-base/60 px-4 py-2 text-sm font-semibold text-text-primary transition hover:border-accent-gain/40 hover:text-accent-gain"
-          >
-            {t("cards.sipGuide.cta")}
-            <ArrowUpRight
-              className="h-4 w-4 text-accent-gain drop-shadow-[0_0_6px_rgba(0,255,136,0.45)]"
-              aria-hidden="true"
-            />
-          </a>
-        </article>
+      <div className="mt-12 grid grid-cols-1 border border-border-hairline md:grid-cols-2 lg:grid-cols-4">
+        <CommunityCard
+          number="01"
+          icon={MessageSquareText}
+          title={t("cards.discord.title")}
+          description={t("cards.discord.description")}
+          ctaLabel={t("cards.discord.cta")}
+          href={tLinks("discord")}
+          className="border-border-hairline border-b lg:border-b-0 lg:border-r"
+        />
+        <CommunityCard
+          number="02"
+          icon={Users}
+          title={t("cards.social.title")}
+          description={t("cards.social.description")}
+          ctaLabel={t("cards.social.cta")}
+          href={tLinks("standxOfficial")}
+          className="border-border-hairline border-b md:border-b-0 md:border-l lg:border-l-0 lg:border-r"
+        />
+        <CommunityCard
+          number="03"
+          icon={BookOpen}
+          title={t("cards.resources.title")}
+          description={t("cards.resources.description")}
+          ctaLabel={t("cards.resources.cta")}
+          href={tLinks("docs")}
+          id="resources"
+          className="border-border-hairline border-b md:border-r lg:border-b-0"
+        />
+        <CommunityCard
+          number="04"
+          icon={FileCode}
+          title={t("cards.sipGuide.title")}
+          description={t("cards.sipGuide.description")}
+          ctaLabel={t("cards.sipGuide.cta")}
+          href="https://standx-sip-guide.vercel.app/"
+        />
       </div>
 
-      <div className="mt-5 rounded-2xl border border-accent-gain/30 bg-accent-gain/10 px-5 py-4">
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent-gain">
+      <div className="mt-6 border border-accent-lime/40 p-5">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-widepill text-accent-lime">
           {t("milestone.label")}
         </p>
         <p className="mt-2 text-sm leading-relaxed text-text-primary">{t("milestone.value")}</p>
       </div>
-    </div>
+    </section>
+  );
+}
+
+interface CommunityCardProps {
+  number: string;
+  icon: typeof MessageSquareText;
+  title: string;
+  description: string;
+  ctaLabel: string;
+  href: string;
+  id?: string;
+  className?: string;
+}
+
+function CommunityCard({
+  number,
+  icon: Icon,
+  title,
+  description,
+  ctaLabel,
+  href,
+  id,
+  className = ""
+}: CommunityCardProps) {
+  return (
+    <article id={id} className={`group flex flex-col gap-4 p-6 transition-colors hover:bg-bg-elevated ${className}`}>
+      <div className="flex items-center justify-between">
+        <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted">
+          {number}
+        </span>
+        <Icon className="h-4 w-4 text-text-secondary group-hover:text-accent-lime" aria-hidden="true" />
+      </div>
+      <h3 className="font-mono text-base font-semibold uppercase tracking-widepill text-text-primary">
+        {title}
+      </h3>
+      <p className="flex-1 text-sm leading-relaxed text-text-secondary">{description}</p>
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className="focus-ring inline-flex min-h-9 items-center justify-between gap-2 border border-border-base px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-primary transition hover:border-accent-lime hover:text-accent-lime"
+      >
+        {ctaLabel}
+        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+      </a>
+    </article>
   );
 }

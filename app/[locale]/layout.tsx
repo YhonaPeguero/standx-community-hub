@@ -61,7 +61,7 @@ export default async function LocaleLayout({children, params}: LocaleLayoutProps
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="relative flex min-h-screen flex-col">
         <Navbar locale={locale} />
-        <main className="flex-1 pt-[68px] md:pt-[72px]">
+        <main className="flex-1 pt-[60px] md:pt-[64px]">
           <div className="locale-fade">{children}</div>
         </main>
         <Footer locale={locale} />

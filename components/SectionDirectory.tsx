@@ -7,12 +7,11 @@ import {
   Users,
   Activity,
   Info,
-  ArrowRight,
+  ArrowUpRight,
   type LucideIcon
 } from "lucide-react";
 import type {AppLocale} from "@/i18n/request";
 import {getHubNavItems, type HubSectionSlug} from "@/lib/hub-navigation";
-import ScrollRevealImage from "@/components/ScrollRevealImage";
 
 interface SectionDirectoryProps {
   locale: AppLocale;
@@ -106,7 +105,6 @@ const directoryCopy: Record<AppLocale, DirectoryCopy> = {
   }
 };
 
-// Per-section lucide icon (stand-in for the 3D icons in the design ref).
 const sectionIcons: Record<HubSectionSlug, LucideIcon> = {
   "getting-started": Rocket,
   "brand-kit": Palette,
@@ -117,318 +115,65 @@ const sectionIcons: Record<HubSectionSlug, LucideIcon> = {
   about: Info
 };
 
-// Per-card color theme, cycled by index (preserves the prior 4-color rotation).
-interface BrandTheme {
-  hex: string;
-  rgb: string; // "r,g,b" for rgba() composition
-  edgeBase: string;
-  edgeHover: string;
-  titleHover: string;
-}
-
-const brandThemes: readonly BrandTheme[] = [
-  {
-    hex: "#00ff9d",
-    rgb: "0,255,157",
-    edgeBase:
-      "!shadow-[0_20px_60px_-20px_rgba(0,255,157,0.08),inset_0_0_0_1px_rgba(0,255,157,0.14)]",
-    edgeHover:
-      "hover:!shadow-[0_28px_80px_-24px_rgba(0,255,157,0.22),inset_0_0_0_1px_rgba(0,255,157,0.34)]",
-    titleHover: "group-hover:text-accent-gain"
-  },
-  {
-    hex: "#00d4ff",
-    rgb: "0,212,255",
-    edgeBase:
-      "!shadow-[0_20px_60px_-20px_rgba(0,212,255,0.08),inset_0_0_0_1px_rgba(0,212,255,0.14)]",
-    edgeHover:
-      "hover:!shadow-[0_28px_80px_-24px_rgba(0,212,255,0.22),inset_0_0_0_1px_rgba(0,212,255,0.34)]",
-    titleHover: "group-hover:text-[#00d4ff]"
-  },
-  {
-    hex: "#ff4da6",
-    rgb: "255,77,166",
-    edgeBase:
-      "!shadow-[0_20px_60px_-20px_rgba(255,77,166,0.08),inset_0_0_0_1px_rgba(255,77,166,0.14)]",
-    edgeHover:
-      "hover:!shadow-[0_28px_80px_-24px_rgba(255,77,166,0.22),inset_0_0_0_1px_rgba(255,77,166,0.34)]",
-    titleHover: "group-hover:text-[#ff4da6]"
-  },
-  {
-    hex: "#8a5cff",
-    rgb: "138,92,255",
-    edgeBase:
-      "!shadow-[0_20px_60px_-20px_rgba(138,92,255,0.08),inset_0_0_0_1px_rgba(138,92,255,0.14)]",
-    edgeHover:
-      "hover:!shadow-[0_28px_80px_-24px_rgba(138,92,255,0.22),inset_0_0_0_1px_rgba(138,92,255,0.34)]",
-    titleHover: "group-hover:text-[#8a5cff]"
-  }
-] as const;
-
-// Deterministic HUD-style telemetry readout. Pure aesthetic / SSR-safe.
-function hudCoords(index: number): {x: string; y: string} {
-  const x = (12.34 + index * 3.87) % 100;
-  const y = (7.09 + index * 2.63) % 100;
-  return {x: x.toFixed(2), y: y.toFixed(2)};
-}
-
-// Deterministic sparkline path so every card shows a unique-looking line
-// without hydration mismatches.
-function sparklinePath(index: number, width = 120, height = 26): string {
-  const points = 8;
-  const seed = (index + 1) * 0.73;
-  const step = width / (points - 1);
-  const coords: string[] = [];
-  for (let i = 0; i < points; i += 1) {
-    const t = i / (points - 1);
-    const wave =
-      Math.sin(t * 6 + seed) * 0.35 +
-      Math.sin(t * 11 + seed * 1.7) * 0.25 +
-      Math.cos(t * 3.2 + seed * 0.6) * 0.2;
-    const yNorm = 0.5 - wave * 0.45;
-    const x = i * step;
-    const y = Math.max(2, Math.min(height - 2, yNorm * height));
-    coords.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
-  }
-  return coords.join(" ");
-}
-
-function CornerBrackets({color}: {color: string}) {
-  const base =
-    "pointer-events-none absolute h-3.5 w-3.5 opacity-70 transition-opacity duration-300 group-hover:opacity-100";
-  return (
-    <>
-      <span
-        aria-hidden="true"
-        className={`${base} left-2.5 top-2.5 border-l border-t`}
-        style={{borderColor: color}}
-      />
-      <span
-        aria-hidden="true"
-        className={`${base} right-2.5 top-2.5 border-r border-t`}
-        style={{borderColor: color}}
-      />
-      <span
-        aria-hidden="true"
-        className={`${base} bottom-2.5 left-2.5 border-b border-l`}
-        style={{borderColor: color}}
-      />
-      <span
-        aria-hidden="true"
-        className={`${base} bottom-2.5 right-2.5 border-b border-r`}
-        style={{borderColor: color}}
-      />
-    </>
-  );
-}
-
 export default function SectionDirectory({locale}: SectionDirectoryProps) {
   const items = getHubNavItems(locale);
   const copy = directoryCopy[locale];
 
   return (
-    <section className="section-shell relative pb-10 md:pb-14">
-      {/* bearmarket mascot — bottom-right scroll-reveal accent, desktop only */}
-      <ScrollRevealImage
-        src="/assets/bearmarket.png"
-        alt=""
-        width={340}
-        height={340}
-        direction="right"
-        threshold={0.08}
-        wrapperClassName="pointer-events-none absolute -bottom-6 -right-10 -z-10 hidden select-none lg:block"
-        wrapperStyle={{
-          maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)"
-        }}
-        className="h-[340px] w-[340px] object-contain opacity-[0.16]"
-      />
-
-      <ScrollRevealImage
-        src="/assets/tryhardtraderstandx.png"
-        alt=""
-        width={260}
-        height={260}
-        direction="left"
-        threshold={0.12}
-        wrapperClassName="pointer-events-none absolute -left-12 top-0 -z-10 hidden select-none md:block"
-        wrapperStyle={{
-          maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 15%, transparent 65%)"
-        }}
-        className="h-[260px] w-[260px] object-contain opacity-[0.15]"
-      />
-
-      {/* standxProfile — top-right scroll-reveal accent */}
-      <ScrollRevealImage
-        src="/assets/standxProfile.png"
-        alt=""
-        width={320}
-        height={320}
-        direction="right"
-        threshold={0.10}
-        wrapperClassName="pointer-events-none absolute -right-32 top-16 -z-10 hidden select-none lg:block"
-        wrapperStyle={{
-          maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 20%, transparent 70%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, #000 20%, transparent 70%)"
-        }}
-        className="h-[320px] w-[320px] object-contain opacity-[0.2]"
-      />
-
-      <header className="mb-8 flex flex-col gap-3 md:mb-10 md:flex-row md:items-end md:justify-between">
-        <div className="space-y-3">
+    <section className="section-shell border-b border-border-hairline py-16 md:py-24">
+      <div className="flex items-end justify-between gap-6 pb-10 md:pb-12">
+        <div className="space-y-4">
           <p className="eyebrow">{copy.eyebrow}</p>
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight text-[#00d4ff] md:text-4xl drop-shadow-[0_0_12px_rgba(0,212,255,0.2)]">
-            {copy.title}
-          </h2>
+          <h2 className="text-display-lg uppercase text-text-primary">{copy.title}</h2>
           <p className="max-w-xl text-sm leading-relaxed text-text-secondary md:text-base">
             {copy.subtitle}
           </p>
         </div>
-      </header>
+        <span className="hidden font-mono text-[11px] uppercase tracking-widercaps text-text-muted md:inline">
+          {String(items.length).padStart(2, "0")} sections
+        </span>
+      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Dense grid. Borders collapse — every card shares hairlines with its
+          neighbours so the grid reads as one table, not seven floating panels. */}
+      <div className="-mx-px grid grid-cols-1 border border-border-hairline sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => {
-          const theme = brandThemes[index % brandThemes.length];
           const Icon = sectionIcons[item.slug];
-          const {x, y} = hudCoords(index);
           const number = String(index + 1).padStart(2, "0");
-          const gradientSparkId = `spark-grad-${item.slug}`;
-
           return (
             <Link
               key={item.slug}
               href={item.href}
-              className={`panel panel-edge panel-hover focus-ring group relative flex flex-col overflow-hidden p-5 pt-6 transition-all duration-300 md:p-6 md:pt-7 ${theme.edgeBase} ${theme.edgeHover}`}
               aria-label={`${item.label} — ${descriptions[locale][item.slug]}`}
+              className="group focus-ring relative flex flex-col gap-5 border-border-hairline p-6 transition-colors hover:bg-bg-elevated md:p-8 [&:not(:last-child)]:border-b sm:[&:nth-child(odd)]:border-r sm:[&:not(:last-child)]:border-b lg:[&:nth-child(3n+1)]:border-r lg:[&:nth-child(3n+2)]:border-r lg:[&:nth-child(-n+3)]:border-b lg:[&:nth-child(n+4)]:border-b lg:[&:last-child]:border-b-0"
             >
-              <CornerBrackets color={theme.hex} />
-
-              {/* Ambient per-card glow, revealed on hover */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-10 left-1/2 h-36 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-60"
-                style={{background: `radial-gradient(circle, rgba(${theme.rgb},0.35), transparent 70%)`}}
-              />
-
-              {/* HUD header: numbered bracket + coords */}
-              <div className="relative z-10 flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-6 w-3 flex-col justify-between"
-                  >
-                    <span
-                      className="block h-[2px] w-full"
-                      style={{background: theme.hex, boxShadow: `0 0 6px ${theme.hex}`}}
-                    />
-                    <span
-                      className="block h-[2px] w-full"
-                      style={{background: theme.hex, opacity: 0.4}}
-                    />
-                  </span>
-                  <span
-                    className="font-mono text-2xl font-bold leading-none tracking-tight md:text-[28px]"
-                    style={{color: theme.hex, textShadow: `0 0 12px rgba(${theme.rgb},0.45)`}}
-                  >
-                    {number}
-                  </span>
-                </div>
-                <div
-                  className="flex flex-col items-end gap-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-text-muted/80"
-                  aria-hidden="true"
-                >
-                  <span>X: {x}</span>
-                  <span>Y: {y}</span>
-                </div>
-              </div>
-
-              {/* Title */}
-              <p
-                className={`relative z-10 mt-4 text-lg font-semibold uppercase leading-tight tracking-wide text-text-primary transition-colors md:text-xl ${theme.titleHover}`}
-              >
-                {item.label}
-              </p>
-
-              {/* Icon medallion */}
-              <div className="relative z-10 mt-4 flex items-center justify-center">
-                <div
-                  className="relative flex h-16 w-16 items-center justify-center rounded-2xl border transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-[1.03]"
-                  style={{
-                    borderColor: `rgba(${theme.rgb},0.35)`,
-                    background: `linear-gradient(135deg, rgba(${theme.rgb},0.16), rgba(${theme.rgb},0.04))`,
-                    boxShadow: `inset 0 0 0 1px rgba(${theme.rgb},0.12), 0 0 22px -6px rgba(${theme.rgb},0.35)`
-                  }}
-                >
-                  <Icon
-                    className="h-7 w-7"
-                    style={{color: theme.hex, filter: `drop-shadow(0 0 8px rgba(${theme.rgb},0.55))`}}
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-
-              {/* Description */}
-              <p className="relative z-10 mt-4 text-center text-[13px] leading-relaxed text-text-secondary md:text-sm">
-                {descriptions[locale][item.slug]}
-              </p>
-
-              {/* Sparkline readout */}
-              <div className="relative z-10 mt-4 flex items-center gap-2">
-                <span
-                  className="font-mono text-[9px] uppercase tracking-[0.2em] text-text-muted/70"
-                  aria-hidden="true"
-                >
-                  SIG
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted">
+                  {number}
                 </span>
-                <svg
-                  viewBox="0 0 120 26"
-                  className="h-[22px] flex-1"
+                <Icon
+                  className="h-5 w-5 text-text-secondary transition-colors group-hover:text-accent-lime"
                   aria-hidden="true"
-                >
-                  <defs>
-                    <linearGradient id={gradientSparkId} x1="0" x2="1" y1="0" y2="0">
-                      <stop offset="0%" stopColor={theme.hex} stopOpacity="0.05" />
-                      <stop offset="100%" stopColor={theme.hex} stopOpacity="1" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d={sparklinePath(index)}
-                    fill="none"
-                    stroke={`url(#${gradientSparkId})`}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{filter: `drop-shadow(0 0 4px rgba(${theme.rgb},0.55))`}}
-                  />
-                </svg>
+                />
               </div>
 
-              {/* OPEN CTA — unified pink → violet → cyan gradient */}
-              <div className="relative z-10 mt-4">
-                <span
-                  className="relative flex items-center justify-center gap-2 overflow-hidden rounded-lg px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.28em] text-[#05070f] shadow-[0_8px_24px_-8px_rgba(255,77,166,0.55)] transition-transform duration-300 group-hover:translate-y-[-1px]"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #ff4da6 0%, #8a5cff 55%, #00d4ff 100%)"
-                  }}
-                >
-                  <span className="relative z-10">{copy.openSection.toUpperCase()}</span>
-                  <ArrowRight
-                    className="relative z-10 h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/45 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full motion-reduce:hidden"
-                  />
+              <div className="space-y-2">
+                <h3 className="font-mono text-base font-semibold uppercase tracking-widepill text-text-primary transition-colors group-hover:text-accent-lime md:text-lg">
+                  {item.label}
+                </h3>
+                <p className="text-sm leading-relaxed text-text-secondary">
+                  {descriptions[locale][item.slug]}
+                </p>
+              </div>
+
+              <div className="mt-auto flex items-center justify-between pt-2">
+                <span className="font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-muted transition-colors group-hover:text-accent-lime">
+                  {copy.openSection}
                 </span>
+                <ArrowUpRight
+                  className="h-4 w-4 text-text-muted transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-lime"
+                  aria-hidden="true"
+                />
               </div>
             </Link>
           );
