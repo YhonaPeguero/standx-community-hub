@@ -1,5 +1,12 @@
 import type {Config} from "tailwindcss";
 
+/**
+ * Trading-deck design tokens — Hyperliquid-inspired.
+ *
+ * Palette is intentionally monochrome with a single lime accent. Cyan/violet/
+ * magenta have been removed. If you need to highlight something, escalate by
+ * weight + spacing, not by adding a new hue.
+ */
 const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
@@ -9,59 +16,61 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Background depth scale.
         bg: {
-          base: "#05070f",
-          elevated: "#090c18",
-          surface: "#0c1120",
-          muted: "#121a2d"
+          base: "#0a0a0a",
+          elevated: "#101010",
+          surface: "#131313",
+          muted: "#181818"
         },
+        // Hairline-first border scale. base is the default 1px stroke.
         border: {
-          base: "#1a2339",
-          strong: "#2a3a5c",
-          hairline: "rgba(148, 184, 232, 0.08)"
+          hairline: "#1f1f1f",
+          base: "#2a2a2a",
+          strong: "#3a3a3a"
         },
+        // Text scale. One tier per surface.
         text: {
-          primary: "#eef6ff",
-          secondary: "#a3b9cf",
-          muted: "#6c819a"
+          primary: "#ffffff",
+          secondary: "#9a9a9a",
+          muted: "#6a6a6a"
         },
+        // Single accent + trading semantic signals only.
         accent: {
-          cyan: "#00d4ff",
-          cyanSoft: "#64e6ff",
-          gain: "#00ff9d",
-          violet: "#8a5cff",
-          magenta: "#ff4da6"
+          // Primary brand pulse. Used for: CTAs, focus rings, live dots, hover.
+          lime: "#00ff87",
+          limeSoft: "#7df7ba",
+          // Legacy aliases so older usages keep compiling. Migrate over time.
+          cyan: "#00ff87",
+          cyanSoft: "#7df7ba",
+          gain: "#00ff87",
+          violet: "#00ff87",
+          magenta: "#ff3b5c"
         },
         signal: {
-          positive: "#00ff9d",
-          caution: "#ffbf4a",
-          negative: "#ff5f7a"
+          positive: "#00ff87",
+          caution: "#ffb547",
+          negative: "#ff3b5c"
         }
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"]
       },
-      backgroundImage: {
-        "gradient-brand":
-          "linear-gradient(120deg, #00d4ff 0%, #64e6ff 35%, #8a5cff 75%, #ff4da6 100%)",
-        "gradient-edge":
-          "linear-gradient(130deg, rgba(0,212,255,0.55) 0%, rgba(138,92,255,0.45) 55%, rgba(255,77,166,0.35) 100%)",
-        "gradient-muted":
-          "linear-gradient(135deg, rgba(0,212,255,0.12) 0%, rgba(138,92,255,0.10) 100%)",
-        "grid-fine":
-          "linear-gradient(to right, rgba(120,160,210,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(120,160,210,0.06) 1px, transparent 1px)",
-        "noise-soft":
-          "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0)"
+      fontSize: {
+        // Huge uppercase display sizes for hero + section headings.
+        "display-2xl": ["clamp(3.5rem, 9vw, 8rem)", {lineHeight: "0.92", letterSpacing: "-0.04em", fontWeight: "700"}],
+        "display-xl": ["clamp(2.75rem, 6.5vw, 5.5rem)", {lineHeight: "0.95", letterSpacing: "-0.035em", fontWeight: "700"}],
+        "display-lg": ["clamp(2.25rem, 5vw, 4rem)", {lineHeight: "1", letterSpacing: "-0.03em", fontWeight: "700"}],
+        "display-md": ["clamp(1.75rem, 3.5vw, 2.5rem)", {lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600"}],
+        "label-xs": ["0.6875rem", {lineHeight: "1", letterSpacing: "0.18em", fontWeight: "600"}]
       },
-      boxShadow: {
-        glow: "0 0 0 1px rgba(0, 212, 255, 0.25), 0 12px 55px -10px rgba(0, 212, 255, 0.35)",
-        "glow-violet":
-          "0 0 0 1px rgba(138, 92, 255, 0.22), 0 14px 55px -12px rgba(138, 92, 255, 0.45)",
-        panel: "0 20px 60px -20px rgba(4, 8, 24, 0.65)",
-        "panel-hover":
-          "0 30px 80px -24px rgba(0, 212, 255, 0.22), 0 0 0 1px rgba(138, 92, 255, 0.2)",
-        "ring-inner": "inset 0 0 0 1px rgba(148, 184, 232, 0.08)"
+      letterSpacing: {
+        widepill: "0.18em",
+        widercaps: "0.22em"
+      },
+      borderRadius: {
+        pill: "999px"
       },
       keyframes: {
         "locale-fade": {
@@ -72,6 +81,19 @@ const config: Config = {
           "0%": {transform: "translateX(0)"},
           "100%": {transform: "translateX(-50%)"}
         },
+        "pulse-dot": {
+          "0%,100%": {
+            boxShadow: "0 0 0 0 rgba(0, 255, 135, 0.55)",
+            opacity: "1"
+          },
+          "50%": {
+            boxShadow: "0 0 0 7px rgba(0, 255, 135, 0)",
+            opacity: "0.85"
+          }
+        },
+        // Kept for backward-compat with legacy components still referencing them.
+        // They no longer have visible effect since the matching classes were
+        // simplified — animation calls are harmless.
         "grid-drift": {
           "0%": {transform: "translate3d(0, 0, 0)"},
           "100%": {transform: "translate3d(-60px, -60px, 0)"}
@@ -84,16 +106,6 @@ const config: Config = {
           "0%,100%": {transform: "translateY(0)"},
           "50%": {transform: "translateY(-4px)"}
         },
-        "pulse-dot": {
-          "0%,100%": {
-            boxShadow: "0 0 0 0 rgba(0, 255, 157, 0.55)",
-            opacity: "1"
-          },
-          "50%": {
-            boxShadow: "0 0 0 7px rgba(0, 255, 157, 0)",
-            opacity: "0.85"
-          }
-        },
         "gradient-pan": {
           "0%,100%": {backgroundPosition: "0% 50%"},
           "50%": {backgroundPosition: "100% 50%"}
@@ -104,12 +116,12 @@ const config: Config = {
         }
       },
       animation: {
-        "locale-fade": "locale-fade 280ms ease-out",
+        "locale-fade": "locale-fade 240ms ease-out",
         "ticker-shift": "ticker-shift 26s linear infinite",
+        "pulse-dot": "pulse-dot 2.4s ease-in-out infinite",
         "grid-drift": "grid-drift 18s linear infinite",
         shimmer: "shimmer 2.6s linear infinite",
         float: "float 5.5s ease-in-out infinite",
-        "pulse-dot": "pulse-dot 2.4s ease-in-out infinite",
         "gradient-pan": "gradient-pan 9s ease-in-out infinite",
         "aurora-drift": "aurora-drift 14s ease-in-out infinite"
       }

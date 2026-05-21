@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {
-  BookOpen,
-  ChartNoAxesCombined,
-  ChevronDown,
-  Globe2,
-  MessageSquareText
-} from "lucide-react";
+import {ChevronDown, Globe2} from "lucide-react";
 import {useMemo, type ChangeEvent} from "react";
 import {useTranslations} from "next-intl";
 import type {AppLocale} from "@/i18n/request";
@@ -32,14 +26,15 @@ interface LocaleOption {
     | "languageNamePtBr"
     | "languageNameUk"
     | "languageNameKo";
+  nativeName: string;
 }
 
 const localeOptions: LocaleOption[] = [
-  {value: "es", codeKey: "languageCodeEs", nameKey: "languageNameEs"},
-  {value: "en", codeKey: "languageCodeEn", nameKey: "languageNameEn"},
-  {value: "pt-br", codeKey: "languageCodePtBr", nameKey: "languageNamePtBr"},
-  {value: "uk", codeKey: "languageCodeUk", nameKey: "languageNameUk"},
-  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo"}
+  {value: "en", codeKey: "languageCodeEn", nameKey: "languageNameEn", nativeName: "English"},
+  {value: "es", codeKey: "languageCodeEs", nameKey: "languageNameEs", nativeName: "Español"},
+  {value: "pt-br", codeKey: "languageCodePtBr", nameKey: "languageNamePtBr", nativeName: "Português (BR)"},
+  {value: "uk", codeKey: "languageCodeUk", nameKey: "languageNameUk", nativeName: "Українська"},
+  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo", nativeName: "한국어"}
 ];
 
 function buildLocalePath(pathname: string, nextLocale: AppLocale): string {
@@ -63,7 +58,6 @@ function normalizePath(path: string): string {
   if (path.length > 1 && path.endsWith("/")) {
     return path.slice(0, -1);
   }
-
   return path;
 }
 
@@ -75,7 +69,6 @@ export default function Footer({locale}: FooterProps) {
   const tCommon = useTranslations("common");
   const tFooter = useTranslations("footer");
   const tLinks = useTranslations("links");
-
   const tNavbar = useTranslations("navbar");
 
   const navLinks = useMemo(() => getHubNavItems(locale), [locale]);
@@ -109,15 +102,13 @@ export default function Footer({locale}: FooterProps) {
   const isActivePath = (href: string): boolean => normalizePath(href) === currentPath;
 
   return (
-    <footer id="about" className="relative mt-20 pb-10 pt-14">
-      <div className="section-shell relative space-y-10">
-        <div className="hairline" aria-hidden="true" />
-
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_1fr]">
-          <div className="space-y-3">
+    <footer id="about" className="border-t border-border-hairline">
+      <div className="section-shell py-16">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+          <div className="space-y-4">
             <div className="inline-flex items-center gap-2.5">
               <span className="live-dot" aria-hidden="true" />
-              <p className="text-[0.95rem] font-semibold tracking-tight text-text-primary">
+              <p className="font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary">
                 {tCommon("brand")}
               </p>
             </div>
@@ -127,114 +118,58 @@ export default function Footer({locale}: FooterProps) {
           </div>
 
           <div className="space-y-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+            <p className="font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
               {tFooter("navigationLabel")}
             </p>
 
-            <nav className="grid gap-0.5">
-              <Link
-                href={homeHref}
-                className={`focus-ring inline-flex min-h-9 items-center rounded-md text-sm transition ${
-                  isActivePath(homeHref)
-                    ? "text-text-primary"
-                    : "text-text-secondary hover:text-accent-cyan"
-                }`}
-                aria-current={isActivePath(homeHref) ? "page" : undefined}
-              >
-                {tNavbar("home")}
-              </Link>
+            <nav className="grid gap-1.5" aria-label={tFooter("navigationLabel")}>
+              <FooterLink href={homeHref} label={tNavbar("home")} active={isActivePath(homeHref)} />
               {navLinks.map((link) => (
-                <Link
-                  key={`footer-${link.href}`}
+                <FooterLink
+                  key={link.href}
                   href={link.href}
-                  className={`focus-ring inline-flex min-h-9 items-center rounded-md text-sm transition ${
-                    isActivePath(link.href)
-                      ? "text-text-primary"
-                      : "text-text-secondary hover:text-accent-cyan"
-                  }`}
-                  aria-current={isActivePath(link.href) ? "page" : undefined}
-                >
-                  {link.label}
-                </Link>
+                  label={link.label}
+                  active={isActivePath(link.href)}
+                />
               ))}
             </nav>
           </div>
 
-          <div className="space-y-4">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+          <div className="space-y-3">
+            <p className="font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
               {tFooter("connectLabel")}
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              <a
-                href={tLinks("discord")}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={tCommon("joinDiscord")}
-                className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
-                style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
-              >
-                <MessageSquareText
-                  className="h-4 w-4 text-[#5865f2] drop-shadow-[0_0_6px_rgba(88,101,242,0.55)]"
-                  aria-hidden="true"
-                />
-                {tFooter("social.discord")}
-              </a>
+            <nav className="grid gap-1.5" aria-label={tFooter("connectLabel")}>
+              <ExternalFooterLink href={tLinks("discord")} label={tFooter("social.discord")} aria={tCommon("joinDiscord")} />
+              <ExternalFooterLink href={tLinks("standxOfficial")} label={tFooter("social.x")} aria={tCommon("visitStandX")} />
+              <ExternalFooterLink href={tLinks("docs")} label={tFooter("social.docs")} aria={tCommon("openDocs")} />
+            </nav>
+          </div>
 
-              <a
-                href={tLinks("standxOfficial")}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={tCommon("visitStandX")}
-                className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
-                style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
-              >
-                <ChartNoAxesCombined
-                  className="h-4 w-4 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
-                  aria-hidden="true"
-                />
-                {tFooter("social.x")}
-              </a>
-
-              <a
-                href={tLinks("docs")}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={tCommon("openDocs")}
-                className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-xl bg-bg-surface/45 px-3 py-2 text-sm text-text-secondary transition hover:text-accent-cyan"
-                style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
-              >
-                <BookOpen
-                  className="h-4 w-4 text-accent-gain drop-shadow-[0_0_6px_rgba(0,255,157,0.55)]"
-                  aria-hidden="true"
-                />
-                {tFooter("social.docs")}
-              </a>
-            </div>
-
-            <label className="grid max-w-[220px] gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+          <div className="space-y-3">
+            <label className="grid gap-2">
+              <span className="font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
                 {tNavbar("languageLabel")}
               </span>
               <div className="relative">
                 <Globe2
-                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
+                  className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary"
                   aria-hidden="true"
                 />
                 <ChevronDown
-                  className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
+                  className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary"
                   aria-hidden="true"
                 />
                 <select
                   value={locale}
                   onChange={handleLanguageChange}
                   aria-label={tCommon("languageSwitcherAria", {locale: currentLocaleName})}
-                  className="focus-ring min-h-11 w-full appearance-none rounded-xl bg-bg-surface/45 py-2 pl-9 pr-9 text-sm font-semibold text-text-primary"
-                  style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
+                  className="focus-ring min-h-10 w-full appearance-none border border-border-base bg-transparent py-2 pl-9 pr-8 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-primary"
                 >
                   {localeOptions.map((option) => (
                     <option key={`footer-${option.value}`} value={option.value}>
-                      {tCommon(option.nameKey)}
+                      {option.nativeName} ({tCommon(option.codeKey)})
                     </option>
                   ))}
                 </select>
@@ -243,12 +178,53 @@ export default function Footer({locale}: FooterProps) {
           </div>
         </div>
 
-        <div className="space-y-1.5 pt-2">
-          <div className="hairline mb-4" aria-hidden="true" />
-          <p className="text-sm text-text-secondary">{tFooter("attribution")}</p>
-          <p className="text-xs text-text-muted">{tFooter("legal")}</p>
+        <div className="hairline mt-14" aria-hidden="true" />
+
+        <div className="mt-6 flex flex-col gap-3 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
+          <p className="text-text-secondary">{tFooter("attribution")}</p>
+          <p className="text-xs">{tFooter("legal")}</p>
         </div>
       </div>
     </footer>
+  );
+}
+
+interface FooterLinkProps {
+  href: string;
+  label: string;
+  active: boolean;
+}
+
+function FooterLink({href, label, active}: FooterLinkProps) {
+  return (
+    <Link
+      href={href}
+      className={`focus-ring inline-flex min-h-8 items-center text-sm transition ${
+        active ? "text-accent-lime" : "text-text-secondary hover:text-text-primary"
+      }`}
+      aria-current={active ? "page" : undefined}
+    >
+      {label}
+    </Link>
+  );
+}
+
+interface ExternalFooterLinkProps {
+  href: string;
+  label: string;
+  aria: string;
+}
+
+function ExternalFooterLink({href, label, aria}: ExternalFooterLinkProps) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={aria}
+      className="focus-ring inline-flex min-h-8 items-center text-sm text-text-secondary transition hover:text-accent-lime"
+    >
+      {label}
+    </a>
   );
 }

@@ -1,76 +1,56 @@
 "use client";
 
 import Link from "next/link";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {usePathname} from "next/navigation";
 import {AnimatePresence, motion} from "framer-motion";
-import {ArrowUpRight, ChevronDown, Globe2, Menu, X} from "lucide-react";
-import {useEffect, type ChangeEvent, type MouseEvent, useState} from "react";
+import {Menu, X} from "lucide-react";
+import {useEffect, type MouseEvent, useState} from "react";
 import {useTranslations} from "next-intl";
 import type {AppLocale} from "@/i18n/request";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import {getHubNavItems} from "@/lib/hub-navigation";
 import {drawerBackdropVariants, drawerPanelVariants} from "@/lib/motion";
 
 interface NavbarProps {
   locale: AppLocale;
 }
 
-interface LocaleOption {
-  value: AppLocale;
-  codeKey:
-    | "languageCodeEs"
-    | "languageCodeEn"
-    | "languageCodePtBr"
-    | "languageCodeUk"
-    | "languageCodeKo";
-  nameKey:
-    | "languageNameEs"
-    | "languageNameEn"
-    | "languageNamePtBr"
-    | "languageNameUk"
-    | "languageNameKo";
-}
-
-const localeOptions: LocaleOption[] = [
-  {value: "en", codeKey: "languageCodeEn", nameKey: "languageNameEn"},
-  {value: "es", codeKey: "languageCodeEs", nameKey: "languageNameEs"},
-  {value: "pt-br", codeKey: "languageCodePtBr", nameKey: "languageNamePtBr"},
-  {value: "uk", codeKey: "languageCodeUk", nameKey: "languageNameUk"},
-  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo"}
-];
-
-function buildLocalePath(pathname: string, nextLocale: AppLocale): string {
-  const localizedPath = pathname.replace(
-    /^\/(en|es|pt-br|uk|ko)(?=\/|$)/,
-    `/${nextLocale}`
-  );
-  return localizedPath === pathname ? `/${nextLocale}` : localizedPath;
-}
-
-function persistLocalePreference(nextLocale: AppLocale): void {
-  if (typeof window === "undefined") {
-    return;
+function normalizePath(path: string): string {
+  if (path.length > 1 && path.endsWith("/")) {
+    return path.slice(0, -1);
   }
-
-  window.localStorage.setItem("standx-hub-locale", nextLocale);
-  document.cookie = `standx-hub-locale=${nextLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
+  return path;
 }
 
 export default function Navbar({locale}: NavbarProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const tCommon = useTranslations("common");
   const tNavbar = useTranslations("navbar");
   const tLinks = useTranslations("links");
 
-  const localeOption = localeOptions.find((option) => option.value === locale);
-  const currentLocaleName = localeOption
-    ? tCommon(localeOption.nameKey)
-    : tCommon("languageNameEn");
+  const hubItems = getHubNavItems(locale);
+  const currentPath = normalizePath(pathname);
+  const homeHref = `/${locale}`;
+  const isHome = currentPath === homeHref;
 
   useEffect(() => {
     setIsDrawerOpen(false);
   }, [pathname]);
+
+  // Cmd+K / Ctrl+K opens/closes the menu. Standard command-menu UX, no
+  // visible kbd hint so the chrome stays clean — power users discover it.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent): void => {
+      const isMod = event.metaKey || event.ctrlKey;
+      if (isMod && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setIsDrawerOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   useEffect(() => {
     if (!isDrawerOpen) {
@@ -92,104 +72,63 @@ export default function Navbar({locale}: NavbarProps) {
     };
   }, [isDrawerOpen]);
 
-  const switchLocale = (nextLocale: AppLocale): void => {
-    if (nextLocale === locale) {
-      return;
-    }
-
-    persistLocalePreference(nextLocale);
-
-    const nextPath = buildLocalePath(pathname, nextLocale);
-    const query = searchParams.toString();
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
-    const route = `${nextPath}${query.length > 0 ? `?${query}` : ""}${hash}`;
-
-    router.replace(route, {scroll: false});
-    setIsDrawerOpen(false);
-  };
-
-  const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    switchLocale(event.target.value as AppLocale);
-  };
-
   const closeDrawerOnBackdrop = (event: MouseEvent<HTMLDivElement>): void => {
     if (event.target === event.currentTarget) {
       setIsDrawerOpen(false);
     }
   };
 
+  const isActiveHref = (href: string): boolean => normalizePath(href) === currentPath;
+
   return (
     <>
-      <header
-        className="fixed inset-x-0 top-0 z-50 bg-bg-base/55 backdrop-blur-xl"
-        style={{boxShadow: "inset 0 -1px 0 rgba(148, 184, 232, 0.08)"}}
-      >
-      <div className="section-shell flex min-h-[68px] items-center justify-between gap-3">
-        <Link
-          href={`/${locale}`}
-          className="focus-ring group inline-flex min-h-11 items-center gap-2.5 rounded-xl px-2 py-1 text-sm font-semibold tracking-tight text-text-primary"
-        >
-          <span className="live-dot" aria-hidden="true" />
-          <span className="truncate sm:hidden">{tCommon("brandShort")}</span>
-          <span className="hidden text-[0.95rem] sm:inline">{tCommon("brand")}</span>
-        </Link>
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-border-hairline bg-bg-base/95 backdrop-blur-sm">
+        <div className="section-shell flex min-h-[60px] items-center gap-3 md:min-h-[64px]">
+          <Link
+            href={homeHref}
+            className="focus-ring group inline-flex min-h-10 items-center gap-2.5 px-1 font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary"
+          >
+            <span className="live-dot" aria-hidden="true" />
+            <span className="truncate sm:hidden">{tCommon("brandShort")}</span>
+            <span className="hidden sm:inline">{tCommon("brand")}</span>
+          </Link>
 
-        {/* Right cluster: language + primary CTA. Section nav is NOT repeated here on purpose;
-            full directory lives on the homepage and the secondary tab bar on each section page. */}
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <Globe2
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
-              aria-hidden="true"
-            />
-            <ChevronDown
-              className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
-              aria-hidden="true"
-            />
-            <select
-              value={locale}
-              onChange={handleLanguageChange}
-              aria-label={tCommon("languageSwitcherAria", {locale: currentLocaleName})}
-              className="focus-ring min-h-11 appearance-none rounded-xl bg-bg-surface/55 py-2 pl-9 pr-9 text-sm font-semibold text-text-primary transition hover:bg-bg-surface/80"
-              style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
+          <div className="ml-auto flex items-center gap-2 md:gap-3">
+            <LanguageSwitcher locale={locale} variant="navbar" align="right" />
+
+            <span className="hidden h-5 w-px bg-border-hairline md:block" aria-hidden="true" />
+
+            <button
+              type="button"
+              onClick={() => setIsDrawerOpen(true)}
+              aria-label={tCommon("openNavigation")}
+              aria-expanded={isDrawerOpen}
+              aria-haspopup="dialog"
+              className="focus-ring inline-flex min-h-10 items-center gap-2 border border-border-base px-3 text-text-primary transition hover:border-accent-lime hover:text-accent-lime"
             >
-              {localeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {tCommon(option.codeKey)}
-                </option>
-              ))}
-            </select>
+              <Menu className="h-4 w-4" aria-hidden="true" />
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-widepill">
+                {tNavbar("menuLabel")}
+              </span>
+            </button>
+
+            <a
+              href={tLinks("startTrading")}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={tCommon("startTradingAria")}
+              className="btn btn-primary hidden sm:inline-flex"
+            >
+              {tNavbar("primaryCta")}
+            </a>
           </div>
-
-          <a
-            href={tLinks("startTrading")}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={tCommon("startTradingAria")}
-            className="cta-primary focus-ring hidden min-h-11 items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold shadow-glow sm:inline-flex"
-          >
-            {tNavbar("primaryCta")}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-
-          <button
-            type="button"
-            onClick={() => setIsDrawerOpen(true)}
-            aria-label={tCommon("openNavigation")}
-            className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-bg-surface/55 text-text-primary transition hover:text-accent-cyan sm:hidden"
-            style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
-          >
-            <Menu className="h-5 w-5" aria-hidden="true" />
-          </button>
         </div>
-      </div>
-
       </header>
 
       <AnimatePresence>
         {isDrawerOpen ? (
           <motion.div
-            className="fixed inset-0 z-[100] bg-bg-base/65 backdrop-blur-sm sm:hidden"
+            className="fixed inset-0 z-[100] bg-bg-base/80 backdrop-blur-sm"
             variants={drawerBackdropVariants}
             initial="hidden"
             animate="visible"
@@ -201,81 +140,112 @@ export default function Navbar({locale}: NavbarProps) {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="ml-auto flex h-full w-[min(88vw,20rem)] flex-col bg-bg-elevated p-5"
-              style={{boxShadow: "inset 1px 0 0 rgba(148, 184, 232, 0.1)"}}
+              className="ml-auto flex h-full w-full max-w-[28rem] flex-col overflow-y-auto border-l border-border-hairline bg-bg-elevated"
               aria-modal="true"
               role="dialog"
               aria-label={tNavbar("drawerTitle")}
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="mb-6 flex items-center justify-between">
+              <div className="flex items-center justify-between border-b border-border-hairline px-6 py-5">
                 <div className="flex items-center gap-2.5">
                   <span className="live-dot" aria-hidden="true" />
-                  <p className="text-sm font-semibold tracking-tight text-text-primary">
-                    {tCommon("brandShort")}
+                  <p className="font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary">
+                    {tNavbar("drawerTitle")}
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setIsDrawerOpen(false)}
-                  aria-label={tCommon("closeNavigation")}
-                  className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-text-secondary transition hover:text-text-primary"
-                  style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.12)"}}
-                >
-                  <X className="h-5 w-5" aria-hidden="true" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <kbd className="hidden border border-border-hairline px-1.5 py-1 font-mono text-[10px] text-text-muted md:inline">
+                    ESC
+                  </kbd>
+                  <button
+                    type="button"
+                    onClick={() => setIsDrawerOpen(false)}
+                    aria-label={tCommon("closeNavigation")}
+                    className="focus-ring inline-flex min-h-9 min-w-9 items-center justify-center border border-border-base text-text-secondary transition hover:border-accent-lime hover:text-accent-lime"
+                  >
+                    <X className="h-4 w-4" aria-hidden="true" />
+                  </button>
+                </div>
               </div>
 
-              <label className="mb-5 grid gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
-                  {tNavbar("languageLabel")}
-                </span>
-                <div className="relative">
-                  <Globe2
-                    className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-accent-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.55)]"
-                    aria-hidden="true"
+              <nav className="flex-1 overflow-y-auto" aria-label={tNavbar("drawerTitle")}>
+                <DrawerNavItem
+                  index="01"
+                  href={homeHref}
+                  label={tNavbar("home")}
+                  active={isHome}
+                />
+                {hubItems.map((item, index) => (
+                  <DrawerNavItem
+                    key={item.href}
+                    index={String(index + 2).padStart(2, "0")}
+                    href={item.href}
+                    label={item.label}
+                    active={isActiveHref(item.href)}
                   />
-                  <ChevronDown
-                    className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary"
-                    aria-hidden="true"
-                  />
-                  <select
-                    value={locale}
-                    onChange={handleLanguageChange}
-                    aria-label={tCommon("languageSwitcherAria", {locale: currentLocaleName})}
-                    className="focus-ring min-h-11 w-full appearance-none rounded-xl bg-bg-base/60 py-2 pl-9 pr-9 text-sm font-semibold text-text-primary"
-                    style={{boxShadow: "inset 0 0 0 1px rgba(148, 184, 232, 0.1)"}}
-                  >
-                    {localeOptions.map((option) => (
-                      <option key={`drawer-${option.value}`} value={option.value}>
-                         {tCommon(option.nameKey)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </label>
+                ))}
+              </nav>
 
-              <a
-                href={tLinks("startTrading")}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={tCommon("startTradingAria")}
-                className="cta-primary focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold shadow-glow"
-              >
-                {tNavbar("primaryCta")}
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-              </a>
+              <div className="space-y-4 border-t border-border-hairline px-6 py-5">
+                <LanguageSwitcher locale={locale} variant="panel" align="left" />
 
-              <div className="my-6 hairline" aria-hidden="true" />
+                <a
+                  href={tLinks("startTrading")}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={tCommon("startTradingAria")}
+                  className="btn btn-primary w-full"
+                >
+                  {tNavbar("primaryCta")}
+                </a>
 
-              <p className="text-xs leading-relaxed text-text-muted">
-                {tNavbar("drawerDescription")}
-              </p>
+                <p className="text-xs leading-relaxed text-text-muted">
+                  {tNavbar("drawerDescription")}
+                </p>
+              </div>
             </motion.aside>
           </motion.div>
         ) : null}
       </AnimatePresence>
     </>
+  );
+}
+
+interface DrawerNavItemProps {
+  index: string;
+  href: string;
+  label: string;
+  active: boolean;
+}
+
+function DrawerNavItem({index, href, label, active}: DrawerNavItemProps) {
+  return (
+    <Link
+      href={href}
+      className={`focus-ring group flex items-center gap-4 border-b border-border-hairline px-6 py-4 transition-colors hover:bg-bg-surface ${
+        active ? "bg-bg-surface" : ""
+      }`}
+      aria-current={active ? "page" : undefined}
+    >
+      <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted">
+        {index}
+      </span>
+      <span
+        className={`flex-1 font-mono text-sm font-semibold uppercase tracking-widepill transition-colors group-hover:text-accent-lime ${
+          active ? "text-accent-lime" : "text-text-primary"
+        }`}
+      >
+        {label}
+      </span>
+      <span
+        aria-hidden="true"
+        className={`font-mono text-[11px] tracking-widercaps transition-colors group-hover:text-accent-lime ${
+          active ? "text-accent-lime" : "text-text-muted"
+        }`}
+      >
+        →
+      </span>
+    </Link>
   );
 }

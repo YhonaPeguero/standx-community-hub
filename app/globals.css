@@ -13,25 +13,18 @@
 
   body {
     @apply bg-bg-base font-sans text-text-primary antialiased;
-    background-color: #05070f;
-    background-image:
-      radial-gradient(ellipse 70% 55% at 12% 0%, rgba(0, 212, 255, 0.16), transparent 60%),
-      radial-gradient(ellipse 55% 45% at 88% 2%, rgba(138, 92, 255, 0.16), transparent 60%),
-      radial-gradient(ellipse 50% 40% at 50% 100%, rgba(0, 255, 157, 0.06), transparent 60%),
-      linear-gradient(180deg, #05070f 0%, #040613 55%, #06091b 100%);
-    background-attachment: fixed;
+    background-color: #0a0a0a;
     min-height: 100vh;
   }
 
   ::selection {
-    background: rgba(0, 212, 255, 0.3);
-    color: #f2fbff;
+    background: #00ff87;
+    color: #0a0a0a;
   }
 
-  /* Dark scrollbar */
   * {
     scrollbar-width: thin;
-    scrollbar-color: rgba(100, 230, 255, 0.18) transparent;
+    scrollbar-color: #2a2a2a transparent;
   }
 
   *::-webkit-scrollbar {
@@ -44,232 +37,196 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background: rgba(100, 230, 255, 0.12);
+    background: #2a2a2a;
     border-radius: 999px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 230, 255, 0.26);
+    background: #3a3a3a;
     background-clip: padding-box;
     border: 2px solid transparent;
+  }
+
+  /* Heading defaults — uppercase weights ride from text-display-* classes. */
+  h1, h2, h3 {
+    color: #ffffff;
   }
 }
 
 @layer components {
+  /* ---------- Focus + layout primitives ---------- */
+
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-lime focus-visible:ring-offset-2 focus-visible:ring-offset-bg-base;
   }
 
+  /* Trading-deck container — wider than before for a denser layout. */
   .section-shell {
-    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10 lg:px-14;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8 lg:px-10;
   }
 
-  /* Base container: hairline edge on dark translucent bg. No "gray box" feel. */
+  /* ---------- Surface system ---------- */
+  /* No blur, no shadow, no glow. Hairlines only. */
+
+  /* Default elevated card. Flat dark surface with a 1px hairline. */
   .panel {
-    position: relative;
-    background:
-      linear-gradient(180deg, rgba(14, 20, 38, 0.72) 0%, rgba(9, 13, 26, 0.72) 100%);
-    border-radius: 1.25rem;
-    box-shadow:
-      inset 0 0 0 1px rgba(148, 184, 232, 0.08),
-      0 20px 60px -24px rgba(4, 8, 24, 0.6);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: #101010;
+    border: 1px solid #1f1f1f;
+    border-radius: 0;
+  }
+
+  /* Quieter sub-surface — used inside a .panel for nested content. */
+  .surface {
+    background: #131313;
+    border: 1px solid #1f1f1f;
+    border-radius: 0;
   }
 
   .panel-hover {
-    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 280ms ease;
+    transition: border-color 200ms ease, background 200ms ease;
   }
 
   .panel-hover:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      inset 0 0 0 1px rgba(100, 230, 255, 0.22),
-      0 28px 80px -24px rgba(0, 212, 255, 0.2);
+    border-color: #00ff87;
+    background: #131313;
   }
 
-  /* Feature panel: subtle gradient border using masked overlay. Looks less like a box. */
-  .panel-edge {
-    position: relative;
-  }
-
-  .panel-edge::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(0, 212, 255, 0.35) 0%,
-      rgba(138, 92, 255, 0.25) 50%,
-      rgba(255, 77, 166, 0.18) 100%
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0.6;
-    transition: opacity 320ms ease;
-  }
-
-  .panel-edge:hover::before {
-    opacity: 1;
-  }
-
-  /* Glowing hero-card variant */
+  /* Legacy aliases retained so older usages still compile. */
+  .glass-panel,
+  .panel-edge,
   .panel-glow {
-    position: relative;
-    background:
-      radial-gradient(
-        ellipse 90% 70% at 20% 0%,
-        rgba(0, 212, 255, 0.12),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 80% 60% at 90% 100%,
-        rgba(138, 92, 255, 0.12),
-        transparent 60%
-      ),
-      linear-gradient(180deg, rgba(12, 18, 34, 0.85) 0%, rgba(7, 11, 24, 0.85) 100%);
-    border-radius: 1.5rem;
-    box-shadow:
-      inset 0 0 0 1px rgba(148, 184, 232, 0.1),
-      0 40px 100px -32px rgba(0, 212, 255, 0.28),
-      0 30px 70px -24px rgba(138, 92, 255, 0.2);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    @apply panel;
   }
 
-  /* Thin translucent pill */
+  /* ---------- Pills, chips, labels ---------- */
+
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-text-secondary;
-    background: rgba(14, 20, 38, 0.55);
-    box-shadow: inset 0 0 0 1px rgba(148, 184, 232, 0.08);
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[11px] uppercase tracking-widepill text-text-secondary;
+    border: 1px solid #1f1f1f;
+    border-radius: 0;
+    background: transparent;
   }
 
   .chip-accent {
-    color: #7fe7ff;
-    background:
-      linear-gradient(135deg, rgba(0, 212, 255, 0.14), rgba(138, 92, 255, 0.1));
-    box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.28);
+    color: #00ff87;
+    border-color: #00ff87;
   }
 
-  /* Mono eyebrow label */
+  /* Mono eyebrow — short uppercase tag above a heading. */
   .eyebrow {
-    @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-accent-cyan;
+    @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widepill text-accent-lime;
   }
 
   .eyebrow::before {
     content: "";
-    width: 1.75rem;
+    width: 1.5rem;
     height: 1px;
-    background: linear-gradient(
-      to right,
-      rgba(0, 212, 255, 0.6),
-      rgba(0, 212, 255, 0)
-    );
+    background: #00ff87;
+    opacity: 0.6;
   }
 
-  /* Thin gradient hairline divider */
+  /* Section number — large mono pseudo-counter for trading-deck headings. */
+  .section-number {
+    @apply font-mono text-[11px] uppercase tracking-widercaps text-text-muted;
+  }
+
+  /* Hairline divider — full bleed. */
   .hairline {
     height: 1px;
     width: 100%;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(148, 184, 232, 0.18) 20%,
-      rgba(148, 184, 232, 0.18) 80%,
-      transparent 100%
-    );
+    background: #1f1f1f;
   }
 
   .hairline-vertical {
     width: 1px;
     align-self: stretch;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(148, 184, 232, 0.16) 20%,
-      rgba(148, 184, 232, 0.16) 80%,
-      transparent 100%
-    );
+    background: #1f1f1f;
   }
 
-  /* Gradient display text */
+  /* Display text — solid white, no gradient. Animated gradient kept as legacy
+     alias mapping to plain white so existing usages render unbroken. */
   .text-gradient {
-    background: linear-gradient(
-      120deg,
-      #7fe7ff 0%,
-      #00ff9d 40%,
-      #8a5cff 75%,
-      #ff4da6 100%
-    );
-    background-size: 200% 200%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: gradient-pan 9s ease-in-out infinite;
+    color: #ffffff;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
   }
 
-  /* Live dot indicator */
+  /* Live dot indicator — lime pulse. */
   .live-dot {
     display: inline-block;
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 9999px;
-    background: #00ff9d;
+    background: #00ff87;
     animation: pulse-dot 2.4s ease-in-out infinite;
   }
 
-  /* CTA with shimmer on hover.
-     Gradient mirrors the OPEN button on the hub section cards (pink -> violet -> cyan)
-     so the primary CTA shares the same visual rhythm. Slightly warmer drop-shadow
-     stack makes it the most eye-catching element without hurting text legibility
-     (dark text on bright gradient). Uses `filter` so it composes with the
-     cyan `shadow-glow` ring applied via Tailwind on CTA usages. */
+  /* ---------- Buttons ---------- */
+
+  .btn {
+    @apply focus-ring inline-flex min-h-11 items-center justify-center gap-2 px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-widepill transition;
+    border-radius: 0;
+  }
+
+  /* Primary CTA — solid lime block. Dark text for legibility on bright fill. */
+  .btn-primary,
   .cta-primary {
-    position: relative;
-    background: linear-gradient(95deg, #ff4da6 0%, #8a5cff 52%, #00d4ff 100%);
-    color: #05070f;
-    overflow: hidden;
-    filter:
-      drop-shadow(0 6px 16px rgba(255, 77, 166, 0.32))
-      drop-shadow(0 12px 30px rgba(138, 92, 255, 0.24));
-    transition: filter 240ms ease, transform 240ms ease;
+    background: #00ff87;
+    color: #0a0a0a;
+    border: 1px solid #00ff87;
   }
 
+  .btn-primary:hover,
   .cta-primary:hover {
-    filter:
-      drop-shadow(0 8px 22px rgba(255, 77, 166, 0.48))
-      drop-shadow(0 14px 36px rgba(138, 92, 255, 0.38));
+    background: #7df7ba;
+    border-color: #7df7ba;
   }
 
+  .btn-primary::after,
   .cta-primary::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      110deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.4) 50%,
-      transparent 70%
-    );
-    background-size: 200% 100%;
-    opacity: 0;
-    transition: opacity 240ms ease;
-    pointer-events: none;
+    display: none;
   }
 
-  .cta-primary:hover::after {
-    opacity: 1;
-    animation: shimmer 1.2s linear infinite;
+  /* Secondary — outlined white-on-black. */
+  .btn-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #2a2a2a;
+  }
+
+  .btn-secondary:hover {
+    border-color: #00ff87;
+    color: #00ff87;
+  }
+
+  /* Ghost — link-like, no border until hover. */
+  .btn-ghost {
+    background: transparent;
+    color: #9a9a9a;
+    border: 1px solid transparent;
+  }
+
+  .btn-ghost:hover {
+    color: #00ff87;
+  }
+
+  /* ---------- Navigation primitives ---------- */
+
+  /* StandX-style nav link. Square, mono, uppercase. */
+  .nav-pill {
+    @apply focus-ring inline-flex min-h-9 items-center px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-secondary transition;
+    border-radius: 0;
+  }
+
+  .nav-pill:hover {
+    color: #ffffff;
+  }
+
+  .nav-pill[data-active="true"] {
+    color: #00ff87;
   }
 
   .locale-fade {
@@ -280,65 +237,37 @@
     @apply flex min-w-full animate-ticker-shift gap-3;
   }
 
-  /* Legacy hero fallback (used when WebGL not available) */
-  .hero-grid-fallback {
-    background-image:
-      linear-gradient(to right, rgba(80, 115, 150, 0.14) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(80, 115, 150, 0.14) 1px, transparent 1px);
-    background-size: 64px 64px;
+  /* ---------- Decorative layers — all neutralized to plain transparent ---------- */
+  /* Kept as no-op classes so existing JSX references render harmlessly. */
+
+  .aurora,
+  .aurora-cyan,
+  .aurora-violet,
+  .aurora-gain {
+    display: none !important;
+  }
+
+  .bg-grid-soft,
+  .hero-grid-fallback,
+  .hero-diagonal-lines {
+    background: none;
   }
 
   .hero-grid-fallback::after {
-    content: "";
-    @apply absolute inset-0 animate-grid-drift;
+    content: none;
+  }
+
+  /* Trading-deck grid backdrop — fine mesh used in the hero. */
+  .grid-mesh {
     background-image:
-      linear-gradient(to right, rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
-    background-size: 128px 128px;
-    opacity: 0.4;
+      linear-gradient(to right, #1f1f1f 1px, transparent 1px),
+      linear-gradient(to bottom, #1f1f1f 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
   }
 
-  /* Ambient aurora blobs behind sections */
-  .aurora {
-    position: absolute;
-    pointer-events: none;
-    filter: blur(70px);
-    opacity: 0.55;
-    border-radius: 9999px;
-    animation: aurora-drift 14s ease-in-out infinite;
-  }
-
-  .aurora-cyan {
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.45), transparent 70%);
-  }
-
-  .aurora-violet {
-    background: radial-gradient(circle, rgba(138, 92, 255, 0.42), transparent 70%);
-  }
-
-  .aurora-gain {
-    background: radial-gradient(circle, rgba(0, 255, 157, 0.28), transparent 70%);
-  }
-
-  /* Subtle background grid usable as decorative layer */
-  .bg-grid-soft {
-    background-image:
-      linear-gradient(to right, rgba(120, 160, 210, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(120, 160, 210, 0.05) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(
-      ellipse 60% 60% at 50% 30%,
-      #000 50%,
-      transparent 100%
-    );
-    -webkit-mask-image: radial-gradient(
-      ellipse 60% 60% at 50% 30%,
-      #000 50%,
-      transparent 100%
-    );
-  }
-
-  /* Underline-style active tab (used for section sub-nav) */
+  /* Underline-style active tab (used for section sub-nav legacy). */
   .tab-underline {
     position: relative;
   }
@@ -346,51 +275,19 @@
   .tab-underline[data-active="true"]::after {
     content: "";
     position: absolute;
-    left: 0.75rem;
-    right: 0.75rem;
+    left: 0;
+    right: 0;
     bottom: -1px;
     height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, #00d4ff 0%, #8a5cff 100%);
-    box-shadow: 0 0 12px rgba(0, 212, 255, 0.55);
-  }
-
-  /* Legacy .glass-panel retained for compatibility */
-  .glass-panel {
-    @apply panel;
-  }
-
-  /* Legacy hero lines kept for fallback mounting */
-  .hero-diagonal-lines {
-    background:
-      repeating-linear-gradient(
-        -45deg,
-        rgba(255, 255, 255, 0) 0,
-        rgba(255, 255, 255, 0) 38px,
-        rgba(120, 148, 176, 0.06) 38px,
-        rgba(120, 148, 176, 0.06) 39px
-      );
+    background: #00ff87;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .locale-fade,
   .ticker-track,
-  .hero-grid-fallback::after,
-  .aurora,
-  .text-gradient,
-  .live-dot,
-  .cta-primary:hover::after {
+  .live-dot {
     animation: none !important;
-  }
-
-  .panel-hover:hover {
-    transform: none;
-  }
-
-  .cta-primary,
-  .cta-primary:hover {
-    transition: none;
   }
 
   html {

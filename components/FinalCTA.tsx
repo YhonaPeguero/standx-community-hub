@@ -7,26 +7,31 @@ export default function FinalCTA() {
   const tLinks = useTranslations("links");
 
   return (
-    <div className="section-shell" id="final-cta">
-      <div className="rounded-3xl border border-accent-cyan/30 bg-bg-surface/80 px-6 py-8 shadow-glow md:px-8">
-        <h2 className="max-w-3xl text-balance text-2xl font-semibold text-text-primary md:text-3xl">
-          {t("title")}
-        </h2>
-        <p className="mt-3 max-w-3xl text-base leading-relaxed text-text-secondary">
-          {t("subtitle")}
-        </p>
+    <section className="section-shell border-b border-border-hairline py-20 md:py-32" id="final-cta">
+      <div className="border border-border-hairline">
+        <div className="grid gap-10 p-8 md:grid-cols-[1.3fr_0.7fr] md:items-end md:p-12">
+          <div className="space-y-5">
+            <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted">
+              / End transmission
+            </span>
+            <h2 className="text-display-lg uppercase text-text-primary">{t("title")}</h2>
+            <p className="max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
+              {t("subtitle")}
+            </p>
+          </div>
 
-        <a
-          href={tLinks("startTrading")}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={tCommon("startTradingAria")}
-          className="focus-ring mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-accent-cyan px-5 py-2.5 font-semibold text-bg-base transition hover:bg-accent-cyanSoft"
-        >
-          {t("cta")}
-          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-        </a>
+          <a
+            href={tLinks("startTrading")}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={tCommon("startTradingAria")}
+            className="btn btn-primary w-full md:w-auto md:self-end"
+          >
+            {t("cta")}
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

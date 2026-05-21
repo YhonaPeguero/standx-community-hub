@@ -1044,28 +1044,13 @@ export default function HubSectionPage({params}: SectionPageProps) {
   const header = sectionHeaders[section];
 
   return (
-    <div className="section-shell relative pb-14 pt-8 md:pt-10">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[28rem] overflow-hidden"
-      >
-        <div className="aurora aurora-cyan absolute -left-32 -top-24 h-[22rem] w-[22rem]" />
-        <div
-          className="aurora aurora-violet absolute -right-32 top-0 h-[20rem] w-[20rem]"
-          style={{animationDelay: "-5s"}}
-        />
-      </div>
-
-      <div className="mb-8 -mx-4 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
+    <div className="border-b border-border-hairline">
+      <div className="section-shell border-b border-border-hairline overflow-x-auto">
         <nav
-          className="relative flex min-w-max items-center gap-0.5"
-          style={{boxShadow: "inset 0 -1px 0 rgba(148, 184, 232, 0.08)"}}
+          className="flex min-w-max items-center gap-1 py-2"
+          aria-label="Hub sections"
         >
-          <Link
-            href={`/${locale}`}
-            data-active="false"
-            className="tab-underline focus-ring inline-flex min-h-11 items-center px-3 text-xs font-semibold uppercase tracking-[0.14em] text-text-secondary transition hover:text-text-primary"
-          >
+          <Link href={`/${locale}`} className="nav-pill">
             {localized(locale, uiCopy.home)}
           </Link>
 
@@ -1076,12 +1061,8 @@ export default function HubSectionPage({params}: SectionPageProps) {
               <Link
                 key={item.slug}
                 href={item.href}
-                data-active={isCurrent}
-                className={`tab-underline focus-ring inline-flex min-h-11 items-center px-3 text-xs font-semibold uppercase tracking-[0.14em] transition ${
-                  isCurrent
-                    ? "text-text-primary"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
+                className="nav-pill"
+                data-active={isCurrent || undefined}
                 aria-current={isCurrent ? "page" : undefined}
               >
                 {item.label}
@@ -1091,38 +1072,36 @@ export default function HubSectionPage({params}: SectionPageProps) {
         </nav>
       </div>
 
-      <header className="mb-10 space-y-4 md:mb-12">
-        <p className="eyebrow">
-          {navItems.find((item) => item.slug === section)?.label}
-        </p>
-        <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-text-primary md:text-5xl">
-          {localized(locale, header.title)}
-        </h1>
-        <p className="max-w-3xl text-pretty text-base leading-relaxed text-text-secondary md:text-lg">
-          {localized(locale, header.subtitle)}
-        </p>
-
-        {header.notice ? (
-          <div
-            className="mt-2 flex gap-3 rounded-2xl p-4"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(0,212,255,0.08), rgba(138,92,255,0.06))",
-              boxShadow: "inset 0 0 0 1px rgba(0, 212, 255, 0.22)"
-            }}
-          >
-            <span
-              aria-hidden="true"
-              className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent-cyan shadow-[0_0_10px_rgba(0,212,255,0.6)]"
-            />
-            <p className="text-sm leading-relaxed text-text-primary">
-              {localized(locale, header.notice)}
-            </p>
+      <div className="section-shell py-12 md:py-16">
+        <header className="space-y-6">
+          <div className="flex items-center gap-3 text-text-muted">
+            <span className="font-mono text-[11px] uppercase tracking-widercaps">
+              / {navItems.find((item) => item.slug === section)?.label}
+            </span>
+            <span className="hairline flex-1 max-w-[120px]" aria-hidden="true" />
           </div>
-        ) : null}
-      </header>
+          <h1 className="text-balance text-display-lg uppercase text-text-primary">
+            {localized(locale, header.title)}
+          </h1>
+          <p className="max-w-3xl text-pretty text-base leading-relaxed text-text-secondary md:text-lg">
+            {localized(locale, header.subtitle)}
+          </p>
 
-      {renderSectionContent(section, locale)}
+          {header.notice ? (
+            <div className="flex gap-3 border border-accent-lime/40 p-4">
+              <span
+                aria-hidden="true"
+                className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent-lime"
+              />
+              <p className="text-sm leading-relaxed text-text-primary">
+                {localized(locale, header.notice)}
+              </p>
+            </div>
+          ) : null}
+        </header>
+
+        <div className="mt-10 md:mt-12">{renderSectionContent(section, locale)}</div>
+      </div>
     </div>
   );
 }

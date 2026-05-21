@@ -19,15 +19,11 @@ export default function HomeTabs({locale}: HomeTabsProps) {
   ];
 
   return (
-    <div className="border-y border-border-base/70 bg-bg-elevated/90">
+    <div className="border-y border-border-hairline">
       <div className="section-shell overflow-x-auto">
-        <nav className="flex min-h-[56px] min-w-max items-center gap-1 py-1">
+        <nav className="flex min-h-[52px] min-w-max items-center gap-1 py-1">
           {tabs.map((tab) => (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className="focus-ring inline-flex min-h-11 items-center rounded-lg px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-text-secondary transition hover:bg-bg-surface/80 hover:text-text-primary"
-            >
+            <Link key={tab.href} href={tab.href} className="nav-pill">
               {tab.label}
             </Link>
           ))}

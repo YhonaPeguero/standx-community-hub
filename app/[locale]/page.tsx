@@ -39,7 +39,7 @@ export default function HomePage({params}: HomePageProps) {
     : defaultLocale;
 
   return (
-    <div className="pb-10 md:pb-16">
+    <div>
       <HeroSection locale={locale} />
 
       <SectionReveal id="overview">
