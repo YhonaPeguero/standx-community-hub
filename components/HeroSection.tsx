@@ -110,16 +110,15 @@ export default function HeroSection({locale}: HeroSectionProps) {
           className="animate-fade-up mt-10 flex flex-wrap items-center gap-3"
           style={{animationDelay: "460ms"}}
         >
-          <a
-            href={tLinks("startTrading")}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={tCommon("startTradingAria")}
-            className="btn btn-primary"
-          >
+          {/* Primary hero CTA points to the in-hub Getting Started section.
+              The navbar already has a "Start Trading" CTA pointing to the
+              external app — duplicating it here would be redundant. The
+              localized label comes from hero.ctaPrimary (now "Get Started"
+              / "Comenzar" / "Começar" / "Почати" / "시작하기"). */}
+          <Link href={`/${locale}/getting-started`} className="btn btn-primary">
             {t("ctaPrimary")}
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
+          </Link>
 
           <Link
             href={`/${locale}/how-it-works`}
