@@ -193,7 +193,10 @@ export default function LanguageSwitcher({
           role="listbox"
           aria-label={tNavbar("languageLabel")}
           onKeyDown={handleListKey}
-          className={`absolute z-50 min-w-[14rem] border border-border-base bg-bg-elevated shadow-[0_24px_48px_-16px_rgba(0,0,0,0.6)] ${
+          // Width clamped to min(16rem, viewport - 1.5rem) so the popover never
+          // overflows on narrow phones where the trigger sits near the right
+          // edge of the navbar.
+          className={`absolute z-50 w-[min(16rem,calc(100vw-1.5rem))] border border-border-base bg-bg-elevated shadow-[0_24px_48px_-16px_rgba(0,0,0,0.6)] ${
             align === "right" ? "right-0" : "left-0"
           } ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}`}
         >

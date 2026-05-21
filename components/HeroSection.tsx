@@ -73,14 +73,18 @@ export default function HeroSection({locale}: HeroSectionProps) {
       />
 
       <div className="section-shell relative py-16 md:py-24 lg:py-32">
+        {/* Eyebrow row — on mobile only the live-dot + the localized eyebrow
+            text remain (the "01 / Community Hub" label + hairline would push
+            this row past the viewport at 320-375px because the localized
+            eyebrow text alone can be ~250px). */}
         <div
-          className="animate-fade-up flex items-center gap-3 text-text-muted"
+          className="animate-fade-up flex flex-wrap items-center gap-x-3 gap-y-2 text-text-muted"
           style={{animationDelay: "0ms"}}
         >
-          <span className="font-mono text-[11px] uppercase tracking-widercaps">
+          <span className="hidden font-mono text-[11px] uppercase tracking-widercaps md:inline">
             01 / Community Hub
           </span>
-          <span className="hairline flex-1 max-w-[180px]" aria-hidden="true" />
+          <span className="hairline hidden max-w-[180px] flex-1 md:block" aria-hidden="true" />
           <span className="live-dot" aria-hidden="true" />
           <span className="font-mono text-[11px] uppercase tracking-widercaps text-accent-lime">
             {t("eyebrow")}

@@ -110,10 +110,10 @@ export default function Navbar({locale}: NavbarProps) {
               aria-label={tCommon("openNavigation")}
               aria-expanded={isDrawerOpen}
               aria-haspopup="dialog"
-              className="focus-ring inline-flex min-h-10 items-center gap-2 border border-border-base px-3 text-text-primary transition hover:border-accent-lime hover:text-accent-lime"
+              className="focus-ring inline-flex min-h-10 min-w-10 items-center justify-center gap-2 border border-border-base px-2.5 text-text-primary transition hover:border-accent-lime hover:text-accent-lime sm:px-3"
             >
               <Menu className="h-4 w-4" aria-hidden="true" />
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-widepill">
+              <span className="hidden font-mono text-[11px] font-semibold uppercase tracking-widepill sm:inline">
                 {tNavbar("menuLabel")}
               </span>
             </button>

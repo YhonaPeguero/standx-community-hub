@@ -136,12 +136,15 @@ export default function SplashIntro() {
             }}
           />
 
+          {/* HUD chips — hidden on narrow screens (<sm) because the two labels
+              collide horizontally on phones at 320–375px. On sm+ they live in
+              the corners as supporting context. */}
           <motion.div
             initial={{opacity: 0, x: -16}}
             animate={{opacity: 0.8, x: 0}}
             exit={{opacity: 0, transition: {duration: 0.25}}}
             transition={{delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1]}}
-            className="absolute left-6 top-6 font-mono text-[11px] font-semibold uppercase tracking-widercaps text-black"
+            className="absolute left-6 top-6 hidden font-mono text-[11px] font-semibold uppercase tracking-widercaps text-black sm:inline-flex"
           >
             Standx · Community Hub
           </motion.div>
@@ -151,7 +154,7 @@ export default function SplashIntro() {
             animate={{opacity: 0.8, x: 0}}
             exit={{opacity: 0, transition: {duration: 0.25}}}
             transition={{delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1]}}
-            className="absolute right-6 top-6 inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-widercaps text-black"
+            className="absolute right-6 top-6 hidden items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-widercaps text-black sm:inline-flex"
           >
             <span>Initializing</span>
             <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-black" />
@@ -247,7 +250,7 @@ function BeStandWordmark() {
     <svg
       viewBox="0 0 720 160"
       preserveAspectRatio="xMidYMid meet"
-      className="h-[clamp(5rem,17vw,13rem)] w-auto"
+      className="block h-auto w-full max-w-[min(85vw,52rem)]"
       aria-label="Be Stand"
       role="img"
     >
