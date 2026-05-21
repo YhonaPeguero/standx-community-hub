@@ -30,10 +30,13 @@ const config: Config = {
           strong: "#3a3a3a"
         },
         // Text scale. One tier per surface.
+        // Contrast against bg-base #0a0a0a:
+        //   primary  ~21:1, secondary ~7.5:1, muted ~6:1.
+        // Muted was bumped from #6a6a6a (3.4:1, fails AA for small text).
         text: {
           primary: "#ffffff",
-          secondary: "#9a9a9a",
-          muted: "#6a6a6a"
+          secondary: "#b0b0b0",
+          muted: "#909090"
         },
         // Single accent + trading semantic signals only.
         accent: {

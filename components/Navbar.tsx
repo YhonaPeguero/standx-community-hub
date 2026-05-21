@@ -86,11 +86,17 @@ export default function Navbar({locale}: NavbarProps) {
         <div className="section-shell flex min-h-[60px] items-center gap-3 md:min-h-[64px]">
           <Link
             href={homeHref}
+            aria-label={tCommon("brand")}
             className="focus-ring group inline-flex min-h-10 items-center gap-2.5 px-1 font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary"
           >
-            <span className="live-dot" aria-hidden="true" />
-            <span className="truncate sm:hidden">{tCommon("brandShort")}</span>
-            <span className="hidden sm:inline">{tCommon("brand")}</span>
+            <span
+              aria-hidden="true"
+              className="brand-logo h-6 w-6 text-accent-lime transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="text-text-primary">StandX</span>
+            <span className="hidden border border-accent-lime/40 px-1.5 py-0.5 text-[10px] tracking-widercaps text-accent-lime sm:inline">
+              Community
+            </span>
           </Link>
 
           <div className="ml-auto flex items-center gap-2 md:gap-3">

@@ -115,6 +115,20 @@ const sectionIcons: Record<HubSectionSlug, LucideIcon> = {
   about: Info
 };
 
+// Per-slug accent — gives each card a small color identity at rest so the grid
+// reads as differentiated tiles, not a uniform gray slab. Mirrors the Growth
+// Path palette (lime / sky / pink) so the hub stays on one visual system.
+// Hover state still escalates to the brand lime via class hovers below.
+const sectionAccents: Record<HubSectionSlug, {hex: string; rgb: string}> = {
+  "getting-started": {hex: "#00ff87", rgb: "0,255,135"}, // lime — growth/start
+  "brand-kit": {hex: "#f472b6", rgb: "244,114,182"}, // pink — creative
+  templates: {hex: "#5ec2ff", rgb: "94,194,255"}, // sky — building blocks
+  references: {hex: "#00ff87", rgb: "0,255,135"}, // lime
+  community: {hex: "#f472b6", rgb: "244,114,182"}, // pink
+  "standers-insights": {hex: "#5ec2ff", rgb: "94,194,255"}, // sky
+  about: {hex: "#00ff87", rgb: "0,255,135"} // lime
+};
+
 export default function SectionDirectory({locale}: SectionDirectoryProps) {
   const items = getHubNavItems(locale);
   const copy = directoryCopy[locale];
@@ -139,26 +153,40 @@ export default function SectionDirectory({locale}: SectionDirectoryProps) {
       <div className="-mx-px grid grid-cols-1 border border-border-hairline sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => {
           const Icon = sectionIcons[item.slug];
+          const accent = sectionAccents[item.slug];
           const number = String(index + 1).padStart(2, "0");
           return (
             <Link
               key={item.slug}
               href={item.href}
               aria-label={`${item.label} — ${descriptions[locale][item.slug]}`}
-              className="group focus-ring relative flex flex-col gap-5 border-border-hairline p-6 transition-colors hover:bg-bg-elevated md:p-8 [&:not(:last-child)]:border-b sm:[&:nth-child(odd)]:border-r sm:[&:not(:last-child)]:border-b lg:[&:nth-child(3n+1)]:border-r lg:[&:nth-child(3n+2)]:border-r lg:[&:nth-child(-n+3)]:border-b lg:[&:nth-child(n+4)]:border-b lg:[&:last-child]:border-b-0"
+              style={
+                {
+                  ["--card-accent" as string]: accent.hex,
+                  ["--card-accent-rgb" as string]: accent.rgb,
+                  animationDelay: `${index * 70}ms`
+                } as React.CSSProperties
+              }
+              className="card-tinted card-entrance group focus-ring relative flex flex-col gap-5 border-border-hairline p-6 transition-all duration-300 md:p-8 [&:not(:last-child)]:border-b sm:[&:nth-child(odd)]:border-r sm:[&:not(:last-child)]:border-b lg:[&:nth-child(3n+1)]:border-r lg:[&:nth-child(3n+2)]:border-r lg:[&:nth-child(-n+3)]:border-b lg:[&:nth-child(n+4)]:border-b lg:[&:last-child]:border-b-0"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted">
+                <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted transition-colors group-hover:text-text-secondary">
                   {number}
                 </span>
                 <Icon
-                  className="h-5 w-5 text-text-secondary transition-colors group-hover:text-accent-lime"
+                  className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110"
+                  style={{
+                    color: accent.hex,
+                    filter: `drop-shadow(0 0 8px rgba(${accent.rgb}, 0.45))`
+                  }}
                   aria-hidden="true"
                 />
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-mono text-base font-semibold uppercase tracking-widepill text-text-primary transition-colors group-hover:text-accent-lime md:text-lg">
+                <h3
+                  className="font-mono text-base font-semibold uppercase tracking-widepill text-text-primary transition-colors duration-300 md:text-lg group-hover:[color:var(--card-accent)]"
+                >
                   {item.label}
                 </h3>
                 <p className="text-sm leading-relaxed text-text-secondary">
@@ -167,11 +195,18 @@ export default function SectionDirectory({locale}: SectionDirectoryProps) {
               </div>
 
               <div className="mt-auto flex items-center justify-between pt-2">
-                <span className="font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-muted transition-colors group-hover:text-accent-lime">
+                <span
+                  className="font-mono text-[11px] font-semibold uppercase tracking-widepill transition-colors duration-300"
+                  style={{color: accent.hex}}
+                >
                   {copy.openSection}
                 </span>
                 <ArrowUpRight
-                  className="h-4 w-4 text-text-muted transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent-lime"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  style={{
+                    color: accent.hex,
+                    filter: `drop-shadow(0 0 6px rgba(${accent.rgb}, 0.35))`
+                  }}
                   aria-hidden="true"
                 />
               </div>

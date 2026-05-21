@@ -14,6 +14,8 @@ interface LanguageSwitcherProps {
   variant?: "navbar" | "panel";
   /** Where the popover should anchor horizontally relative to the trigger. */
   align?: "left" | "right";
+  /** Whether the popover opens above (footer) or below (navbar) the trigger. */
+  placement?: "top" | "bottom";
 }
 
 interface LocaleOption {
@@ -61,7 +63,8 @@ function persistLocalePreference(nextLocale: AppLocale): void {
 export default function LanguageSwitcher({
   locale,
   variant = "navbar",
-  align = "right"
+  align = "right",
+  placement = "bottom"
 }: LanguageSwitcherProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -190,9 +193,9 @@ export default function LanguageSwitcher({
           role="listbox"
           aria-label={tNavbar("languageLabel")}
           onKeyDown={handleListKey}
-          className={`absolute z-50 mt-2 min-w-[14rem] border border-border-base bg-bg-elevated shadow-[0_24px_48px_-16px_rgba(0,0,0,0.6)] ${
+          className={`absolute z-50 min-w-[14rem] border border-border-base bg-bg-elevated shadow-[0_24px_48px_-16px_rgba(0,0,0,0.6)] ${
             align === "right" ? "right-0" : "left-0"
-          }`}
+          } ${placement === "top" ? "bottom-full mb-2" : "top-full mt-2"}`}
         >
           <li className="border-b border-border-hairline px-3 py-2 font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
             {tNavbar("languageLabel")}
