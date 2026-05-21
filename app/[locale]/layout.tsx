@@ -4,6 +4,8 @@ import {getMessages, getTranslations, setRequestLocale} from "next-intl/server";
 import {notFound} from "next/navigation";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ScrollProgress from "@/components/ScrollProgress";
+import SplashIntro from "@/components/SplashIntro";
 import {
   defaultLocale,
   isAppLocale,
@@ -60,6 +62,8 @@ export default async function LocaleLayout({children, params}: LocaleLayoutProps
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="relative flex min-h-screen flex-col">
+        <SplashIntro />
+        <ScrollProgress />
         <Navbar locale={locale} />
         <main className="flex-1 pt-[60px] md:pt-[64px]">
           <div className="locale-fade">{children}</div>

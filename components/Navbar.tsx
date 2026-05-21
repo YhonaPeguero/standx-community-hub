@@ -86,11 +86,17 @@ export default function Navbar({locale}: NavbarProps) {
         <div className="section-shell flex min-h-[60px] items-center gap-3 md:min-h-[64px]">
           <Link
             href={homeHref}
+            aria-label={tCommon("brand")}
             className="focus-ring group inline-flex min-h-10 items-center gap-2.5 px-1 font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary"
           >
-            <span className="live-dot" aria-hidden="true" />
-            <span className="truncate sm:hidden">{tCommon("brandShort")}</span>
-            <span className="hidden sm:inline">{tCommon("brand")}</span>
+            <span
+              aria-hidden="true"
+              className="brand-logo h-6 w-6 text-accent-lime transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="text-text-primary">StandX</span>
+            <span className="hidden border border-accent-lime/40 px-1.5 py-0.5 text-[10px] tracking-widercaps text-accent-lime sm:inline">
+              Community
+            </span>
           </Link>
 
           <div className="ml-auto flex items-center gap-2 md:gap-3">
@@ -104,10 +110,10 @@ export default function Navbar({locale}: NavbarProps) {
               aria-label={tCommon("openNavigation")}
               aria-expanded={isDrawerOpen}
               aria-haspopup="dialog"
-              className="focus-ring inline-flex min-h-10 items-center gap-2 border border-border-base px-3 text-text-primary transition hover:border-accent-lime hover:text-accent-lime"
+              className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border border-border-base px-2.5 text-text-primary transition hover:border-accent-lime hover:text-accent-lime sm:px-3"
             >
               <Menu className="h-4 w-4" aria-hidden="true" />
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-widepill">
+              <span className="hidden font-mono text-[11px] font-semibold uppercase tracking-widepill sm:inline">
                 {tNavbar("menuLabel")}
               </span>
             </button>
@@ -162,7 +168,7 @@ export default function Navbar({locale}: NavbarProps) {
                     type="button"
                     onClick={() => setIsDrawerOpen(false)}
                     aria-label={tCommon("closeNavigation")}
-                    className="focus-ring inline-flex min-h-9 min-w-9 items-center justify-center border border-border-base text-text-secondary transition hover:border-accent-lime hover:text-accent-lime"
+                    className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center border border-border-base text-text-secondary transition hover:border-accent-lime hover:text-accent-lime"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -188,7 +194,16 @@ export default function Navbar({locale}: NavbarProps) {
               </nav>
 
               <div className="space-y-4 border-t border-border-hairline px-6 py-5">
-                <LanguageSwitcher locale={locale} variant="panel" align="left" />
+                {/* placement="top" so the locale popover opens upward into the
+                    nav scroll area. With the default downward placement the
+                    popover would push past the Start Trading CTA and the
+                    drawer description, breaking the layout on mobile. */}
+                <LanguageSwitcher
+                  locale={locale}
+                  variant="panel"
+                  align="left"
+                  placement="top"
+                />
 
                 <a
                   href={tLinks("startTrading")}

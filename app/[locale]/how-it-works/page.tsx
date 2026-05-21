@@ -61,11 +61,11 @@ export default function HowItWorksPage({params}: HowItWorksPageProps) {
     <>
       <SectionReveal>
         <section className="section-shell border-b border-border-hairline py-16 md:py-24">
-          <div className="flex items-center gap-3 text-text-muted">
-            <span className="font-mono text-[11px] uppercase tracking-widercaps">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-text-muted">
+            <span className="hidden font-mono text-[11px] uppercase tracking-widercaps md:inline">
               02 / Onboarding
             </span>
-            <span className="hairline flex-1 max-w-[180px]" aria-hidden="true" />
+            <span className="hairline hidden max-w-[180px] flex-1 md:block" aria-hidden="true" />
             <span className="font-mono text-[11px] uppercase tracking-widercaps text-accent-lime">
               {t("eyebrow")}
             </span>

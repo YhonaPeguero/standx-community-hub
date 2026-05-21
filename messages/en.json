@@ -61,14 +61,6 @@
     "drawerTitle": "Navigate the hub",
     "drawerDescription": "Access onboarding guides, community channels, and key resources."
   },
-  "homeTabs": {
-    "gettingStarted": "Getting Started",
-    "whyTrade": "Why Trade",
-    "howItWorks": "How It Works",
-    "community": "Community",
-    "resources": "Resources",
-    "about": "About"
-  },
   "hero": {
     "eyebrow": "StandX · Community Infrastructure",
     "title": "Trade perpetuals with confidence. Keep DUSD working between trades.",
@@ -113,140 +105,6 @@
       "four": "Community-driven resources you can share"
     }
   },
-  "whatIsStandX": {
-    "eyebrow": "What is StandX",
-    "title": "A Perpetuals DEX designed for clarity, speed, and continuous learning",
-    "sentenceOne": "StandX is a decentralized exchange for perpetual contracts, where you can trade market direction through long and short positions.",
-    "sentenceTwo": "Instead of letting funds sit idle, StandX connects your collateral flow with DUSD utility in a way that is easier to understand than most platforms.",
-    "sentenceThree": "This hub gives newcomers a simple path to understand the product fast, without assuming deep DeFi background.",
-    "cards": {
-      "perpetuals": {
-        "title": "Perpetual contracts",
-        "description": "Trade price movement without expiry dates, with clear risk awareness."
-      },
-      "dusd": {
-        "title": "DUSD stablecoin",
-        "description": "DUSD is the native stablecoin reference across the StandX experience."
-      },
-      "selfCustody": {
-        "title": "Self-custody by default",
-        "description": "Your wallet remains your access layer while you interact with the DEX."
-      }
-    }
-  },
-  "whyTradeHere": {
-    "eyebrow": "Why trade here",
-    "title": "Three reasons traders keep coming back to StandX",
-    "subtitle": "You get a focused Trading environment, DUSD utility that supports better planning, and decentralized architecture that keeps control in user hands.",
-    "cards": {
-      "perpetualContracts": {
-        "title": "Perpetual Contracts",
-        "description": "Execute long and short strategies with a UI made for decision speed, not noise."
-      },
-      "dusdYield": {
-        "title": "DUSD Yield Gains",
-        "description": "Understand how DUSD supports yield flow so idle periods can still stay productive."
-      },
-      "decentralizedSecure": {
-        "title": "Decentralized & Secure",
-        "description": "Keep wallet-level ownership while participating in a transparent DEX environment."
-      }
-    }
-  },
-  "howItWorksSection": {
-    "eyebrow": "How it works",
-    "title": "From zero to first trade in three clear steps",
-    "subtitle": "No guesswork. Follow the same path most users take when they begin on StandX.",
-    "steps": {
-      "connect": {
-        "number": "01",
-        "title": "Connect Wallet",
-        "description": "Use your wallet to access StandX in seconds."
-      },
-      "deposit": {
-        "number": "02",
-        "title": "Deposit / Get DUSD",
-        "description": "Prepare your collateral and understand DUSD role first."
-      },
-      "trade": {
-        "number": "03",
-        "title": "Trade & Earn Yield",
-        "description": "Open long or short positions and manage yield flow clearly."
-      }
-    }
-  },
-  "dusdSpotlight": {
-    "eyebrow": "DUSD spotlight",
-    "title": "Why DUSD matters before any yield number",
-    "description": "DUSD is not a side feature. It is the native stablecoin context that helps users understand collateral flow, risk pacing, and how yield is generated across trading activity.",
-    "callout": "Know the stablecoin first. Yield comes after understanding.",
-    "ctaDocs": "Read Resources",
-    "ctaGuide": "Open Visual Guide",
-    "panel": {
-      "title": "DUSD in practical terms",
-      "pointOne": "DUSD gives users a stablecoin reference while interacting with perpetual markets.",
-      "pointTwo": "Yield potential is easier to evaluate when DUSD behavior is clear in your workflow.",
-      "pointThree": "Learning DUSD mechanics first helps reduce emotional, overleveraged decisions."
-    }
-  },
-  "communitySection": {
-    "eyebrow": "Community",
-    "title": "A hub that stays alive after your first visit",
-    "subtitle": "Join active channels, follow ecosystem updates, and find contribution paths that make your work visible.",
-    "cards": {
-      "discord": {
-        "title": "Join Discord",
-        "description": "Events, support, trading discussions, and contributor coordination happen in real time.",
-        "cta": "Enter Discord"
-      },
-      "social": {
-        "title": "Follow X / Twitter",
-        "description": "Track StandX announcements, community threads, and educational breakdowns.",
-        "cta": "Open X Profile"
-      },
-      "resources": {
-        "title": "Resources & FAQ",
-        "description": "Use docs and community-written material to answer questions without friction.",
-        "cta": "Open Docs"
-      },
-      "sipGuide": {
-        "title": "SIP Visual Guide",
-        "description": "A community-driven educational experience that makes StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
-        "cta": "Explore SIPs"
-      }
-    },
-    "milestone": {
-      "label": "Community milestone",
-      "value": "StandX creators continue publishing multilingual education that helps new users start faster."
-    }
-  },
-  "statsSection": {
-    "eyebrow": "Social proof",
-    "title": "Numbers that signal a growing ecosystem",
-    "subtitle": "These placeholders are directional snapshots while live integrations are out of scope for this phase.",
-    "items": {
-      "totalVolume": {
-        "label": "Total Volume",
-        "value": "$1.2B+",
-        "note": "Perpetuals activity across market cycles"
-      },
-      "activeTraders": {
-        "label": "Active Traders",
-        "value": "48K+",
-        "note": "Wallets trading long / short strategies"
-      },
-      "communityMembers": {
-        "label": "Community Members",
-        "value": "92K+",
-        "note": "Discord and social channels combined"
-      }
-    }
-  },
-  "finalCta": {
-    "title": "Ready to experience StandX with a clearer edge?",
-    "subtitle": "Start with the official app, then come back to the hub whenever you need onboarding, resources, or community routes.",
-    "cta": "Start trading on StandX"
-  },
   "footer": {
     "description": "Community-built onboarding and education hub for StandX Perpetuals DEX.",
     "navigationLabel": "Navigation",
@@ -256,7 +114,7 @@
       "x": "X / Twitter",
       "docs": "Docs"
     },
-    "attribution": "Built on the original community initiative by @TARZANWEB3 · Redesign by @Thisnotmeeme ❤️",
+    "attribution": "Redesign by <link>@Thisnotmeeme</link> ❤️",
     "legal": "Educational content only. This site is not official financial advice."
   },
   "howItWorksPage": {

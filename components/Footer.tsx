@@ -1,57 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {ChevronDown, Globe2} from "lucide-react";
-import {useMemo, type ChangeEvent} from "react";
+import {usePathname} from "next/navigation";
+import {useMemo} from "react";
 import {useTranslations} from "next-intl";
 import type {AppLocale} from "@/i18n/request";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import {getHubNavItems} from "@/lib/hub-navigation";
 
 interface FooterProps {
   locale: AppLocale;
-}
-
-interface LocaleOption {
-  value: AppLocale;
-  codeKey:
-    | "languageCodeEs"
-    | "languageCodeEn"
-    | "languageCodePtBr"
-    | "languageCodeUk"
-    | "languageCodeKo";
-  nameKey:
-    | "languageNameEs"
-    | "languageNameEn"
-    | "languageNamePtBr"
-    | "languageNameUk"
-    | "languageNameKo";
-  nativeName: string;
-}
-
-const localeOptions: LocaleOption[] = [
-  {value: "en", codeKey: "languageCodeEn", nameKey: "languageNameEn", nativeName: "English"},
-  {value: "es", codeKey: "languageCodeEs", nameKey: "languageNameEs", nativeName: "Español"},
-  {value: "pt-br", codeKey: "languageCodePtBr", nameKey: "languageNamePtBr", nativeName: "Português (BR)"},
-  {value: "uk", codeKey: "languageCodeUk", nameKey: "languageNameUk", nativeName: "Українська"},
-  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo", nativeName: "한국어"}
-];
-
-function buildLocalePath(pathname: string, nextLocale: AppLocale): string {
-  const localizedPath = pathname.replace(
-    /^\/(en|es|pt-br|uk|ko)(?=\/|$)/,
-    `/${nextLocale}`
-  );
-  return localizedPath === pathname ? `/${nextLocale}` : localizedPath;
-}
-
-function persistLocalePreference(nextLocale: AppLocale): void {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem("standx-hub-locale", nextLocale);
-  document.cookie = `standx-hub-locale=${nextLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
 }
 
 function normalizePath(path: string): string {
@@ -62,9 +20,7 @@ function normalizePath(path: string): string {
 }
 
 export default function Footer({locale}: FooterProps) {
-  const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const tCommon = useTranslations("common");
   const tFooter = useTranslations("footer");
@@ -75,30 +31,6 @@ export default function Footer({locale}: FooterProps) {
   const currentPath = normalizePath(pathname);
   const homeHref = `/${locale}`;
 
-  const localeOption = localeOptions.find((option) => option.value === locale);
-  const currentLocaleName = localeOption
-    ? tCommon(localeOption.nameKey)
-    : tCommon("languageNameEn");
-
-  const switchLocale = (nextLocale: AppLocale): void => {
-    if (nextLocale === locale) {
-      return;
-    }
-
-    persistLocalePreference(nextLocale);
-
-    const nextPath = buildLocalePath(pathname, nextLocale);
-    const query = searchParams.toString();
-    const hash = typeof window !== "undefined" ? window.location.hash : "";
-    const route = `${nextPath}${query.length > 0 ? `?${query}` : ""}${hash}`;
-
-    router.replace(route, {scroll: false});
-  };
-
-  const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    switchLocale(event.target.value as AppLocale);
-  };
-
   const isActivePath = (href: string): boolean => normalizePath(href) === currentPath;
 
   return (
@@ -106,12 +38,20 @@ export default function Footer({locale}: FooterProps) {
       <div className="section-shell py-16">
         <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2.5">
-              <span className="live-dot" aria-hidden="true" />
-              <p className="font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary">
-                {tCommon("brand")}
-              </p>
-            </div>
+            <Link
+              href={homeHref}
+              aria-label={tCommon("brand")}
+              className="focus-ring group inline-flex items-center gap-2.5 font-mono text-xs font-semibold uppercase tracking-widepill text-text-primary"
+            >
+              <span
+                aria-hidden="true"
+                className="brand-logo h-6 w-6 text-accent-lime transition-transform duration-300 group-hover:scale-105"
+              />
+              <span>StandX</span>
+              <span className="border border-accent-lime/40 px-1.5 py-0.5 text-[10px] tracking-widercaps text-accent-lime">
+                Community
+              </span>
+            </Link>
             <p className="max-w-sm text-sm leading-relaxed text-text-secondary">
               {tFooter("description")}
             </p>
@@ -148,41 +88,37 @@ export default function Footer({locale}: FooterProps) {
           </div>
 
           <div className="space-y-3">
-            <label className="grid gap-2">
-              <span className="font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
-                {tNavbar("languageLabel")}
-              </span>
-              <div className="relative">
-                <Globe2
-                  className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary"
-                  aria-hidden="true"
-                />
-                <ChevronDown
-                  className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-text-secondary"
-                  aria-hidden="true"
-                />
-                <select
-                  value={locale}
-                  onChange={handleLanguageChange}
-                  aria-label={tCommon("languageSwitcherAria", {locale: currentLocaleName})}
-                  className="focus-ring min-h-10 w-full appearance-none border border-border-base bg-transparent py-2 pl-9 pr-8 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-primary"
-                >
-                  {localeOptions.map((option) => (
-                    <option key={`footer-${option.value}`} value={option.value}>
-                      {option.nativeName} ({tCommon(option.codeKey)})
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </label>
+            <p className="font-mono text-[10px] uppercase tracking-widercaps text-text-muted">
+              {tNavbar("languageLabel")}
+            </p>
+            <LanguageSwitcher
+              locale={locale}
+              variant="panel"
+              align="left"
+              placement="top"
+            />
           </div>
         </div>
 
         <div className="hairline mt-14" aria-hidden="true" />
 
-        <div className="mt-6 flex flex-col gap-3 text-sm text-text-muted md:flex-row md:items-center md:justify-between">
-          <p className="text-text-secondary">{tFooter("attribution")}</p>
-          <p className="text-xs">{tFooter("legal")}</p>
+        <div className="mt-6 flex flex-col gap-3 text-sm md:flex-row md:items-center md:justify-between">
+          <p className="text-text-secondary">
+            {tFooter.rich("attribution", {
+              link: (chunks) => (
+                <a
+                  href="https://x.com/thisnotmeeme"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="@Thisnotmeeme on X"
+                  className="focus-ring font-medium text-text-primary underline decoration-text-muted/50 underline-offset-4 transition hover:text-accent-lime hover:decoration-accent-lime"
+                >
+                  {chunks}
+                </a>
+              )
+            })}
+          </p>
+          <p className="text-xs text-text-muted">{tFooter("legal")}</p>
         </div>
       </div>
     </footer>
@@ -199,7 +135,7 @@ function FooterLink({href, label, active}: FooterLinkProps) {
   return (
     <Link
       href={href}
-      className={`focus-ring inline-flex min-h-8 items-center text-sm transition ${
+      className={`focus-ring inline-flex min-h-11 items-center text-sm transition ${
         active ? "text-accent-lime" : "text-text-secondary hover:text-text-primary"
       }`}
       aria-current={active ? "page" : undefined}
@@ -222,7 +158,7 @@ function ExternalFooterLink({href, label, aria}: ExternalFooterLinkProps) {
       target="_blank"
       rel="noreferrer"
       aria-label={aria}
-      className="focus-ring inline-flex min-h-8 items-center text-sm text-text-secondary transition hover:text-accent-lime"
+      className="focus-ring inline-flex min-h-11 items-center text-sm text-text-secondary transition hover:text-accent-lime"
     >
       {label}
     </a>

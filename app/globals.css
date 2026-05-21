@@ -164,6 +164,19 @@
     animation: pulse-dot 2.4s ease-in-out infinite;
   }
 
+  /* Brand logo — uses the source PNG (white-on-black) as a luminance mask
+     so the visible shape inherits the consumer's currentColor. Set color
+     via `text-*` utility (e.g. `text-accent-lime`) or inline color. Width
+     and height must be set by the consumer. */
+  .brand-logo {
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask: url("/assets/logo.png") center / contain no-repeat;
+    mask: url("/assets/logo.png") center / contain no-repeat;
+    -webkit-mask-mode: luminance;
+    mask-mode: luminance;
+  }
+
   /* ---------- Buttons ---------- */
 
   .btn {
@@ -190,16 +203,19 @@
     display: none;
   }
 
-  /* Secondary — outlined white-on-black. */
+  /* Secondary — outlined lime by default. Lower-volume than .btn-primary
+     (no fill) but visibly on-brand at rest so it does not disappear next to
+     the dark surface. Hover deepens with a subtle lime tint fill. */
   .btn-secondary {
     background: transparent;
-    color: #ffffff;
-    border: 1px solid #2a2a2a;
+    color: #00ff87;
+    border: 1px solid #00ff87;
   }
 
   .btn-secondary:hover {
-    border-color: #00ff87;
-    color: #00ff87;
+    background: rgba(0, 255, 135, 0.08);
+    color: #7df7ba;
+    border-color: #7df7ba;
   }
 
   /* Ghost — link-like, no border until hover. */
@@ -281,13 +297,113 @@
     height: 2px;
     background: #00ff87;
   }
+
+  /* ---------- Entrance animations ---------- */
+  /* Premium reveal motion. All keyframes use the same easing
+     curve (cubic-bezier(0.22, 1, 0.36, 1) — a soft "ease-out-cubic" variant)
+     so reveal motion feels like one system. All have a reduced-motion
+     opt-out at the bottom of this file. */
+
+  .animate-fade-up {
+    animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 700ms ease-out backwards;
+  }
+
+  .animate-rise-lg {
+    animation: rise-lg 900ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  /* Card grid entrance. Uses inline animation-delay per card for stagger. */
+  .card-entrance {
+    animation: card-rise 750ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  /* Card hover tint — uses --card-accent-rgb CSS variable set per card. */
+  .card-tinted {
+    position: relative;
+  }
+
+  .card-tinted::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--card-accent-rgb), 0.05);
+    opacity: 0;
+    transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .card-tinted:hover::after {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-lg {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .locale-fade,
   .ticker-track,
-  .live-dot {
+  .live-dot,
+  .animate-fade-up,
+  .animate-fade-in,
+  .animate-rise-lg,
+  .card-entrance {
     animation: none !important;
+  }
+
+  .card-tinted::after,
+  .card-tinted:hover::after {
+    transition: none;
+  }
+
+  /* Hide the splash overlay immediately for users who prefer reduced motion.
+     The component itself also bails out of the JS effect, but this CSS rule
+     ensures no flash even before hydration. */
+  .splash-intro {
+    display: none !important;
   }
 
   html {
