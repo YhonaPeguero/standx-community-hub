@@ -135,7 +135,7 @@ function FooterLink({href, label, active}: FooterLinkProps) {
   return (
     <Link
       href={href}
-      className={`focus-ring inline-flex min-h-8 items-center text-sm transition ${
+      className={`focus-ring inline-flex min-h-11 items-center text-sm transition ${
         active ? "text-accent-lime" : "text-text-secondary hover:text-text-primary"
       }`}
       aria-current={active ? "page" : undefined}
@@ -158,7 +158,7 @@ function ExternalFooterLink({href, label, aria}: ExternalFooterLinkProps) {
       target="_blank"
       rel="noreferrer"
       aria-label={aria}
-      className="focus-ring inline-flex min-h-8 items-center text-sm text-text-secondary transition hover:text-accent-lime"
+      className="focus-ring inline-flex min-h-11 items-center text-sm text-text-secondary transition hover:text-accent-lime"
     >
       {label}
     </a>

@@ -148,9 +148,12 @@ export default function SectionDirectory({locale}: SectionDirectoryProps) {
         </span>
       </div>
 
-      {/* Dense grid. Borders collapse — every card shares hairlines with its
-          neighbours so the grid reads as one table, not seven floating panels. */}
-      <div className="-mx-px grid grid-cols-1 border border-border-hairline sm:grid-cols-2 lg:grid-cols-3">
+      {/* Dense grid. gap-px + bg-border-hairline on the wrapper renders 1-px
+          dividers between every card at every breakpoint (1 / 2 / 3 cols),
+          including the partial last row (card 7 alone). The previous
+          [&:nth-child(...)]:border-r approach left a stray vertical border on
+          card 7's right edge with nothing to its right. */}
+      <div className="mt-0 grid grid-cols-1 gap-px border border-border-hairline bg-border-hairline sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item, index) => {
           const Icon = sectionIcons[item.slug];
           const accent = sectionAccents[item.slug];
@@ -167,7 +170,7 @@ export default function SectionDirectory({locale}: SectionDirectoryProps) {
                   animationDelay: `${index * 70}ms`
                 } as React.CSSProperties
               }
-              className="card-tinted card-entrance group focus-ring relative flex flex-col gap-5 border-border-hairline p-6 transition-all duration-300 md:p-8 [&:not(:last-child)]:border-b sm:[&:nth-child(odd)]:border-r sm:[&:not(:last-child)]:border-b lg:[&:nth-child(3n+1)]:border-r lg:[&:nth-child(3n+2)]:border-r lg:[&:nth-child(-n+3)]:border-b lg:[&:nth-child(n+4)]:border-b lg:[&:last-child]:border-b-0"
+              className="card-tinted card-entrance group focus-ring relative flex flex-col gap-5 bg-bg-base p-6 transition-all duration-300 md:p-8"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[11px] uppercase tracking-widercaps text-text-muted transition-colors group-hover:text-text-secondary">

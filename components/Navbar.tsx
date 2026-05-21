@@ -110,7 +110,7 @@ export default function Navbar({locale}: NavbarProps) {
               aria-label={tCommon("openNavigation")}
               aria-expanded={isDrawerOpen}
               aria-haspopup="dialog"
-              className="focus-ring inline-flex min-h-10 min-w-10 items-center justify-center gap-2 border border-border-base px-2.5 text-text-primary transition hover:border-accent-lime hover:text-accent-lime sm:px-3"
+              className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center gap-2 border border-border-base px-2.5 text-text-primary transition hover:border-accent-lime hover:text-accent-lime sm:px-3"
             >
               <Menu className="h-4 w-4" aria-hidden="true" />
               <span className="hidden font-mono text-[11px] font-semibold uppercase tracking-widepill sm:inline">
@@ -168,7 +168,7 @@ export default function Navbar({locale}: NavbarProps) {
                     type="button"
                     onClick={() => setIsDrawerOpen(false)}
                     aria-label={tCommon("closeNavigation")}
-                    className="focus-ring inline-flex min-h-9 min-w-9 items-center justify-center border border-border-base text-text-secondary transition hover:border-accent-lime hover:text-accent-lime"
+                    className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center border border-border-base text-text-secondary transition hover:border-accent-lime hover:text-accent-lime"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -194,7 +194,16 @@ export default function Navbar({locale}: NavbarProps) {
               </nav>
 
               <div className="space-y-4 border-t border-border-hairline px-6 py-5">
-                <LanguageSwitcher locale={locale} variant="panel" align="left" />
+                {/* placement="top" so the locale popover opens upward into the
+                    nav scroll area. With the default downward placement the
+                    popover would push past the Start Trading CTA and the
+                    drawer description, breaking the layout on mobile. */}
+                <LanguageSwitcher
+                  locale={locale}
+                  variant="panel"
+                  align="left"
+                  placement="top"
+                />
 
                 <a
                   href={tLinks("startTrading")}

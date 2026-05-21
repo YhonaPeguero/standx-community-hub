@@ -161,7 +161,11 @@ export default function SplashIntro() {
           </motion.div>
 
           <div className="flex flex-col items-center gap-6 px-6">
-            <div className="flex w-full max-w-5xl items-center justify-center gap-4 md:gap-6">
+            {/* Wordmark + mascot — stacked vertically on narrow phones, side
+                by side from sm+. On 320-375px, the SVG (max-w 85vw) plus the
+                mascot (~60px) plus gap would overflow horizontally; stacking
+                keeps both fully visible. */}
+            <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
               <BeStandWordmark />
 
               {/* StandX mascot — pose mirrors the standing-person emoji it
@@ -187,7 +191,7 @@ export default function SplashIntro() {
                   ease: [0.22, 1, 0.36, 1]
                 }}
                 style={{mixBlendMode: "multiply"}}
-                className="h-[clamp(4.5rem,12vw,9rem)] w-auto select-none object-contain"
+                className="h-[clamp(4rem,12vw,9rem)] w-auto select-none object-contain"
               />
             </div>
 

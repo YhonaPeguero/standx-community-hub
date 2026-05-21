@@ -163,8 +163,8 @@ export default function LanguageSwitcher({
 
   const triggerClass =
     variant === "navbar"
-      ? "focus-ring inline-flex min-h-10 min-w-10 items-center justify-center text-text-secondary transition hover:text-accent-lime"
-      : "focus-ring inline-flex min-h-10 w-full items-center justify-between gap-2 border border-border-base px-3 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-primary transition hover:border-accent-lime hover:text-accent-lime";
+      ? "focus-ring inline-flex min-h-11 min-w-11 items-center justify-center text-text-secondary transition hover:text-accent-lime"
+      : "focus-ring inline-flex min-h-11 w-full items-center justify-between gap-2 border border-border-base px-3 font-mono text-[11px] font-semibold uppercase tracking-widepill text-text-primary transition hover:border-accent-lime hover:text-accent-lime";
 
   return (
     <div ref={containerRef} className="relative">
