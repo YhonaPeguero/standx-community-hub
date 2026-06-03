@@ -29,6 +29,7 @@ import {useEffect, useState} from "react";
  */
 
 const STORAGE_KEY = "standx-splash-origin";
+const SPLASH_MASCOT_SRC = "/assets/standx-mascot-cutout.png";
 const HOLD_MS = 4400;
 const EXIT_DURATION_S = 0.75;
 
@@ -161,38 +162,13 @@ export default function SplashIntro() {
           </motion.div>
 
           <div className="flex flex-col items-center gap-6 px-6">
-            {/* Wordmark + mascot — stacked vertically on narrow phones, side
-                by side from sm+. On 320-375px, the SVG (max-w 85vw) plus the
-                mascot (~60px) plus gap would overflow horizontally; stacking
-                keeps both fully visible. */}
-            <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-              <BeStandWordmark />
+            {/* Wordmark + mascot: stacked on phones, paired from sm+. */}
+            <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-5 sm:flex-row sm:gap-8 lg:gap-10">
+              <div className="w-full min-w-0 sm:flex-1">
+                <BeStandWordmark />
+              </div>
 
-              {/* StandX mascot — pose mirrors the standing-person emoji it
-                  replaces. mix-blend-mode: multiply drops the JPG's white
-                  background into the lime canvas so only the mascot silhouette
-                  reads as a foreground subject. */}
-              <motion.img
-                src="/assets/mascot-standx.jpg"
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-                initial={{y: 70, opacity: 0, scale: 0.7}}
-                animate={{y: 0, opacity: 1, scale: 1}}
-                exit={{
-                  y: -30,
-                  opacity: 0,
-                  scale: 1.08,
-                  transition: {duration: 0.35, ease: [0.55, 0, 0.5, 1]}
-                }}
-                transition={{
-                  delay: 1.2,
-                  duration: 0.7,
-                  ease: [0.22, 1, 0.36, 1]
-                }}
-                style={{mixBlendMode: "multiply"}}
-                className="h-[clamp(4rem,12vw,9rem)] w-auto select-none object-contain"
-              />
+              <SplashMascot />
             </div>
 
             <motion.div
@@ -235,6 +211,40 @@ export default function SplashIntro() {
         </motion.div>
       ) : null}
     </AnimatePresence>
+  );
+}
+
+function SplashMascot() {
+  return (
+    <motion.figure
+      aria-hidden="true"
+      className="relative isolate flex w-[clamp(7rem,30vw,10rem)] shrink-0 items-center justify-center sm:w-[clamp(8.5rem,18vw,13rem)] lg:w-[clamp(10rem,16vw,15rem)]"
+      initial={{y: 70, opacity: 0, scale: 0.72, rotate: -4}}
+      animate={{y: 0, opacity: 1, scale: 1, rotate: 0}}
+      exit={{
+        y: -30,
+        opacity: 0,
+        scale: 1.08,
+        transition: {duration: 0.35, ease: [0.55, 0, 0.5, 1]}
+      }}
+      transition={{
+        delay: 1.2,
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+    >
+      <span
+        className="absolute -inset-4 -z-10 rounded-full border border-black/10 bg-white/10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+      />
+      <span className="absolute inset-x-1 bottom-3 top-8 -z-10 rounded-full bg-black/10 blur-2xl" />
+      <span className="absolute bottom-3 left-1/2 -z-10 h-5 w-2/3 -translate-x-1/2 rounded-full bg-black/20 blur-md" />
+      <motion.img
+        src={SPLASH_MASCOT_SRC}
+        alt=""
+        draggable={false}
+        className="relative z-10 block h-auto w-full select-none object-contain drop-shadow-[0_22px_28px_rgba(0,0,0,0.28)]"
+      />
+    </motion.figure>
   );
 }
 
@@ -289,7 +299,7 @@ function BeStandWordmark() {
           fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
           fontSize: "140px",
           fontWeight: 900,
-          letterSpacing: "-0.04em"
+          letterSpacing: "0"
         }}
       >
         BE STAND
@@ -306,7 +316,7 @@ function BeStandWordmark() {
             fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
             fontSize: "140px",
             fontWeight: 900,
-            letterSpacing: "-0.04em"
+            letterSpacing: "0"
           }}
         >
           BE STAND
