@@ -229,6 +229,52 @@
     color: #00ff87;
   }
 
+  /* Card action button — used on community project cards. Rides the .btn
+     base (square, mono, uppercase). At rest: dim per-card accent border +
+     accent text. On hover: the accent fill sweeps in from the left and the
+     label flips to the per-card ink color for contrast. Per-card colors are
+     provided via --btn-accent / --btn-accent-rgb / --btn-accent-ink inline
+     variables so one class serves every accent. */
+  .btn-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: transparent;
+    color: var(--btn-accent, #00ff87);
+    border: 1px solid rgba(var(--btn-accent-rgb, 0, 255, 135), 0.45);
+    transition:
+      color 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 240ms ease;
+  }
+
+  .btn-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-accent, #00ff87);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-card svg {
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-card:hover {
+    color: var(--btn-accent-ink, #0a0a0a);
+    border-color: var(--btn-accent, #00ff87);
+  }
+
+  .btn-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .btn-card:hover svg {
+    transform: translate(2px, -2px);
+  }
+
   /* ---------- Navigation primitives ---------- */
 
   /* StandX-style nav link. Square, mono, uppercase. */
@@ -397,6 +443,17 @@
   .card-tinted::after,
   .card-tinted:hover::after {
     transition: none;
+  }
+
+  /* Accent fill still appears on hover, just without the sweep motion. */
+  .btn-card,
+  .btn-card::before,
+  .btn-card svg {
+    transition: none;
+  }
+
+  .btn-card:hover svg {
+    transform: none;
   }
 
   /* Hide the splash overlay immediately for users who prefer reduced motion.

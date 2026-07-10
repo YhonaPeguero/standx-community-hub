@@ -62,6 +62,18 @@ interface CreatorItem {
   bio: LocalizedValue;
 }
 
+interface CommunityProjectItem {
+  label: LocalizedValue;
+  title: LocalizedValue;
+  description: LocalizedValue;
+  cta: LocalizedValue;
+  link: string;
+  ariaLabel: string;
+  // Drives the .btn-card accent variables. ink = label color once the
+  // accent fill sweeps in on hover (dark for bright fills, white for blurple).
+  accent: {hex: string; rgb: string; ink: string};
+}
+
 interface InsightItem {
   title: string;
   author: string;
@@ -788,39 +800,6 @@ const referenceItems: ReferenceItem[] = [
 ];
 
 const communityCopy = {
-  projectLabel: lv("Community project", "Proyecto comunitario", "Projeto comunitário", "Community project", "커뮤니티 프로젝트"),
-  projectTitle: lv(
-    "StandX Flappy Candle",
-    "StandX Flappy Candle",
-    "StandX Flappy Candle",
-    "StandX Flappy Candle",
-    "StandX Flappy Candle"
-  ),
-  projectDescription: lv(
-    "Navigate the market as the StandX mascot, collect DUSD, dodge candles, and climb the global ranking.",
-    "Navega el mercado como la mascota de StandX, junta DUSD, esquiva velas y sube en el ranking global.",
-    "Navegue pelo mercado como a mascote da StandX, colete DUSD, desvie de candles e suba no ranking global.",
-    "Керуйте маскотом StandX, збирайте DUSD, уникайте свічок і піднімайтесь у глобальному рейтингу.",
-    "StandX 마스코트로 시장을 탐험하며 DUSD를 모으고 캔들을 피해서 글로벌 랭킹을 올리세요."
-  ),
-  serverLabel: lv("Official server", "Servidor oficial", "Servidor oficial", "Офіційний сервер", "공식 서버"),
-  serverTitle: lv("StandX Discord", "Discord de StandX", "Discord da StandX", "StandX Discord", "StandX Discord"),
-  serverDescription: lv(
-    "Tasks, events, discussions, and Growth Path progression all happen in Discord.",
-    "Las tareas, eventos, discusiones y el progreso del Growth Path suceden en Discord.",
-    "Tarefas, eventos, discussões e progresso do Growth Path acontecem no Discord.",
-    "Усі задачі, події, дискусії та прогрес Growth Path відбуваються в Discord.",
-    "과제, 이벤트, 토론, Growth Path 진행은 모두 Discord에서 이루어집니다."
-  ),
-  sipGuideLabel: lv("Community resource", "Recurso comunitario", "Recurso comunitário", "Community resource", "커뮤니티 리소스"),
-  sipGuideTitle: lv("StandX SIP Visual Guide", "Guía Visual de SIPs", "Guia Visual de SIPs", "Візуальний гайд по SIP", "SIP 비주얼 가이드"),
-  sipGuideDescription: lv(
-    "A community-driven educational experience designed to make StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
-    "Una experiencia educativa impulsada por la comunidad que hace más fácil entender los SIPs de StandX. Visual, interactiva y diseñada para que comprendas cada propuesta con claridad.",
-    "Uma experiência educacional criada pela comunidade para tornar os SIPs da StandX mais fáceis de entender. Visual, interativa e feita para você compreender cada proposta com clareza.",
-    "Освітній досвід від спільноти, що робить SIP StandX простішими для розуміння. Візуальний, інтерактивний і створений, щоб ви чітко розуміли кожну пропозицію.",
-    "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다."
-  ),
   creatorsTitle: lv(
     "Creators who inspire",
     "Creadores que inspiran",
@@ -829,6 +808,119 @@ const communityCopy = {
     "영감을 주는 크리에이터"
   )
 };
+
+// Card accents reuse the palette already sanctioned by SectionDirectory
+// (lime / sky / pink) plus Discord blurple as the one brand exception.
+const communityProjects: CommunityProjectItem[] = [
+  {
+    label: lv("Official server", "Servidor oficial", "Servidor oficial", "Офіційний сервер", "공식 서버"),
+    title: lv("StandX Discord", "Discord de StandX", "Discord da StandX", "StandX Discord", "StandX Discord"),
+    description: lv(
+      "Tasks, events, discussions, and Growth Path progression all happen in Discord.",
+      "Las tareas, eventos, discusiones y el progreso del Growth Path suceden en Discord.",
+      "Tarefas, eventos, discussões e progresso do Growth Path acontecem no Discord.",
+      "Усі задачі, події, дискусії та прогрес Growth Path відбуваються в Discord.",
+      "과제, 이벤트, 토론, Growth Path 진행은 모두 Discord에서 이루어집니다."
+    ),
+    cta: uiCopy.joinDiscord,
+    link: "https://discord.gg/standx",
+    ariaLabel: "Join StandX Discord in a new tab",
+    accent: {hex: "#5865f2", rgb: "88,101,242", ink: "#ffffff"}
+  },
+  {
+    label: lv("Community project", "Proyecto comunitario", "Projeto comunitário", "Community project", "커뮤니티 프로젝트"),
+    title: lv(
+      "StandX Flappy Candle",
+      "StandX Flappy Candle",
+      "StandX Flappy Candle",
+      "StandX Flappy Candle",
+      "StandX Flappy Candle"
+    ),
+    description: lv(
+      "Navigate the market as the StandX mascot, collect DUSD, dodge candles, and climb the global ranking.",
+      "Navega el mercado como la mascota de StandX, junta DUSD, esquiva velas y sube en el ranking global.",
+      "Navegue pelo mercado como a mascote da StandX, colete DUSD, desvie de candles e suba no ranking global.",
+      "Керуйте маскотом StandX, збирайте DUSD, уникайте свічок і піднімайтесь у глобальному рейтингу.",
+      "StandX 마스코트로 시장을 탐험하며 DUSD를 모으고 캔들을 피해서 글로벌 랭킹을 올리세요."
+    ),
+    cta: uiCopy.playNow,
+    link: "https://standx-flappy.vercel.app/",
+    ariaLabel: "Play StandX Flappy Candle in a new tab",
+    accent: {hex: "#00ff87", rgb: "0,255,135", ink: "#0a0a0a"}
+  },
+  {
+    label: lv("Community game", "Juego comunitario", "Jogo comunitário", "Гра спільноти", "커뮤니티 게임"),
+    title: lv(
+      "StandX Growth Path RPG",
+      "StandX Growth Path RPG",
+      "StandX Growth Path RPG",
+      "StandX Growth Path RPG",
+      "StandX Growth Path RPG"
+    ),
+    description: lv(
+      "Live the Growth Path as a story: quests, zones, and progression from New Stander to Flower in a community-built RPG.",
+      "Vive el Growth Path como una historia: misiones, zonas y progresión de New Stander a Flower en un RPG hecho por la comunidad.",
+      "Viva o Growth Path como uma história: missões, zonas e progressão de New Stander a Flower em um RPG feito pela comunidade.",
+      "Пройдіть Growth Path як історію: квести, зони та шлях від New Stander до Flower у RPG, створеній спільнотою.",
+      "커뮤니티가 만든 RPG에서 Growth Path를 스토리로 경험하세요. 퀘스트와 존을 지나 New Stander에서 Flower까지 성장합니다."
+    ),
+    cta: uiCopy.playNow,
+    link: "https://rpg-standx-game.vercel.app/",
+    ariaLabel: "Play StandX Growth Path RPG in a new tab",
+    accent: {hex: "#f472b6", rgb: "244,114,182", ink: "#0a0a0a"}
+  },
+  {
+    label: lv("Community tool", "Herramienta comunitaria", "Ferramenta comunitária", "Інструмент спільноти", "커뮤니티 도구"),
+    title: lv("StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats"),
+    description: lv(
+      "Upload your StandX trade export and get your full perps stats: realized PnL, win rate, profit factor, and a shareable card. Parsed 100% locally in your browser.",
+      "Sube tu export de trades de StandX y obtén tus stats completas de perps: PnL realizado, win rate, profit factor y una tarjeta para compartir. Se procesa 100% local en tu navegador.",
+      "Envie seu export de trades da StandX e veja suas stats completas de perps: PnL realizado, win rate, profit factor e um card compartilhável. Processado 100% localmente no navegador.",
+      "Завантажте експорт угод StandX і отримайте повну статистику perps: реалізований PnL, win rate, profit factor і картку для шерингу. Обробка на 100% локальна у браузері.",
+      "StandX 거래 내역을 업로드하면 실현 PnL, 승률, 프로핏 팩터와 공유 카드까지 perps 통계를 확인할 수 있습니다. 모든 처리는 브라우저에서 100% 로컬로 이루어집니다."
+    ),
+    cta: lv("View stats", "Ver stats", "Ver stats", "Статистика", "통계 보기"),
+    link: "https://standx-stats.vercel.app/",
+    ariaLabel: "Open StandX Stats in a new tab",
+    accent: {hex: "#5ec2ff", rgb: "94,194,255", ink: "#0a0a0a"}
+  },
+  {
+    label: lv("Community event", "Evento comunitario", "Evento comunitário", "Подія спільноти", "커뮤니티 이벤트"),
+    title: lv(
+      "StandCup · World Cup 2026",
+      "StandCup · Mundial 2026",
+      "StandCup · Copa 2026",
+      "StandCup · ЧС-2026",
+      "StandCup · 2026 월드컵"
+    ),
+    description: lv(
+      "Predict World Cup 2026 matches, pick an asset, set your risk mode, and climb the community leaderboard.",
+      "Predice los partidos del Mundial 2026, elige un activo, define tu modo de riesgo y sube en el ranking de la comunidad.",
+      "Preveja os jogos da Copa 2026, escolha um ativo, defina seu modo de risco e suba no ranking da comunidade.",
+      "Прогнозуйте матчі ЧС-2026, обирайте актив, налаштовуйте рівень ризику та підіймайтеся в рейтингу спільноти.",
+      "2026 월드컵 경기를 예측하고 자산을 선택해 리스크 모드를 설정하며 커뮤니티 리더보드에 도전하세요."
+    ),
+    cta: lv("View matches", "Ver partidos", "Ver partidas", "Дивитися матчі", "경기 보기"),
+    link: "https://stand-cup.vercel.app/matches",
+    ariaLabel: "Open StandCup World Cup 2026 matches in a new tab",
+    accent: {hex: "#00ff87", rgb: "0,255,135", ink: "#0a0a0a"}
+  },
+  {
+    label: lv("Community resource", "Recurso comunitario", "Recurso comunitário", "Community resource", "커뮤니티 리소스"),
+    title: lv("StandX SIP Visual Guide", "Guía Visual de SIPs", "Guia Visual de SIPs", "Візуальний гайд по SIP", "SIP 비주얼 가이드"),
+    description: lv(
+      "A community-driven educational experience designed to make StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
+      "Una experiencia educativa impulsada por la comunidad que hace más fácil entender los SIPs de StandX. Visual, interactiva y diseñada para que comprendas cada propuesta con claridad.",
+      "Uma experiência educacional criada pela comunidade para tornar os SIPs da StandX mais fáceis de entender. Visual, interativa e feita para você compreender cada proposta com clareza.",
+      "Освітній досвід від спільноти, що робить SIP StandX простішими для розуміння. Візуальний, інтерактивний і створений, щоб ви чітко розуміли кожну пропозицію.",
+      "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다."
+    ),
+    cta: uiCopy.exploreSIPs,
+    link: "https://standx-sip-guide.vercel.app/",
+    ariaLabel: "Open StandX SIP Visual Guide in a new tab",
+    accent: {hex: "#f472b6", rgb: "244,114,182", ink: "#0a0a0a"}
+  }
+];
 
 const creatorItems: CreatorItem[] = [
   {
@@ -1413,80 +1505,38 @@ function renderCommunity(locale: AppLocale) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <article className="panel panel-edge flex flex-col gap-3 p-6">
-          <p className="eyebrow">{localized(locale, communityCopy.projectLabel)}</p>
-          <h3 className="text-xl font-semibold text-text-primary">
-            {localized(locale, communityCopy.projectTitle)}
-          </h3>
-          <p className="flex-1 text-sm leading-relaxed text-text-secondary">
-            {localized(locale, communityCopy.projectDescription)}
-          </p>
-
-          <a
-            href="https://standx-flappy.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Play StandX Flappy Candle in a new tab"
-            className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-bg-base transition hover:brightness-110"
-            style={{
-              background: "linear-gradient(120deg, #00ff9d 0%, #64e6ff 100%)",
-              boxShadow: "0 10px 30px -10px rgba(0, 255, 157, 0.5)"
-            }}
+        {communityProjects.map((project) => (
+          <article
+            key={project.link}
+            className="panel panel-edge flex flex-col gap-3 p-6"
           >
-            {localized(locale, uiCopy.playNow)}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </article>
+            <p className="eyebrow">{localized(locale, project.label)}</p>
+            <h3 className="text-xl font-semibold text-text-primary">
+              {localized(locale, project.title)}
+            </h3>
+            <p className="flex-1 text-sm leading-relaxed text-text-secondary">
+              {localized(locale, project.description)}
+            </p>
 
-        <article className="panel panel-edge flex flex-col gap-3 p-6">
-          <p className="eyebrow">{localized(locale, communityCopy.serverLabel)}</p>
-          <h3 className="text-xl font-semibold text-text-primary">
-            {localized(locale, communityCopy.serverTitle)}
-          </h3>
-          <p className="flex-1 text-sm leading-relaxed text-text-secondary">
-            {localized(locale, communityCopy.serverDescription)}
-          </p>
-
-          <a
-            href="https://discord.gg/standx"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Join StandX Discord in a new tab"
-            className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
-            style={{
-              background: "linear-gradient(120deg, #5865f2 0%, #7289da 100%)",
-              boxShadow: "0 10px 30px -10px rgba(88, 101, 242, 0.5)"
-            }}
-          >
-            {localized(locale, uiCopy.joinDiscord)}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </article>
-
-        <article className="panel panel-edge flex flex-col gap-3 p-6">
-          <p className="eyebrow">{localized(locale, communityCopy.sipGuideLabel)}</p>
-          <h3 className="text-xl font-semibold text-text-primary">
-            {localized(locale, communityCopy.sipGuideTitle)}
-          </h3>
-          <p className="flex-1 text-sm leading-relaxed text-text-secondary">
-            {localized(locale, communityCopy.sipGuideDescription)}
-          </p>
-
-          <a
-            href="https://standx-sip-guide.vercel.app/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open StandX SIP Visual Guide in a new tab"
-            className="focus-ring inline-flex min-h-10 items-center gap-2 self-start rounded-xl px-4 py-2 text-sm font-semibold text-bg-base transition hover:brightness-110"
-            style={{
-              background: "linear-gradient(120deg, #00d4ff 0%, #8a5cff 100%)",
-              boxShadow: "0 10px 30px -10px rgba(0, 212, 255, 0.5)"
-            }}
-          >
-            {localized(locale, uiCopy.exploreSIPs)}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
-        </article>
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={project.ariaLabel}
+              className="btn btn-card focus-ring mt-2 w-full justify-between"
+              style={
+                {
+                  ["--btn-accent" as string]: project.accent.hex,
+                  ["--btn-accent-rgb" as string]: project.accent.rgb,
+                  ["--btn-accent-ink" as string]: project.accent.ink
+                } as React.CSSProperties
+              }
+            >
+              {localized(locale, project.cta)}
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </article>
+        ))}
       </div>
 
       <section className="space-y-4">
