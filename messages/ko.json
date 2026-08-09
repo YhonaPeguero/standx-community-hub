@@ -24,7 +24,7 @@
     "startTrading": "https://standx.com/",
     "standxOfficial": "https://x.com/StandX_Official",
     "discord": "https://discord.gg/standx",
-    "docs": "https://docs.standx.com/docs/about-stand-x"
+    "docs": "https://docs.standx.com/docs/about-standx"
   },
   "common": {
     "brand": "StandX Community Hub",
@@ -167,6 +167,46 @@
       "title": "탐색 중 도움이 필요하신가요?",
       "description": "StandX 커뮤니티는 setup 질문, 플랫폼 사용법, 신규 사용자 실전 다음 단계까지 안내해 줄 수 있습니다.",
       "cta": "커뮤니티 참여"
+    }
+  },
+  "agent": {
+    "name": "Stander",
+    "dockAria": "StandX 홀로그램 어시스턴트 열기",
+    "dialogLabel": "StandX 홀로그램 어시스턴트",
+    "close": "어시스턴트 닫기",
+    "newChat": "새 대화",
+    "greeting": "안녕하세요, 이 허브의 홀로그램 Stander예요. StandX에 대해 무엇이든 물어보시거나, 찾는 것을 말씀해 주시면 그곳으로 안내할게요.",
+    "hint": "도움이 필요하신가요? StandX에 대해 물어보세요.",
+    "placeholder": "StandX에 대해 묻거나 찾는 것을 입력하세요",
+    "send": "메시지 보내기",
+    "stop": "중지",
+    "statusOnline": "온라인",
+    "statusThinking": "생각 중",
+    "statusAnswering": "답변 중",
+    "statusListening": "듣는 중",
+    "statusSpeaking": "말하는 중",
+    "statusError": "연결 문제",
+    "errorGeneric": "지금은 두뇌에 연결하지 못했어요. 아래 링크는 여전히 작동하며, 다시 시도해도 됩니다.",
+    "errorRateLimit": "질문이 한꺼번에 너무 많았어요 — 몇 초만 기다렸다가 다시 물어봐 주세요.",
+    "retry": "다시 시도",
+    "micStart": "말하기",
+    "micStop": "듣기 중지",
+    "voiceOn": "음성 켜기",
+    "voiceOff": "음성 끄기",
+    "voiceUnsupported": "이 브라우저는 음성을 지원하지 않습니다. 입력으로 이용해 주세요.",
+    "micDenied": "브라우저가 마이크를 차단했습니다. 입력으로 이용해 주세요.",
+    "navigatingTo": "이동 중: {label}",
+    "openLinkAria": "{label}을(를) 새 탭에서 열기",
+    "disclaimer": "커뮤니티가 만든 가이드입니다. 교육 목적이며 투자 조언이 아닙니다.",
+    "voiceShort": "음성",
+    "micShort": "마이크",
+    "sendShort": "보내기",
+    "stopShort": "중지",
+    "suggestions": {
+      "one": "DUSD가 무엇인가요?",
+      "two": "커뮤니티는 어떻게 시작하나요?",
+      "three": "브랜드 키트는 어디 있나요?",
+      "four": "거래 수수료는 어떻게 되나요?"
     }
   }
 }

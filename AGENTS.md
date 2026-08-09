@@ -17,9 +17,15 @@ npm run build
 npm run start
 npm run lint        # next lint (eslint-config-next)
 npm run typecheck   # tsc --noEmit (strict)
+npm run motion:check # headless assertions on the mascot's movement curves
 ```
 
 No test runner is configured. Do not invent one. Verify changes with `typecheck` + `lint` + manual dev run.
+
+`motion:check` is not a test runner — it is a standalone script that transpiles
+`lib/mascot/motion.ts` (which has no imports, deliberately) and asserts the
+shape of each movement curve. It is the gate for any character-motion change;
+see `.claude/skills/character-motion/SKILL.md`.
 
 ## Routing + i18n (non-obvious)
 
@@ -33,8 +39,205 @@ No test runner is configured. Do not invent one. Verify changes with `typecheck`
 
 - Design tokens in `tailwind.config.ts`: custom `bg-*` (`base`/`elevated`/`surface`/`muted`), `border-*`, `text-*`, `accent-cyan`/`accent-gain`, `signal-*`, plus `shadow-glow`/`shadow-panel` and keyframes `locale-fade`, `ticker-shift`, `grid-drift`. Prefer these tokens over raw hex.
 - Shared component classes in `app/globals.css`: `.section-shell` (page width/padding), `.glass-panel`, `.focus-ring`, `.ticker-track`, `.hero-grid-fallback`, `.hero-diagonal-lines`, `.locale-fade`. Reuse before inventing new utilities.
-- `@media (prefers-reduced-motion: reduce)` block in `globals.css` AND `sectionRevealReducedVariants` / `useReducedMotion()` in `lib/motion.ts` + `components/SectionReveal.tsx` — any new animation must have a reduced-motion path.
+- **Motion tokens are the source of truth for timing.** `:root` in `globals.css` defines
+  `--ease-out` / `--ease-out-soft` / `--ease-in-out` / `--ease-in` and `--dur-instant` … `--dur-scene`;
+  `lib/motion.ts` mirrors them as `ease` / `duration`; `tailwind.config.ts` points
+  `transitionTimingFunction.DEFAULT` and `transitionDuration.DEFAULT` at the same vars, so a bare
+  `transition` utility, a hand-written CSS transition and a framer variant all resolve to the same
+  curve. Never hard-code a `cubic-bezier` or a bare `Xms ease` in new code. Entrances take
+  `--ease-out`, exits take `--ease-in` at roughly half the duration; nothing overshoots.
+- `@media (prefers-reduced-motion: reduce)` block in `globals.css` — any new animation must have a reduced-motion path.
+- **Never branch a server-rendered component's output on `useReducedMotion()`.** The hook reads
+  `matchMedia`, so it is `false` during SSR and `true` on a reduced-motion client. Returning
+  `null` (or a different `variants` object) on one pass and not the other is a hydration
+  mismatch: an early return shifts every following sibling — that is what produced
+  "Expected server HTML to contain a matching `<header>`" at the Navbar — and a swapped
+  variant emits a different inline `style` and warns. Both bugs shipped and were only visible
+  to users who actually have reduced motion enabled.
+  Emit **one** variant on both passes and put the reduced-motion path in CSS:
+  `.scroll-progress` (`display: none`) and `.section-reveal` (`transform: none`) in
+  `globals.css` are the two worked examples.
+  Using the hook for props that don't change the rendered tree (`trackPointer`, a `behavior`
+  argument) is fine, as is using it inside a subtree that never server-renders — the agent
+  overlay only mounts after a click, which is why picking `agentMotionReduced` there is safe.
+  For anything that DOES server-render, prefer a CSS animation over a framer `initial`: the dock
+  entrance (`agent-dock-in`) and the route entrance (`.route-fade`) both do this, which also means
+  they degrade to visible content if hydration never happens, where a framer `initial` would leave
+  `opacity: 0` inline forever.
+- **Route changes animate via `components/RouteTransition.tsx`.** `app/[locale]/layout.tsx` is not
+  re-rendered when the visitor moves between sibling routes, so the wrapper reads `usePathname()`
+  on the client and uses it as a `key` — that remount is what replays `.route-fade`. The animation
+  ends on `transform: none` deliberately: a lingering transform on a page-level wrapper becomes the
+  containing block for every `position: fixed` descendant.
 - Tailwind `content` globs cover only `app/`, `components/`, `lib/`. New top-level dirs with JSX won't be scanned until added here.
+
+## Hologram assistant ("Stander")
+
+A floating mascot in the bottom-right that answers StandX questions and navigates the visitor
+around the hub. Mounted once in `app/[locale]/layout.tsx` (NOT per page) so the conversation
+survives client-side navigation.
+
+- **Server**: `app/api/hub-agent/route.ts` — `runtime = "nodejs"`, streams Server-Sent Events.
+  Uses `@anthropic-ai/sdk` (`client.messages.stream`) with adaptive thinking + `effort: "low"`,
+  and a manual tool loop capped at `MAX_TOOL_ROUNDS`. The system prompt carries a
+  `cache_control: ephemeral` breakpoint — it is ~4.3k tokens, so prompt caching matters.
+- **No API key is required to ship.** Without `ANTHROPIC_API_KEY` (and on any provider error)
+  the route falls back to `lib/agent/local-fallback.ts`, a deterministic keyword engine that
+  still routes to the right section and links the right doc. Same SSE contract either way, so
+  the client cannot tell them apart. Env vars are documented in `.env.example`.
+- **Two rate-limit budgets, charged against the path that will actually serve the
+  request** — `MODEL_MAX_REQUESTS` (24/min, real money) and `LOCAL_MAX_REQUESTS`
+  (90/min, string matching). One shared 12/min bucket shipped and cut visitors off
+  mid-conversation; worse, a deployment with **no API key** — the documented
+  default — was throttled at model-call prices for doing nothing but keyword
+  lookups. With no proxy headers (local dev) every client collapses into the
+  `"anonymous"` bucket, which is why that key must never get the tight budget.
+- **A failed turn must render.** The route replies `{error, code, retryAfter}`;
+  the client localises off `code` and never shows the server's English `error`
+  string. `ChatEntry.failed` drives an assistant-voiced apology plus a Retry
+  button gated on a `retry-after` countdown. Marking the entry `complete` with
+  empty content — which is what it used to do — renders as literally nothing, so
+  the visitor saw their own question followed by silence.
+- **Knowledge lives in two files and nowhere else**: `lib/agent/hub-map.ts` (this site) and
+  `lib/agent/standx-knowledge.ts` (docs.standx.com digest + the doc URL map). `hubSectionMap` is
+  typed `Record<HubSectionSlug, ...>`, so **adding a hub section breaks the build here until the
+  assistant is taught about it** — that is deliberate, do not widen the type.
+- **Never hand-write a docs.standx.com URL.** The docs site restructured (`/docs/about-standx`,
+  not `about-stand-x`) and guessed paths 404. Add the page to `docPages` and reference it via
+  `findDoc(title)`, which throws on a miss — earlier code indexed `docPages` by position and
+  silently ran off the end. `allowedLinkUrls` in `lib/agent/tools.ts` is the runtime allowlist;
+  a URL outside it is rejected rather than rendered.
+- **Fallback keyword matching is plain substring matching** over `normalize()`d text, scored as
+  `MATCH_BASE + min(8, length)`. The flat base exists because pure length scoring under-ranks
+  CJK, where a whole word is 2–4 characters. Index distinctive stems, not whole phrases
+  (`"працює"`, not `"як працює"` — the latter misses "як **це** працює").
+- **Client**: `components/agent/StandxAgent.tsx` (widget), `useAgentChat.ts` (SSE + streaming),
+  `useSpeech.ts` (optional Web Speech in/out, both feature-detected), `HologramStage.tsx` (canvas).
+- **It is a full-viewport takeover, not a corner panel.** Clicking the dock opens
+  `.agent-overlay` — scrim, backdrop mesh, vignette, a top rail holding only the close button, the
+  projection, then the console deck. The mascot is the subject; sizing it down to a chat bubble was
+  the original mistake.
+- **Nothing in it is allowed to look like a box.** The console is one continuous deck running off
+  the bottom of the screen (`.agent-console`, gradient background, a top hairline that fades out at
+  both ends so it has no corners), not a stack of cards; the transcript has no border of its own;
+  the composer is a single `.agent-field` with the voice buttons inside it rather than a bordered
+  row wrapping a bordered input. `.agent-overlay__stage` is `pointer-events: none` so clicking the
+  projection falls through to the scrim and closes the chamber.
+- **The chamber entrance is choreographed by explicit delays, not `staggerChildren`** — see
+  `agentMotion` in `lib/motion.ts`. Visual order (scrim → mesh → projection → deck → rail) is not
+  DOM order, and the deck deliberately does *not* use `when: "beforeChildren"`, which would push
+  the composer past 850ms. Input focus is delayed to 520ms to land with it.
+- **`agentMotion.overlay` must animate a real value.** `AnimatePresence` keeps the tree mounted
+  until its direct child reports an exit complete, and a variant resolving to `{}` never does — the
+  children all fade to `opacity: 0` and the overlay stays in the DOM forever, blocking the whole
+  page. It owns the exit fade and enters in 10ms so the layered choreography still reads.
+- **Navigating closes the overlay** (`NAVIGATE_CLOSE_DELAY_MS`). Since it covers the viewport,
+  staying open would hide the very page the visitor was sent to. The transcript is preserved in
+  state, so reopening shows the history.
+- **Only one WebGL context may be live.** The dock renders on `!open && !overlayMounted`, where
+  `overlayMounted` is cleared by `AnimatePresence`'s `onExitComplete` — gating on `open` alone
+  mounts the dock's canvas while the overlay's is still animating out.
+
+### Character motion
+
+**Read `.claude/skills/character-motion/SKILL.md` before touching any movement.**
+The short version:
+
+- **All movement lives in `lib/mascot/motion.ts`** as named, independently
+  switchable channels (`breath`, `sway`, `gaze`, `blink`, `speech`, `arms`,
+  `leaf`, `reaction`). `lib/hologram-scene.ts` copies the resulting pose onto
+  meshes and makes no decisions. Movement authored in the render loop is the
+  thing this split exists to prevent.
+- **`lib/mascot/motion.ts` has zero imports and must keep it that way** — that is
+  what lets `scripts/verify-motion.mjs` transpile and exercise it with no
+  bundler and no browser.
+- **`npm run motion:check` is the gate.** 37 assertions on curve shape: exhale
+  longer than inhale, blink opens slower than it closes, gaze still for >80% of
+  frames, speech at a real syllable rate, springs that settle rather than hunt,
+  and identical output at 30fps and 144fps. Run it after any motion change.
+- **`/motion-lab` is the visual rig** — solo one channel, watch its scope, scrub
+  speed. Dev-only (`NEXT_PUBLIC_MOTION_LAB=1` to enable on a preview), lives
+  outside `app/[locale]`, and `middleware.ts` excludes the path from the
+  next-intl redirect.
+- A channel must be gated in **both** `stepPhysics` and `composePose`. Gating
+  one leaves either a stale spring in the pose or a spring accumulating
+  invisibly; `arms` shipped gated in neither and its solo button did nothing.
+- **Never use `lerp(current, target, k)` per frame.** It is frame-rate
+  dependent — the old rig literally animated twice as fast on a 120Hz display.
+  Use `damp()` or a spring on the fixed substep.
+- `forceAnimate` on `createHologramScene` overrides `prefers-reduced-motion` and
+  exists **only** for the lab.
+
+### Hologram rendering
+
+- `lib/mascot-art.ts` draws the mascot as **separate SVG parts**, not one image, because the rig
+  animates them independently (iris tracks the pointer, eye squashes to blink, mouth cross-fades
+  while speaking, leaf sways). Part geometry is in body-diameter units — the body circle is 1.0
+  wide, centred on (0, 0) — and the scene applies the only scale factor.
+- **Every part the rig rotates declares a `pivotX`/`pivotY`.** The scene bakes it in with
+  `geometry.translate()`. A limb rotating about the centre of its own plane visibly detaches from
+  the shoulder as it swings — that is what made the old arms read as flapping fins. Arms pivot at
+  the shoulder edge, legs at the hip, the leaf sprig at the stalk base.
+- **The legs live in their own group and never take the breath bob.** `pose.stand` drives them;
+  `pose.root` drives the torso. Applying one transform to the whole rig lifts the feet with the
+  chest, which is exactly what "it is floating" looks like. Legs overlap the ball by 0.11 units so
+  the torso can bob and scale without opening a gap at the hip.
+- **The layout is solved, not eyeballed** — see the vertical table in `mascot-art.ts`. Foot base
+  sits at -0.63, which is `FLOOR_Y`, so the character stands on the emitter ring instead of
+  hovering a third of a body above it. The `Framing` values in the scene are derived from the real
+  ink bounds; change a part's size and they need re-solving.
+- **There are two framings, and small canvases recompose rather than blindly shrink.** The open
+  chamber keeps a roomy field; `FRAME_COMPACT` holds the face near 80% of the dock width and
+  preserves vertical room for the emitter rings. It may crop bloom and motes, never the connection
+  between the delta-loop and the body.
+  The trigger is **pixels per body diameter**, not container width or height: which dimension
+  constrains the drawing depends on the aspect, so a 708x141 landscape strip is "large" by width
+  and tiny in practice. Docks land at 48-68 px/unit, the open chamber at 217-300.
+- **Colours in `mascot-art.ts` ship as drawn**, so they are the reference's real values, not
+  values picked to survive a tint. Keep the shell charcoal (~#2e2e2e) and the outlines near-black:
+  the outlines are the only thing separating an arm from the body at 104px.
+- `lib/hologram-scene.ts` is raw three.js in the same imperative style as `lib/three-scene.ts`
+  (no react renderer). Every part plane shares one holographic `ShaderMaterial`; time/intensity
+  uniforms are **shared objects by reference**, so one write per frame drives the whole projection.
+- **The shader lights the artwork, it does not recolour it.** The mascot keeps its own colours:
+  charcoal shell, black outlines, cream eye and smile, green leaf and iris. The scene adds a lime
+  bounce in the shadows, a lime rim on the silhouette, and the CSS bloom on the canvas — that is
+  what seats a near-black character on a near-black page. An earlier version mapped luminance onto
+  a lime ramp, which repainted everything one hue: the black outlines stopped being black, so at
+  dock size the arms fused into the body and the character read as a green paunch.
+- **The figure is opaque, and the CRT costume is mostly gone.** The scanlines, chromatic split,
+  tear glitch and vertex jitter were doing the work of a character design, and underneath them the
+  drawing was never legible — peak alpha stayed under 1.0, so it read as a ghost of itself rather
+  than as somebody. What is left is a single `SIGNAL` constant (0.22) scaling a whisper of
+  scanline, plus a slow sheen and a rim light. Raise `SIGNAL` to get the old look back; do not
+  reintroduce the artefacts individually.
+- **No light-shaft cone, and no scan ring through the body.** A `ConeGeometry` has a hard
+  silhouette, so under additive blending its slanted edges stay visible as lines at any opacity —
+  it reads as a wireframe triangle. A hoop sweeping through the character is a special effect, not
+  characterisation. The floor rings plus the CSS bloom on `.agent-overlay__stage` carry the
+  staging instead.
+- `FRAME_FULL` / `FRAME_COMPACT` are solved against the real content extent — floor ellipse
+  ≈ -0.693, delta/leaf tip ≈ +0.60 — so the figure fills the frame instead of floating in padding.
+- `HologramStage` imports the scene with a dynamic `import()`. three.js is ~300KB and this widget
+  is decorative — keep it out of first load. Until the chunk lands (or if WebGL is unavailable)
+  the `.hologram-stage--fallback` CSS silhouette holds the space.
+- **Reduced motion paints on demand, not once.** There is no rAF loop on that path, so every
+  input that changes the image must call `scheduleStaticRedraw()` — texture load, `resize()`,
+  `setMood`, `setActive`. A fixed burst of frames at startup is not enough: `setSize()`
+  reallocates the drawing buffer, so the canvas goes **permanently blank** after any later
+  resize or orientation change. The repaint is synchronous on purpose; deferring it to rAF
+  leaves a visible blank frame between `setSize` and the paint.
+- **Do not verify rendering with `gl.readPixels`.** `preserveDrawingBuffer` is `false`, so the
+  buffer is cleared after compositing and a later read always returns zeroes whether or not the
+  scene drew. Use a screenshot.
+- The dock (`.agent-dock`) is **frameless, but the canvas still needs something behind it.** The
+  stage is transparent, so a bare canvas renders the mascot straight over page copy and the text
+  shows through it. An opaque housing solved that and looked like a bolted-on widget; the fix is
+  `.agent-dock__aura` — two radial gradients plus a `backdrop-filter` that is **masked to the same
+  falloff**. Skipping the mask puts the box straight back, because an unmasked blur clips to the
+  element's rectangle. Dock size stays fixed and has no visible caption; its localized invitation
+  remains in the accessible label and first-visit hint, so copy cannot grow the footprint over card
+  text.
 
 ## Hero canvas
 

@@ -24,7 +24,7 @@
     "startTrading": "https://standx.com/",
     "standxOfficial": "https://x.com/StandX_Official",
     "discord": "https://discord.gg/standx",
-    "docs": "https://docs.standx.com/docs/about-stand-x"
+    "docs": "https://docs.standx.com/docs/about-standx"
   },
   "common": {
     "brand": "StandX Community Hub",
@@ -167,6 +167,46 @@
       "title": "¿Necesitas apoyo mientras exploras?",
       "description": "La comunidad de StandX puede ayudarte con dudas de setup, navegación de plataforma y los siguientes pasos prácticos.",
       "cta": "Unirme a la comunidad"
+    }
+  },
+  "agent": {
+    "name": "Stander",
+    "dockAria": "Abrir el asistente holográfico de StandX",
+    "dialogLabel": "Asistente holográfico de StandX",
+    "close": "Cerrar asistente",
+    "newChat": "Nueva conversación",
+    "greeting": "Hola, soy Stander, el holograma de este hub. Pregúntame lo que quieras sobre StandX, o dime qué buscas y te llevo ahí.",
+    "hint": "¿Necesitas ayuda? Pregúntame sobre StandX.",
+    "placeholder": "Pregunta sobre StandX o qué estás buscando",
+    "send": "Enviar mensaje",
+    "stop": "Detener",
+    "statusOnline": "En línea",
+    "statusThinking": "Pensando",
+    "statusAnswering": "Respondiendo",
+    "statusListening": "Escuchando",
+    "statusSpeaking": "Hablando",
+    "statusError": "Problema de conexión",
+    "errorGeneric": "No pude conectar con mi cerebro en ese momento. Los enlaces de abajo siguen funcionando, o inténtalo de nuevo.",
+    "errorRateLimit": "Fueron muchas preguntas seguidas — dame unos segundos y vuelve a preguntar.",
+    "retry": "Reintentar",
+    "micStart": "Hablar",
+    "micStop": "Dejar de escuchar",
+    "voiceOn": "Activar voz",
+    "voiceOff": "Silenciar voz",
+    "voiceUnsupported": "Este navegador no soporta voz. Puedes escribir igualmente.",
+    "micDenied": "El navegador bloqueó el micrófono. Puedes escribir igualmente.",
+    "navigatingTo": "Abriendo: {label}",
+    "openLinkAria": "Abrir {label} en una pestaña nueva",
+    "disclaimer": "Guía creada por la comunidad. Solo educativa, no es asesoría financiera.",
+    "voiceShort": "Voz",
+    "micShort": "Mic",
+    "sendShort": "Enviar",
+    "stopShort": "Parar",
+    "suggestions": {
+      "one": "¿Qué es DUSD?",
+      "two": "¿Cómo empiezo en la comunidad?",
+      "three": "¿Dónde está el brand kit?",
+      "four": "¿Cómo funcionan las comisiones?"
     }
   }
 }

@@ -15,5 +15,7 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"]
+  // `motion-lab` is a dev tool living outside `app/[locale]`, so it must not be
+  // rewritten to `/en/motion-lab` — that route does not exist.
+  matcher: ["/((?!api|_next|_vercel|motion-lab|.*\\..*).*)"]
 };

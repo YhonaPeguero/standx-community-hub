@@ -24,7 +24,7 @@
     "startTrading": "https://standx.com/",
     "standxOfficial": "https://x.com/StandX_Official",
     "discord": "https://discord.gg/standx",
-    "docs": "https://docs.standx.com/docs/about-stand-x"
+    "docs": "https://docs.standx.com/docs/about-standx"
   },
   "common": {
     "brand": "StandX Community Hub",
@@ -167,6 +167,46 @@
       "title": "Need help while you explore?",
       "description": "The StandX community can guide setup questions, platform navigation, and practical next steps for new users.",
       "cta": "Join the community"
+    }
+  },
+  "agent": {
+    "name": "Stander",
+    "dockAria": "Open the StandX hologram assistant",
+    "dialogLabel": "StandX hologram assistant",
+    "close": "Close assistant",
+    "newChat": "New conversation",
+    "greeting": "Hey — I'm Stander, the hologram of this hub. Ask me anything about StandX, or tell me what you're looking for and I'll take you there.",
+    "hint": "Need a hand? Ask me anything about StandX.",
+    "placeholder": "Ask about StandX, or what you're looking for",
+    "send": "Send message",
+    "stop": "Stop",
+    "statusOnline": "Online",
+    "statusThinking": "Thinking",
+    "statusAnswering": "Answering",
+    "statusListening": "Listening",
+    "statusSpeaking": "Speaking",
+    "statusError": "Connection issue",
+    "errorGeneric": "I couldn't reach my brain just then. The links below still work, or try again.",
+    "errorRateLimit": "That was a lot of questions at once — give me a few seconds and ask again.",
+    "retry": "Try again",
+    "micStart": "Speak",
+    "micStop": "Stop listening",
+    "voiceOn": "Turn voice on",
+    "voiceOff": "Turn voice off",
+    "voiceUnsupported": "This browser doesn't support voice. You can still type.",
+    "micDenied": "The browser blocked the microphone. You can still type.",
+    "navigatingTo": "Opening: {label}",
+    "openLinkAria": "Open {label} in a new tab",
+    "disclaimer": "Community-built guide. Educational only — not financial advice.",
+    "voiceShort": "Voice",
+    "micShort": "Mic",
+    "sendShort": "Send",
+    "stopShort": "Stop",
+    "suggestions": {
+      "one": "What is DUSD?",
+      "two": "How do I start in the community?",
+      "three": "Where is the brand kit?",
+      "four": "How do trading fees work?"
     }
   }
 }

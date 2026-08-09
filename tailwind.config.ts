@@ -72,6 +72,21 @@ const config: Config = {
         widepill: "0.18em",
         widercaps: "0.22em"
       },
+      /* Motion tokens — the source of truth is `:root` in app/globals.css,
+         mirrored in lib/motion.ts. Overriding DEFAULT means a bare `transition`
+         utility picks up the site's curve instead of Tailwind's generic
+         150ms ease-in-out, so a Tailwind hover and a hand-written CSS hover
+         resolve to the same timing. */
+      transitionTimingFunction: {
+        DEFAULT: "var(--ease-out)",
+        out: "var(--ease-out)",
+        "out-soft": "var(--ease-out-soft)",
+        "in-out": "var(--ease-in-out)",
+        in: "var(--ease-in)"
+      },
+      transitionDuration: {
+        DEFAULT: "var(--dur-fast)"
+      },
       borderRadius: {
         pill: "999px"
       },

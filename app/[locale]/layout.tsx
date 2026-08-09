@@ -4,8 +4,10 @@ import {getMessages, getTranslations, setRequestLocale} from "next-intl/server";
 import {notFound} from "next/navigation";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import RouteTransition from "@/components/RouteTransition";
 import ScrollProgress from "@/components/ScrollProgress";
 import SplashIntro from "@/components/SplashIntro";
+import StandxAgent from "@/components/agent/StandxAgent";
 import {
   defaultLocale,
   isAppLocale,
@@ -66,9 +68,14 @@ export default async function LocaleLayout({children, params}: LocaleLayoutProps
         <ScrollProgress />
         <Navbar locale={locale} />
         <main className="flex-1 pt-[60px] md:pt-[64px]">
-          <div className="locale-fade">{children}</div>
+          {/* Keyed on the pathname so the entrance replays per navigation —
+              this layout does not re-render when sibling routes change. */}
+          <RouteTransition>{children}</RouteTransition>
         </main>
         <Footer locale={locale} />
+        {/* Lives in the layout so the conversation survives navigation — the
+            assistant routes the visitor around the hub and must not remount. */}
+        <StandxAgent locale={locale} />
       </div>
     </NextIntlClientProvider>
   );
