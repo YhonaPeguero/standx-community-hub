@@ -132,6 +132,10 @@ export default function StandxAgent({locale}: StandxAgentProps) {
   }, [speech.listening, speech.speaking, status, t]);
 
   const live = busy || speech.listening || speech.speaking;
+  // "Online" is not useful conversation feedback. Keep the utility row out
+  // of the empty state and surface status only while Stander is doing
+  // something the visitor needs to understand (or when a request failed).
+  const showActivity = status !== "idle" || speech.listening || speech.speaking;
 
   // Counts the server's retry-after down so the Retry button cannot fire
   // straight back into the same 429.
@@ -320,35 +324,37 @@ export default function StandxAgent({locale}: StandxAgentProps) {
               </motion.div>
 
               <motion.div variants={m.deck} className="agent-console">
-                <motion.div variants={m.row} className="agent-console__head">
-                  <span className="agent-console__brand">{t("name")}</span>
+                {showActivity || entries.length > 0 ? (
+                  <motion.div variants={m.row} className="agent-console__head">
+                    {showActivity ? (
+                      <span className="agent-console__status" data-live={live}>
+                        <span
+                          className={live ? "live-dot" : "agent-dot-static"}
+                          aria-hidden="true"
+                        />
+                        <span aria-live="polite">{statusLabel}</span>
+                      </span>
+                    ) : null}
 
-                  <span className="agent-console__status" data-live={live}>
-                    <span
-                      className={live ? "live-dot" : "agent-dot-static"}
-                      aria-hidden="true"
-                    />
-                    <span aria-live="polite">{statusLabel}</span>
-                  </span>
-
-                  {entries.length > 0 ? (
-                    <span className="agent-console__actions">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          speech.cancelSpeech();
-                          spokenRef.current = null;
-                          reset();
-                        }}
-                        aria-label={t("newChat")}
-                        title={t("newChat")}
-                        className="agent-icon-btn"
-                      >
-                        <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                      </button>
-                    </span>
-                  ) : null}
-                </motion.div>
+                    {entries.length > 0 ? (
+                      <span className="agent-console__actions">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            speech.cancelSpeech();
+                            spokenRef.current = null;
+                            reset();
+                          }}
+                          aria-label={t("newChat")}
+                          title={t("newChat")}
+                          className="agent-icon-btn"
+                        >
+                          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+                        </button>
+                      </span>
+                    ) : null}
+                  </motion.div>
+                ) : null}
 
                 <motion.div
                   variants={m.row}

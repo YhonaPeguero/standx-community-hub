@@ -171,13 +171,13 @@
   },
   "agent": {
     "name": "Stander",
-    "dockAria": "Відкрити голографічного асистента StandX",
-    "dialogLabel": "Голографічний асистент StandX",
-    "close": "Закрити асистента",
+    "dockAria": "Відкрити Stander",
+    "dialogLabel": "Чат зі Stander",
+    "close": "Закрити Stander",
     "newChat": "Нова розмова",
-    "greeting": "Привіт, я Stander — голограма цього хабу. Питай що завгодно про StandX або скажи, що шукаєш, і я тебе туди відведу.",
-    "hint": "Потрібна допомога? Запитай мене про StandX.",
-    "placeholder": "Запитайте про StandX або що ви шукаєте",
+    "greeting": "Привіт, я Stander. Запитай мене про StandX, DUSD, SIP, торгівлю чи спільноту.",
+    "hint": "Є питання про StandX? Запитай Stander.",
+    "placeholder": "Запитайте Stander",
     "send": "Надіслати повідомлення",
     "stop": "Зупинити",
     "statusOnline": "Онлайн",
@@ -203,10 +203,10 @@
     "sendShort": "Надіслати",
     "stopShort": "Стоп",
     "suggestions": {
-      "one": "Що таке DUSD?",
-      "two": "Як почати у спільноті?",
-      "three": "Де знайти brand kit?",
-      "four": "Як працюють комісії?"
+      "one": "Що таке StandX?",
+      "two": "Як працює DUSD?",
+      "three": "Що таке SIP?",
+      "four": "Як почати?"
     }
   }
 }

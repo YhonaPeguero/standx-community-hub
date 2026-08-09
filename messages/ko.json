@@ -171,13 +171,13 @@
   },
   "agent": {
     "name": "Stander",
-    "dockAria": "StandX 홀로그램 어시스턴트 열기",
-    "dialogLabel": "StandX 홀로그램 어시스턴트",
-    "close": "어시스턴트 닫기",
+    "dockAria": "Stander 열기",
+    "dialogLabel": "Stander와 대화",
+    "close": "Stander 닫기",
     "newChat": "새 대화",
-    "greeting": "안녕하세요, 이 허브의 홀로그램 Stander예요. StandX에 대해 무엇이든 물어보시거나, 찾는 것을 말씀해 주시면 그곳으로 안내할게요.",
-    "hint": "도움이 필요하신가요? StandX에 대해 물어보세요.",
-    "placeholder": "StandX에 대해 묻거나 찾는 것을 입력하세요",
+    "greeting": "안녕하세요, Stander예요. StandX, DUSD, SIP, 트레이딩 또는 커뮤니티에 대해 물어보세요.",
+    "hint": "StandX가 궁금하신가요? Stander에게 물어보세요.",
+    "placeholder": "Stander에게 물어보세요",
     "send": "메시지 보내기",
     "stop": "중지",
     "statusOnline": "온라인",
@@ -203,10 +203,10 @@
     "sendShort": "보내기",
     "stopShort": "중지",
     "suggestions": {
-      "one": "DUSD가 무엇인가요?",
-      "two": "커뮤니티는 어떻게 시작하나요?",
-      "three": "브랜드 키트는 어디 있나요?",
-      "four": "거래 수수료는 어떻게 되나요?"
+      "one": "StandX가 무엇인가요?",
+      "two": "DUSD는 어떻게 작동하나요?",
+      "three": "SIP란 무엇인가요?",
+      "four": "어떻게 시작하나요?"
     }
   }
 }

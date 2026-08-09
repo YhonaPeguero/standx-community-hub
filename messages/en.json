@@ -171,13 +171,13 @@
   },
   "agent": {
     "name": "Stander",
-    "dockAria": "Open the StandX hologram assistant",
-    "dialogLabel": "StandX hologram assistant",
-    "close": "Close assistant",
+    "dockAria": "Open Stander",
+    "dialogLabel": "Chat with Stander",
+    "close": "Close Stander",
     "newChat": "New conversation",
-    "greeting": "Hey — I'm Stander, the hologram of this hub. Ask me anything about StandX, or tell me what you're looking for and I'll take you there.",
-    "hint": "Need a hand? Ask me anything about StandX.",
-    "placeholder": "Ask about StandX, or what you're looking for",
+    "greeting": "Hi, I'm Stander. Ask me about StandX, DUSD, SIPs, trading, or the community.",
+    "hint": "Questions about StandX? Ask Stander.",
+    "placeholder": "Ask Stander anything",
     "send": "Send message",
     "stop": "Stop",
     "statusOnline": "Online",
@@ -203,10 +203,10 @@
     "sendShort": "Send",
     "stopShort": "Stop",
     "suggestions": {
-      "one": "What is DUSD?",
-      "two": "How do I start in the community?",
-      "three": "Where is the brand kit?",
-      "four": "How do trading fees work?"
+      "one": "What is StandX?",
+      "two": "How does DUSD work?",
+      "three": "What are SIPs?",
+      "four": "How do I get started?"
     }
   }
 }

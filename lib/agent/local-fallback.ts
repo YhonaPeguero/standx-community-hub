@@ -136,6 +136,16 @@ const extraRouteLabels: Record<AppLocale, Record<string, string>> = {
  */
 const docTopics: Array<{terms: string[]; doc: DocEntry}> = [
   {
+    terms: [
+      "what is standx",
+      "que es standx",
+      "o que e standx",
+      "що таке standx",
+      "standx가 무엇"
+    ],
+    doc: findDoc("About StandX")
+  },
+  {
     terms: ["dusd", "stablecoin", "estable", "estável", "стейблкоїн", "스테이블"],
     doc: findDoc("$DUSD Overview")
   },

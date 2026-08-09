@@ -289,8 +289,13 @@ export const mascotParts: MascotPart[] = [
   {id: "eyeWhite", svg: eyeWhiteSvg, width: 0.54, height: 0.54, x: -0.01, y: 0.07, z: 0.01},
   {id: "iris", svg: irisSvg, width: 0.37, height: 0.37, x: -0.01, y: 0.07, z: 0.02},
   {id: "blink", svg: blinkSvg, width: 0.54, height: 0.17, x: -0.01, y: 0.07, z: 0.03, initialOpacity: 0},
-  {id: "smile", svg: smileSvg, width: 0.42, height: 0.24, x: 0, y: -0.27, z: 0.02},
-  {id: "talk", svg: talkSvg, width: 0.42, height: 0.24, x: 0, y: -0.27, z: 0.02, initialOpacity: 0}
+  // The reference smile is a compact expression, not a second horizontal
+  // feature spanning the torso. Keeping it near one third of the shell width
+  // stops the circular body reading as a wide belly while preserving the
+  // mascot's friendly face. Rest and speech share the same footprint so their
+  // cross-fade never changes the apparent proportions of the head.
+  {id: "smile", svg: smileSvg, width: 0.34, height: 0.22, x: 0, y: -0.29, z: 0.02},
+  {id: "talk", svg: talkSvg, width: 0.34, height: 0.22, x: 0, y: -0.29, z: 0.02, initialOpacity: 0}
 ];
 
 export function toDataUri(source: string): string {
