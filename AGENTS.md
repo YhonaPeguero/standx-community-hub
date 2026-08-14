@@ -20,6 +20,7 @@ npm run typecheck   # tsc --noEmit (strict)
 npm run motion:check # headless assertions on the mascot's movement curves
 npm run framing:check # re-solves the mascot's camera framing from the geometry
 npm run agent:check  # offline: the knowledge base is internally consistent
+npm run guards:check # the visitor budget's tiers, and that a forged cookie fails
 npm run docs:check   # ONLINE: the knowledge base still agrees with StandX
 ```
 
@@ -92,14 +93,31 @@ A floating mascot in the bottom-right that answers StandX questions and navigate
 around the hub. Mounted once in `app/[locale]/layout.tsx` (NOT per page) so the conversation
 survives client-side navigation.
 
-- **Server**: `app/api/hub-agent/route.ts` — `runtime = "nodejs"`, streams Server-Sent Events.
-  Uses `@anthropic-ai/sdk` (`client.messages.stream`) with adaptive thinking + `effort: "low"`,
-  and a manual tool loop capped at `MAX_TOOL_ROUNDS`. The system prompt carries a
-  `cache_control: ephemeral` breakpoint — it is ~4.3k tokens, so prompt caching matters.
-- **No API key is required to ship.** Without `ANTHROPIC_API_KEY` (and on any provider error)
-  the route falls back to `lib/agent/local-fallback.ts`, a deterministic keyword engine that
-  still routes to the right section and links the right doc. Same SSE contract either way, so
-  the client cannot tell them apart. Env vars are documented in `.env.example`.
+- **Server**: `app/api/hub-agent/route.ts` — `runtime = "nodejs"`, streams Server-Sent Events,
+  with a manual tool loop capped at `MAX_TOOL_ROUNDS`.
+- **Providers are a chain, and every one is OpenAI-compatible** (`lib/agent/providers.ts`):
+  Groq, then OpenRouter, then the offline knowledge. Adding a fourth is configuration, not
+  code. The chain exists because these are free tiers — rather than counting requests
+  ourselves, **the provider's own 429 is the budget signal**. Two rules earned their state
+  the hard way: a provider that fails over is **retired for the rest of the request** (a rate
+  limit does not clear in the second a tool call takes), and failover is refused once text
+  has reached the visitor — tracked **per turn, not per request**, or the second tool round
+  can never fail over.
+- **No API key is required to ship.** With no key configured (and on any provider error) the
+  route falls back to `lib/agent/local-fallback.ts`, a deterministic keyword engine that still
+  routes to the right section and links the right doc. Same SSE contract either way, so the
+  client cannot tell them apart. Env vars are documented in `.env.example`.
+- **The visitor budget cannot identify a visitor, and does not try** (`lib/agent/visitor-quota.ts`).
+  IP fails on CGNAT — one carrier address covers thousands of people, so an IP limit punishes
+  the innocent. Cookies die in incognito, fingerprinting is privacy-hostile and defeated by
+  the browsers that care, and the hub advertises "No login" on its front page. So the counter
+  lives in an HMAC-signed cookie: 20 questions answered normally, 15 more paced, then curated
+  answers. A server-side store would buy nothing — it would be keyed on the same cookie.
+  Curated answers are never charged, because they cost nothing to serve.
+- **`isSameOrigin` refuses cross-origin POSTs.** A browser always sends `Origin` on a
+  cross-document POST, so requiring it to match closes the obvious abuse: a stranger pointing
+  `curl` at the route and using the deployment as a free model proxy. Missing `Origin` is
+  allowed outside production so local scripts still work.
 - **Two rate-limit budgets, charged against the path that will actually serve the
   request** — `MODEL_MAX_REQUESTS` (24/min, real money) and `LOCAL_MAX_REQUESTS`
   (90/min, string matching). One shared 12/min bucket shipped and cut visitors off
