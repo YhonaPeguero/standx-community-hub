@@ -29,6 +29,24 @@ export const allowedLinkUrls = new Set<string>([
 
 export const agentTools = [
   {
+    name: "read_doc",
+    description:
+      "Read the current text of one official StandX documentation page. Use it whenever the visitor asks for a specific detail your knowledge summary does not already contain — an exact rate, a formula, a threshold, a contract spec, a step in a guide — instead of saying you do not know. Name the page by its exact title from your documentation list; you cannot pass a URL. Read at most two pages per answer, then answer from what you read and surface the page with open_link.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        title: {
+          type: "string",
+          description:
+            'The page title, copied exactly from the documentation list in your system prompt, e.g. "Funding Rate".'
+        }
+      },
+      required: ["title"],
+      additionalProperties: false
+    },
+    strict: true
+  },
+  {
     name: "navigate",
     description:
       "Take the visitor to a page on this hub. Call this when they ask where something is, ask to be shown something, or when your answer lives on another page here. Do not call it for the page they are already on, and call it at most once per reply.",

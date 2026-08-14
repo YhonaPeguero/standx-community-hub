@@ -186,6 +186,39 @@ check(
   "a retired provider is not retried later in the same request",
   /available = available\.slice\(1\)/.test(route)
 );
+check(
+  "documentation reads are capped per answer",
+  /docsRead >= MAX_DOC_READS/.test(route) && /docsRead \+= 1/.test(route)
+);
+
+section("Doc reader — the model names a page, it never supplies a URL");
+
+const tools = fs.readFileSync(path.join(root, "lib", "agent", "tools.ts"), "utf8");
+const readerBlock = tools.match(/name: "read_doc",[\s\S]*?strict: true/);
+
+check("the read_doc tool exists", Boolean(readerBlock));
+check(
+  "its only input is a title — there is no url parameter",
+  Boolean(readerBlock) &&
+    /title: \{/.test(readerBlock[0]) &&
+    !/\burl\b\s*:/.test(readerBlock[0]),
+  "this is what makes server-side fetching SSRF-free"
+);
+
+const reader = fs.readFileSync(path.join(root, "lib", "agent", "doc-reader.ts"), "utf8");
+check(
+  "the reader resolves titles against the hardcoded docPages list",
+  /docPages\.find\(/.test(reader)
+);
+check(
+  "the only thing ever fetched is a resolved page's own url",
+  /fetch\(page\.url,/.test(reader) && !/fetch\((?!page\.url)/.test(reader),
+  "no model-supplied string can reach fetch()"
+);
+check(
+  "page text is bounded before it enters the conversation",
+  /MAX_CHARS/.test(reader) && /slice\(0, MAX_CHARS\)/.test(reader)
+);
 
 /* -------------------------------------------------------------------- done */
 

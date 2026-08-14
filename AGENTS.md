@@ -103,6 +103,15 @@ survives client-side navigation.
   limit does not clear in the second a tool call takes), and failover is refused once text
   has reached the visitor — tracked **per turn, not per request**, or the second tool round
   can never fail over.
+- **`read_doc` is what makes it a docs assistant rather than a FAQ** (`lib/agent/doc-reader.ts`).
+  The curated knowledge covers the common questions; this fetches the actual page for
+  everything else — an exact rate, a formula, a contract spec. **The model names a page by
+  title and never supplies a URL**: the title is resolved against the hardcoded `docPages`
+  list, so no model output ever reaches `fetch` and there is no SSRF surface even in
+  principle. Pages are capped at `MAX_CHARS`, reads at `MAX_DOC_READS` per answer, and cached
+  for 30 minutes per instance. Extraction pulls the docs site's single `<article>`, which
+  `docs:check` exercises against a live page — a redesign there would otherwise empty every
+  answer without failing anything else.
 - **No API key is required to ship.** With no key configured (and on any provider error) the
   route falls back to `lib/agent/local-fallback.ts`, a deterministic keyword engine that still
   routes to the right section and links the right doc. Same SSE contract either way, so the

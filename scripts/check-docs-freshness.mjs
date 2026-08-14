@@ -237,6 +237,50 @@ if (stale.length) {
   }
 }
 
+/* ------------------------------------------------- 4. the reader still reads */
+
+section("Stander can still read a page, not just link to it");
+
+// `read_doc` turns the hub from a FAQ into a docs assistant, and it rests on
+// scraping text out of the docs site's HTML. A redesign there — or a switch to
+// client-side rendering — would empty every answer without failing anything
+// else in this file, so the extraction is exercised against a live page.
+const readerSource = fs
+  .readFileSync(
+    path.join(__dirname, "..", "lib", "agent", "doc-reader.ts"),
+    "utf8"
+  )
+  .replace('from "@/lib/agent/standx-knowledge"', 'from "./standx-knowledge.mjs"');
+
+const readerDir = path.dirname(tmp);
+fs.writeFileSync(path.join(readerDir, "standx-knowledge.mjs"), transpiled);
+const readerFile = path.join(readerDir, "doc-reader.mjs");
+fs.writeFileSync(
+  readerFile,
+  ts.transpileModule(readerSource, {
+    compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022}
+  }).outputText
+);
+const {readDocPage} = await import(`file://${readerFile.split(path.sep).join("/")}`);
+
+const sample = await readDocPage("Funding Rate");
+check(
+  "a known page still yields readable text",
+  sample.ok && sample.content.length > 500,
+  sample.ok ? `${sample.content.length} characters` : sample.content
+);
+check(
+  "and the text is the page's own content, not chrome",
+  sample.ok && /funding/i.test(sample.content),
+  sample.ok ? `opens: ${sample.content.slice(0, 60).replace(/\n/g, " ")}…` : "unreadable"
+);
+
+const bogus = await readDocPage("A Page That Does Not Exist");
+check(
+  "an unknown title is refused rather than fetched",
+  !bogus.ok && /no documentation page/.test(bogus.content)
+);
+
 /* -------------------------------------------------------------------- done */
 
 console.log(

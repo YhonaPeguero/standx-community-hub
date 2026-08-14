@@ -1,5 +1,6 @@
 import {defaultLocale, isAppLocale, type AppLocale} from "@/i18n/request";
 import {buildHref, isNavigableRoute} from "@/lib/agent/hub-map";
+import {readDocPage} from "@/lib/agent/doc-reader";
 import {buildLocalAnswer, type LocalAnswer} from "@/lib/agent/local-fallback";
 import {buildSystemPrompt, buildUserContext} from "@/lib/agent/prompt";
 import {
@@ -25,6 +26,7 @@ export const dynamic = "force-dynamic";
 const MAX_TURNS = 16;
 const MAX_CHARS_PER_MESSAGE = 2000;
 const MAX_TOOL_ROUNDS = 3;
+const MAX_DOC_READS = 2;
 
 // Coarse per-instance throttle. Serverless means each instance keeps its own
 // counter, so this bounds abuse from a single client rather than enforcing a
@@ -438,6 +440,10 @@ export async function POST(request: Request): Promise<Response> {
       // model cannot yank the visitor through several pages in one turn.
       let navigationSent = false;
       let emitted = false;
+      // Each page read costs a round trip and thousands of tokens of context.
+      // Two is enough to answer any question the docs actually answer, and it
+      // bounds how long a visitor waits on a free tier.
+      let docsRead = 0;
       const seenLinks = new Set<string>();
 
       const conversation: ChatMessage[] = [
@@ -503,7 +509,19 @@ export async function POST(request: Request): Promise<Response> {
 
             let result = "ok";
 
-            if (call.name === "navigate") {
+            if (call.name === "read_doc") {
+              const title = typeof input.title === "string" ? input.title : "";
+              if (docsRead >= MAX_DOC_READS) {
+                result =
+                  "error: you have already read the pages allowed for this answer — answer from them now";
+              } else {
+                docsRead += 1;
+                const page = await readDocPage(title);
+                result = page.ok
+                  ? `Current text of "${page.page?.title}" (${page.page?.url}):\n\n${page.content}`
+                  : page.content;
+              }
+            } else if (call.name === "navigate") {
               const route = parseRoute(input.route);
               const reason = typeof input.reason === "string" ? input.reason : "";
 
