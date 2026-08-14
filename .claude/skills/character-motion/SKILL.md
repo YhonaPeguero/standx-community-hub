@@ -65,6 +65,8 @@ what "right" means. Examples already in there:
 | gaze | still for >80% of frames; ≥6 distinct saccades in 30s |
 | speech | 1.5–8 openings/s; genuine closures between syllables |
 | springs | overshoots past rest, then settles instead of hunting |
+| attention | a target on one side measurably biases the gaze; at half weight it still looks away |
+| beats | each one travels, starts from rest rather than jumping, and settles back |
 | all | identical output at 30fps and 144fps |
 
 **Visual — the one that tells you if it is *good*:**
@@ -98,6 +100,10 @@ Common failures, in the order they actually occur:
   offset. Perfect mirroring reads as a machine.
 - **A state change cross-fades.** Characters react. Inject a velocity impulse
   into the springs and let them resolve — never jump a position.
+- **It performs but does not respond.** A mood is a state, not an interaction.
+  If the visitor can do something the character does not notice — hover, focus,
+  type, send — that is the gap. Route it through the `avatar` surface in
+  `StandxAgent`, not through a new mood. See `INTERACTION.md`.
 
 ### 4. Integrate
 

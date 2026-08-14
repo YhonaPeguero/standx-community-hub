@@ -30,7 +30,11 @@ const TRIGGERS: ReadonlyArray<{id: MotionTrigger; label: string}> = [
   {id: "blink", label: "Blink"},
   {id: "doubleBlink", label: "Double blink"},
   {id: "saccade", label: "Saccade"},
-  {id: "react", label: "React"}
+  {id: "react", label: "React"},
+  {id: "greet", label: "Greet"},
+  {id: "perk", label: "Perk"},
+  {id: "acknowledge", label: "Ack"},
+  {id: "nod", label: "Nod"}
 ];
 
 /** What each channel owns, so the panel is self-documenting. */
@@ -40,6 +44,8 @@ const CHANNEL_NOTES: Record<MotionChannel, string> = {
   gaze: "Ballistic saccades between fixations, plus micro-tremor.",
   blink: "Fast close (85ms), hold (35ms), slow open (150ms).",
   speech: "Syllable train with attack/decay envelopes and real pauses.",
+  gesture: "Sparse phrase beats: alternating lead arm, body emphasis, quiet gaps.",
+  attention: "Looks at what the visitor is using, plus the one-shot beats.",
   arms: "Springs chasing the body — they arrive late and overshoot.",
   leaf: "Lightest mass on the rig, so the last thing to stop moving.",
   reaction: "Impulse injected on mood change. Reads as a settle, not a fade."
@@ -52,6 +58,8 @@ const CHANNEL_RANGE: Record<MotionChannel, [number, number]> = {
   gaze: [-1, 1],
   blink: [0, 1],
   speech: [0, 1],
+  gesture: [-1, 1],
+  attention: [-1, 1],
   arms: [-0.4, 0.4],
   leaf: [-1, 1],
   reaction: [-2, 2]
@@ -76,6 +84,8 @@ export default function MotionLab() {
   const [timeScale, setTimeScale] = useState(1);
   const [followMouse, setFollowMouse] = useState(false);
   const [pointer, setPointer] = useState({x: 0, y: 0});
+  const [attention, setAttention] = useState({x: 0.8, y: 0, weight: 0});
+  const [interest, setInterest] = useState(0);
   const [channels, setChannels] = useState<ChannelMask | null>(null);
 
   // ---- Scene lifecycle ----------------------------------------------------
@@ -127,6 +137,16 @@ export default function MotionLab() {
   useEffect(() => {
     sceneRef.current?.motion.setPointerOverride(followMouse ? null : pointer);
   }, [followMouse, pointer]);
+
+  useEffect(() => {
+    sceneRef.current?.motion.setAttention(
+      attention.weight > 0 ? attention : null
+    );
+  }, [attention]);
+
+  useEffect(() => {
+    sceneRef.current?.motion.setInterest(interest);
+  }, [interest]);
 
   // Real-pointer mode reuses the same normalisation the widget uses, so gaze
   // behaves here exactly as it does in the corner of the site.
@@ -461,6 +481,58 @@ export default function MotionLab() {
                 ))}
               </div>
             ) : null}
+          </fieldset>
+
+          <fieldset className="border border-border-hairline bg-bg-elevated p-3">
+            <legend className="px-1 font-mono text-[10px] uppercase tracking-widepill text-text-muted">
+              Attention
+            </legend>
+            <p className="mb-2 text-[10px] leading-snug text-text-muted">
+              Stage-local: 0 is the mascot&apos;s own centre, 1 is roughly its frame
+              edge. Weight 0 hands the eye back to ambient wandering.
+            </p>
+            <div className="space-y-1.5">
+              {(["x", "y", "weight"] as const).map((axis) => (
+                <label
+                  key={axis}
+                  className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widepill text-text-muted"
+                >
+                  <span className="w-10">{axis}</span>
+                  <input
+                    type="range"
+                    min={axis === "weight" ? 0 : -1.5}
+                    max={axis === "weight" ? 1 : 1.5}
+                    step={0.02}
+                    value={attention[axis]}
+                    onChange={(event) =>
+                      setAttention((value) => ({
+                        ...value,
+                        [axis]: Number(event.target.value)
+                      }))
+                    }
+                    className="flex-1 accent-accent-lime"
+                  />
+                  <span className="w-10 text-right text-accent-lime">
+                    {attention[axis].toFixed(2)}
+                  </span>
+                </label>
+              ))}
+              <label className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widepill text-text-muted">
+                <span className="w-10">int</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.02}
+                  value={interest}
+                  onChange={(event) => setInterest(Number(event.target.value))}
+                  className="flex-1 accent-accent-lime"
+                />
+                <span className="w-10 text-right text-accent-lime">
+                  {interest.toFixed(2)}
+                </span>
+              </label>
+            </div>
           </fieldset>
 
           <fieldset className="border border-border-hairline bg-bg-elevated p-3">

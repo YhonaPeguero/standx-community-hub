@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import {defaultLocale, isAppLocale, type AppLocale} from "@/i18n/request";
 import {buildHref, isNavigableRoute} from "@/lib/agent/hub-map";
-import {buildLocalAnswer} from "@/lib/agent/local-fallback";
+import {buildLocalAnswer, type LocalAnswer} from "@/lib/agent/local-fallback";
 import {buildSystemPrompt, buildUserContext} from "@/lib/agent/prompt";
 import {agentTools, allowedLinkUrls} from "@/lib/agent/tools";
 import type {
@@ -157,31 +157,103 @@ function streamResponse(body: ReadableStream<Uint8Array>): Response {
   });
 }
 
+const LOCAL_STREAM_TARGET_CHARS = 26;
+
+/**
+ * Groups whole words into short phrases. Local answers used to land as one
+ * giant SSE event, so the transcript appeared instantly and the speaking pose
+ * had nothing visible to accompany. Phrase-sized chunks feel responsive while
+ * preserving punctuation and paragraph spacing exactly.
+ */
+function chunkLocalText(text: string): string[] {
+  const words = text.match(/\S+\s*/gu);
+  if (!words) {
+    return text ? [text] : [];
+  }
+
+  const chunks: string[] = [];
+  let current = "";
+
+  for (const word of words) {
+    current += word;
+    const endsParagraph = /\n\n$/u.test(current);
+    const endsSentence = /[.!?]["')\]]?\s*$/u.test(current);
+    if (
+      current.length >= LOCAL_STREAM_TARGET_CHARS ||
+      endsParagraph ||
+      endsSentence
+    ) {
+      chunks.push(current);
+      current = "";
+    }
+  }
+
+  if (current) {
+    chunks.push(current);
+  }
+
+  return chunks;
+}
+
+function localChunkDelay(chunk: string): number {
+  if (/\n\n$/u.test(chunk)) return 115;
+  if (/[.!?]["')\]]?\s*$/u.test(chunk)) return 82;
+  if (/[,;:]\s*$/u.test(chunk)) return 52;
+  return 34;
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /** Emits the offline answer over the same SSE contract the model path uses. */
 function localStream(
   messages: AgentMessage[],
   locale: AppLocale,
-  currentRoute: string
+  currentRoute: string,
+  resolvedAnswer?: LocalAnswer
 ): Response {
   const encoder = new TextEncoder();
-  const answer = buildLocalAnswer(messages, locale, currentRoute);
+  const answer = resolvedAnswer ?? buildLocalAnswer(messages, locale, currentRoute);
+  let cancelled = false;
 
   const stream = new ReadableStream<Uint8Array>({
-    start(controller) {
-      controller.enqueue(encoder.encode(sse({type: "status", value: "answering"})));
-      controller.enqueue(encoder.encode(sse({type: "text", value: answer.text})));
+    async start(controller) {
+      try {
+        controller.enqueue(encoder.encode(sse({type: "status", value: "answering"})));
 
-      if (answer.navigation) {
+        const chunks = chunkLocalText(answer.text);
+        for (let index = 0; index < chunks.length; index += 1) {
+          if (cancelled) return;
+          const chunk = chunks[index];
+          controller.enqueue(encoder.encode(sse({type: "text", value: chunk})));
+          if (index < chunks.length - 1) {
+            await wait(localChunkDelay(chunk));
+          }
+        }
+
+        if (cancelled) return;
+        if (answer.navigation) {
+          controller.enqueue(
+            encoder.encode(sse({type: "navigate", value: answer.navigation}))
+          );
+        }
+        for (const link of answer.links) {
+          controller.enqueue(encoder.encode(sse({type: "link", value: link})));
+        }
+
         controller.enqueue(
-          encoder.encode(sse({type: "navigate", value: answer.navigation}))
+          encoder.encode(sse({type: "done", value: {provider: "local"}}))
         );
+        controller.close();
+      } catch (error) {
+        if (!cancelled) {
+          controller.error(error);
+        }
       }
-      for (const link of answer.links) {
-        controller.enqueue(encoder.encode(sse({type: "link", value: link})));
-      }
-
-      controller.enqueue(encoder.encode(sse({type: "done", value: {provider: "local"}})));
-      controller.close();
+    },
+    cancel() {
+      cancelled = true;
     }
   });
 
@@ -210,11 +282,15 @@ export async function POST(request: Request): Promise<Response> {
   const currentRoute = parseRoute(body.currentRoute);
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
+  const localAnswer = buildLocalAnswer(messages, locale, currentRoute);
+  const isLocallyResolved = localAnswer.kind !== "fallback";
   const key = clientKey(request);
 
   // Budget is charged against the path that will actually serve the request,
-  // so the offline brain is never throttled at a model-call price.
-  const verdict = checkRate(key, apiKey ? MODEL_MAX_REQUESTS : LOCAL_MAX_REQUESTS);
+  // so a core answer never spends provider quota or gets throttled at a
+  // model-call price. Unknown and conversational questions may use a provider.
+  const usesModel = Boolean(apiKey && !isLocallyResolved);
+  const verdict = checkRate(key, usesModel ? MODEL_MAX_REQUESTS : LOCAL_MAX_REQUESTS);
   if (verdict.limited) {
     return errorResponse(
       "rate_limited",
@@ -224,8 +300,8 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  if (!apiKey) {
-    return localStream(messages, locale, currentRoute);
+  if (isLocallyResolved || !apiKey) {
+    return localStream(messages, locale, currentRoute, localAnswer);
   }
 
   const client = new Anthropic({apiKey});

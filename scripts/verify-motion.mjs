@@ -65,7 +65,16 @@ function only(...names) {
 }
 
 /** Runs the engine at a fixed frame time and collects a sample per frame. */
-function run(engine, {seconds, dt = 1 / 60, mood = "idle", active = true, pointer = {x: 0, y: 0}, pick}) {
+function run(engine, {
+  seconds,
+  dt = 1 / 60,
+  mood = "idle",
+  active = true,
+  pointer = {x: 0, y: 0},
+  attention = null,
+  interest = 0,
+  pick
+}) {
   const frames = Math.round(seconds / dt);
   const out = [];
   for (let i = 0; i < frames; i += 1) {
@@ -73,7 +82,9 @@ function run(engine, {seconds, dt = 1 / 60, mood = "idle", active = true, pointe
       mood,
       active,
       pointerX: pointer.x,
-      pointerY: pointer.y
+      pointerY: pointer.y,
+      attention,
+      interest
     });
     out.push(pick(pose));
   }
@@ -260,7 +271,238 @@ section("Speech — syllable envelopes with real pauses");
   check("there are genuine pauses", quiet > 0.1, `${(quiet * 100).toFixed(0)}% quiet frames`);
 }
 
-/* ------------------------------------------------- 6. follow-through ------ */
+/* ------------------------------------------------ 6. speaking gestures ---- */
+
+section("Gesture — sparse conversational beats, never constant waving");
+{
+  const engine = createMotionEngine({seed: 58});
+  engine.setChannels(only("gesture"));
+  const dt = 1 / 120;
+  const series = run(engine, {
+    seconds: 16,
+    dt,
+    mood: "speaking",
+    pick: (p) => p.channels.gesture
+  });
+
+  let beats = 0;
+  let active = false;
+  for (const value of series) {
+    const moving = Math.abs(value) > 0.16;
+    if (moving && !active) beats += 1;
+    active = moving;
+  }
+
+  const quiet = series.filter((value) => Math.abs(value) < 0.04).length / series.length;
+  const peak = Math.max(...series);
+  const trough = Math.min(...series);
+
+  check("several distinct emphasis beats fire", beats >= 5 && beats <= 14, `${beats} in 16s`);
+  check("the character rests between gestures", quiet > 0.42, `${(quiet * 100).toFixed(0)}% quiet frames`);
+  check("gestures use both sides", peak > 0.22 && trough < -0.22, `range=${trough.toFixed(2)}…${peak.toFixed(2)}`);
+
+  const speakingPoses = run(engine, {seconds: 4, dt, mood: "speaking", pick: (p) => p});
+  const armTravel = Math.max(
+    ...speakingPoses.map((pose) =>
+      Math.max(
+        Math.abs(pose.armLeft.rot - 0.8),
+        Math.abs(pose.armRight.rot + 0.8)
+      )
+    )
+  );
+  const bodyLean = Math.max(...speakingPoses.map((pose) => Math.abs(pose.root.rotZ)));
+  check("a beat is visible in the arms", armTravel > 0.06, `travel=${armTravel.toFixed(3)}`);
+  check("body emphasis stays restrained", bodyLean > 0.008 && bodyLean < 0.075, `lean=${bodyLean.toFixed(3)}`);
+
+  const settling = run(engine, {seconds: 2, dt, mood: "idle", pick: (p) => p});
+  const settled = settling[settling.length - 1];
+  check(
+    "the gesture settles cleanly when speech ends",
+    Math.abs(settled.channels.gesture) < 0.02 &&
+      Math.abs(settled.root.rotZ) < 0.008 &&
+      Math.abs(settled.armLeft.rot - 0.8) < 0.02
+  );
+}
+
+/* ------------------------------------------ 6b. attention, interest, beats - */
+// Attention is the difference between a character that follows your cursor and
+// one that looks at the thing you are using. The test is directional bias: given
+// a target on one side, the eye must actually spend its time over there.
+
+section("Attention — the eye goes to the target, and it blends rather than locks");
+{
+  const dt = 1 / 120;
+  const SECONDS = 24;
+  const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+
+  const wander = createMotionEngine({seed: 31});
+  wander.setChannels(only("gaze"));
+  const loose = run(wander, {seconds: SECONDS, dt, pick: (p) => p.irisX});
+
+  const attend = createMotionEngine({seed: 31});
+  attend.setChannels(only("gaze", "attention"));
+  const locked = run(attend, {
+    seconds: SECONDS,
+    dt,
+    attention: {x: 0.9, y: 0, weight: 1},
+    pick: (p) => p.irisX
+  });
+
+  const wanderMean = mean(loose);
+  const lockedMean = mean(locked);
+
+  check(
+    "a right-hand target pulls the gaze right",
+    lockedMean > wanderMean + 0.012,
+    `wander=${wanderMean.toFixed(4)} attend=${lockedMean.toFixed(4)}`
+  );
+  check(
+    "the eye still stays inside its socket",
+    Math.max(...locked.map(Math.abs)) < 0.07,
+    `max=${Math.max(...locked.map(Math.abs)).toFixed(4)}`
+  );
+
+  // A blend, not a lock: at half weight the character must still look away, or
+  // it stares.
+  const half = createMotionEngine({seed: 31});
+  half.setChannels(only("gaze", "attention"));
+  const blended = run(half, {
+    seconds: SECONDS,
+    dt,
+    attention: {x: 0.9, y: 0, weight: 0.5},
+    pick: (p) => p.irisX
+  });
+  const awayFrames = blended.filter((v) => v < 0.005).length / blended.length;
+  check(
+    "at half weight it still looks away sometimes",
+    awayFrames > 0.1,
+    `${(awayFrames * 100).toFixed(0)}% of frames off-target`
+  );
+
+  const muted = createMotionEngine({seed: 31});
+  muted.setChannels(only("gaze"));
+  const ignored = run(muted, {
+    seconds: SECONDS,
+    dt,
+    attention: {x: 0.9, y: 0, weight: 1},
+    pick: (p) => p.irisX
+  });
+  check("muting attention ignores the target", Math.abs(mean(ignored) - wanderMean) < 1e-9);
+}
+
+section("Idle rise only ever goes up, and inhale is not a belly");
+{
+  const dt = 1 / 120;
+  const engine = createMotionEngine({seed: 91});
+  engine.setChannels(only("breath"));
+  const frames = run(engine, {seconds: 30, dt, active: false, pick: (p) => p});
+
+  const ys = frames.map((p) => p.root.y);
+  const lowest = Math.min(...ys);
+  const highest = Math.max(...ys);
+
+  // Centring the bob on zero meant half of every breath sat below the resting
+  // pose, which reads as the character shrinking rather than breathing.
+  check("never dips below rest", lowest >= -1e-6, `lowest=${lowest.toExponential(2)}`);
+  check("still visibly rises", highest > 0.008, `highest=${highest.toFixed(4)}`);
+  check("the rise stays gentle", highest < 0.03, `highest=${highest.toFixed(4)}`);
+
+  // On a round character, widest-and-shortest at peak inhale is the silhouette
+  // of a belly. Inhale must read as a chest lifting instead.
+  let widestAtInhale = false;
+  for (const pose of frames) {
+    if (pose.channels.breath > 0.9 && pose.bodyScaleX > pose.bodyScaleY) {
+      widestAtInhale = true;
+      break;
+    }
+  }
+  check("the shell is not widest at peak inhale", !widestAtInhale);
+
+  const maxWidth = Math.max(...frames.map((p) => p.bodyScaleX));
+  check("squash amplitude stays subtle", maxWidth < 1.01, `maxScaleX=${maxWidth.toFixed(4)}`);
+}
+
+section("Gaze never parks on the floor");
+{
+  const dt = 1 / 120;
+  // Everything the widget points at (composer, chips, transcript) is below the
+  // stage. A faithful target used to drag the eye down and pin it there, which
+  // reads as sulking rather than as looking.
+  const engine = createMotionEngine({seed: 77});
+  engine.setChannels(only("gaze", "attention"));
+  const series = run(engine, {
+    seconds: 20,
+    dt,
+    attention: {x: 0, y: 1.4, weight: 1},
+    pick: (p) => p.irisY
+  });
+
+  // irisY is negated from the target, so a downward look is a NEGATIVE irisY.
+  const lowest = Math.min(...series);
+  check(
+    "a target far below only tips the eye down a little",
+    lowest > -0.022,
+    `lowest irisY=${lowest.toFixed(4)}`
+  );
+
+  const idle = createMotionEngine({seed: 78});
+  idle.setChannels(only("gaze"));
+  const wander = run(idle, {seconds: 40, dt, pick: (p) => p.irisY});
+  const mean = wander.reduce((a, b) => a + b, 0) / wander.length;
+  check("idle wandering sits at or above eye level", mean >= 0, `mean=${mean.toFixed(4)}`);
+}
+
+section("Interest — alertness that is not a mood change");
+{
+  const dt = 1 / 120;
+  const calm = createMotionEngine({seed: 44});
+  calm.setChannels(only("blink", "attention"));
+  const calmEye = run(calm, {seconds: 6, dt, interest: 0, pick: (p) => p.eyeOpen});
+
+  const alert = createMotionEngine({seed: 44});
+  alert.setChannels(only("blink", "attention"));
+  const alertEye = run(alert, {seconds: 6, dt, interest: 1, pick: (p) => p.eyeOpen});
+
+  check(
+    "interest widens the eye",
+    Math.max(...alertEye) > Math.max(...calmEye),
+    `calm=${Math.max(...calmEye).toFixed(3)} alert=${Math.max(...alertEye).toFixed(3)}`
+  );
+  check(
+    "but never past the socket",
+    Math.max(...alertEye) <= 1.06,
+    `max=${Math.max(...alertEye).toFixed(3)}`
+  );
+}
+
+section("Beats — impulses that travel and settle, never position jumps");
+{
+  const dt = 1 / 240;
+  for (const beat of ["greet", "perk", "acknowledge", "nod"]) {
+    const engine = createMotionEngine({seed: 52});
+    engine.setChannels(only("attention"));
+    // Settle first, so the beat is the only thing that moves.
+    run(engine, {seconds: 0.5, dt, pick: (p) => p.root.y});
+    const before = run(engine, {seconds: 4 / 240, dt, pick: (p) => p.root.y}).pop();
+
+    engine.trigger(beat);
+    const series = run(engine, {seconds: 3, dt, pick: (p) => p.root.y});
+
+    const firstStep = Math.abs(series[0] - before);
+    const travel = Math.max(...series.map((v) => Math.abs(v - before)));
+    const tail = Math.max(...series.slice(-240).map((v) => Math.abs(v - before)));
+
+    check(`${beat}: produces real travel`, travel > 0.002, `travel=${travel.toFixed(4)}`);
+    check(
+      `${beat}: starts from rest, not a jump`,
+      firstStep < travel * 0.25,
+      `first frame ${firstStep.toFixed(5)} of ${travel.toFixed(4)}`
+    );
+    check(`${beat}: settles back`, tail < travel * 0.2, `tail=${tail.toFixed(5)}`);
+  }
+}
+
+/* ------------------------------------------------- 7. follow-through ------ */
 
 section("Springs — limbs overshoot then settle");
 {
@@ -286,7 +528,7 @@ section("Springs — limbs overshoot then settle");
   check("it settles rather than hunting", settled < peak * 0.35, `tail max=${settled.toFixed(3)}`);
 }
 
-/* ----------------------------------------------------- 7. channel safety -- */
+/* ----------------------------------------------------- 8. channel safety -- */
 // Soloing must always leave a valid pose. If muting a channel could produce a
 // broken figure, the lab's solo buttons would be lying to you.
 
@@ -323,7 +565,7 @@ section("Channel isolation — every solo leaves a valid pose");
   );
 }
 
-/* ------------------------------------------------------------- 8. bounds -- */
+/* ------------------------------------------------------------- 9. bounds -- */
 
 section("Bounds — a long run never leaves a sane envelope");
 {

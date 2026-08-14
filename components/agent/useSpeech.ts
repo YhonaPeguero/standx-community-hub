@@ -62,6 +62,7 @@ const speechLocales: Record<AppLocale, string> = {
 };
 
 interface UseSpeechOptions {
+  enabled: boolean;
   locale: AppLocale;
   onTranscript: (text: string) => void;
   onInterim: (text: string) => void;
@@ -70,6 +71,7 @@ interface UseSpeechOptions {
 }
 
 export function useSpeech({
+  enabled,
   locale,
   onTranscript,
   onInterim,
@@ -84,13 +86,13 @@ export function useSpeech({
   const speechLocale = speechLocales[locale];
 
   const canListen = useMemo(() => {
-    if (typeof window === "undefined") return false;
+    if (!enabled || typeof window === "undefined") return false;
     return Boolean(window.SpeechRecognition ?? window.webkitSpeechRecognition);
-  }, []);
+  }, [enabled]);
 
   const canSpeak = useMemo(() => {
-    return typeof window !== "undefined" && "speechSynthesis" in window;
-  }, []);
+    return enabled && typeof window !== "undefined" && "speechSynthesis" in window;
+  }, [enabled]);
 
   useEffect(() => {
     return () => {
@@ -110,7 +112,7 @@ export function useSpeech({
 
   const speak = useCallback(
     (text: string) => {
-      if (!voiceEnabled || !canSpeak || !text.trim()) {
+      if (!enabled || !voiceEnabled || !canSpeak || !text.trim()) {
         return;
       }
 
@@ -136,7 +138,7 @@ export function useSpeech({
 
       window.speechSynthesis.speak(utterance);
     },
-    [canSpeak, speechLocale, voiceEnabled]
+    [canSpeak, enabled, speechLocale, voiceEnabled]
   );
 
   const toggleVoice = useCallback(() => {

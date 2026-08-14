@@ -446,8 +446,15 @@
   .agent-dock {
     position: relative;
     display: block;
-    width: 104px;
-    height: 128px;
+    /* 0.755 — the character's own aspect, sprig and floor rings included, with
+       the rings measured as they actually project rather than as they measure
+       flat. A squarer dock spends its width on empty air and draws the figure
+       smaller. These two numbers are what pays for the clearance the scene now
+       holds on every edge: at 108x143 the mascot is still drawn at 80.7px per
+       body diameter, exactly its size before any of this was corrected.
+       `npm run framing:check` fails if they drift out of proportion. */
+    width: 108px;
+    height: 143px;
     padding: 0;
     border: 0;
     background: none;
@@ -506,17 +513,26 @@
   }
 
   /* Light spilling onto the page under the projection — the detail that grounds
-     the figure now that there is no housing to stand in. */
+     the figure now that there is no housing to stand in.
+
+     It has to sit BELOW the floor rings, not on them. At `bottom: 2px` its core
+     landed square on the ellipse, and a soft lime wash over three hairlines of
+     the same lime is how you lose them: the bottom of the ring read as haze
+     rather than as a ring. The scene already draws the floor; this only has to
+     light the page under it.
+
+     Percentages, so it keeps its place against the rings at the phone size too
+     — the dock is 143px tall on desktop and 116px on a phone. */
   .agent-dock__glow {
     position: absolute;
     left: 50%;
-    bottom: 2px;
-    width: 74%;
-    height: 12px;
+    bottom: -5%;
+    width: 66%;
+    height: 9%;
     transform: translateX(-50%);
     border-radius: 9999px;
-    background: radial-gradient(ellipse at center, rgba(0, 255, 135, 0.55), transparent 70%);
-    filter: blur(5px);
+    background: radial-gradient(ellipse at center, rgba(0, 255, 135, 0.4), transparent 70%);
+    filter: blur(6px);
     animation: emitter-pulse 3.6s var(--ease-in-out) infinite;
     pointer-events: none;
   }
@@ -784,6 +800,15 @@
        chopped by the container edge. */
     mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem);
+  }
+
+  /* Messages hug the bottom of the transcript. The box is `flex: 1 1 auto` so a
+     long conversation can grow into it, but with only the greeting in it that
+     left ~190px of dead space between the greeting and the suggestions.
+     `margin-top: auto` on the first child rather than `justify-content: flex-end`
+     — the latter clips the top of overflowing content in a scrolling column. */
+  .agent-transcript > *:first-child {
+    margin-top: auto;
   }
 
   .agent-turn {
@@ -1115,12 +1140,6 @@
     background: currentColor;
   }
 
-  /* Sits directly on the scrim, so it needs more lift than #6f6f6f (~3.8:1). */
-  .agent-disclaimer {
-    font-size: 0.6875rem;
-    line-height: 1.5;
-    color: #7f8f86;
-  }
 
   /* Card hover tint — uses --card-accent-rgb CSS variable set per card. */
   .card-tinted {
@@ -1243,7 +1262,7 @@
 }
 
 /* Landscape phones and short windows: the composer must stay reachable, so the
-   optional bits go first. The disclaimer stays — it is not decoration. */
+   optional bits go first. */
 @media (max-height: 520px) {
   .agent-overlay__inner {
     padding-top: 0.5rem;
@@ -1322,8 +1341,8 @@
   }
 
   .agent-dock {
-    width: 84px;
-    height: 104px;
+    width: 88px;
+    height: 116px;
   }
 
   .agent-hint {

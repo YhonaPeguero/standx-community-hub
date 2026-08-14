@@ -1,14 +1,36 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
-import type {HologramMood, HologramSceneHandle} from "@/lib/hologram-scene";
+import {useEffect, useImperativeHandle, useRef, useState, type Ref} from "react";
+import type {
+  HologramMood,
+  HologramSceneHandle,
+  MotionPreference
+} from "@/lib/hologram-scene";
+import type {MotionTrigger} from "@/lib/mascot/motion";
+
+export type HologramMotionPreference = MotionPreference;
+
+/**
+ * What the widget can ask the character to do. Deliberately narrow: the mascot
+ * reacts to interaction, it is not a puppet the chat drives frame by frame.
+ */
+export interface HologramHandle {
+  /** Look at an element. `null` goes back to wandering. */
+  lookAt: (element: Element | null, weight?: number) => void;
+  /** 0..1 arousal. Decays on its own. */
+  setInterest: (interest: number) => void;
+  /** One-shot acknowledgement. */
+  beat: (event: MotionTrigger) => void;
+}
 
 interface HologramStageProps {
   mood: HologramMood;
   active: boolean;
+  motionPreference?: HologramMotionPreference;
   /** Tracks the pointer so the mascot's eye follows the visitor. */
   trackPointer?: boolean;
   className?: string;
+  handleRef?: Ref<HologramHandle>;
 }
 
 /**
@@ -19,13 +41,16 @@ interface HologramStageProps {
 export default function HologramStage({
   mood,
   active,
+  motionPreference = "system",
   trackPointer = true,
-  className
+  className,
+  handleRef
 }: HologramStageProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<HologramSceneHandle | null>(null);
   const moodRef = useRef<HologramMood>(mood);
   const activeRef = useRef<boolean>(active);
+  const preferenceRef = useRef<HologramMotionPreference>(motionPreference);
   const [webglFailed, setWebglFailed] = useState(false);
 
   // three.js is ~300KB and this widget is decorative, so the scene module is
@@ -44,7 +69,10 @@ export default function HologramStage({
         if (cancelled) {
           return;
         }
-        const scene = createHologramScene({container});
+        const scene = createHologramScene({
+          container,
+          motionPreference: preferenceRef.current
+        });
         sceneRef.current = scene;
 
         if (scene.webglAvailable) {
@@ -66,7 +94,31 @@ export default function HologramStage({
       sceneRef.current?.dispose();
       sceneRef.current = null;
     };
+    // Intentionally mount-only. The motion preference is applied through a
+    // runtime setter below: keying this effect on it rebuilt the WebGL context
+    // and reset every spring, which read as a hard cut mid-toggle.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    preferenceRef.current = motionPreference;
+    sceneRef.current?.setMotionPreference(motionPreference);
+  }, [motionPreference]);
+
+  useImperativeHandle(
+    handleRef,
+    () => ({
+      lookAt: (element, weight = 1) => {
+        sceneRef.current?.lookAt(
+          element ? element.getBoundingClientRect() : null,
+          weight
+        );
+      },
+      setInterest: (interest) => sceneRef.current?.setInterest(interest),
+      beat: (event) => sceneRef.current?.beat(event)
+    }),
+    []
+  );
 
   useEffect(() => {
     moodRef.current = mood;
@@ -116,6 +168,7 @@ export default function HologramStage({
         className ?? ""
       }`}
       data-mood={mood}
+      data-motion={motionPreference}
     />
   );
 }

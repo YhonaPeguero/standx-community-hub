@@ -55,7 +55,11 @@
       "Bash(gh pr *)",
       "PowerShell(gh *)",
       "Bash(git fetch *)",
-      "Bash(git cherry-pick *)"
+      "Bash(git cherry-pick *)",
+      "Bash(gh auth *)",
+      "Bash(gh api *)",
+      "Bash(npx ctx7@latest library \"Vercel\" \"disable deployments for a specific git branch using vercel.json git.deploymentEnabled\")",
+      "Bash(npx ctx7@latest docs /websites/vercel \"vercel.json git deploymentEnabled disable automatic deployments for a specific branch\")"
     ]
   }
 }

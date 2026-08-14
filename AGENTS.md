@@ -18,9 +18,24 @@ npm run start
 npm run lint        # next lint (eslint-config-next)
 npm run typecheck   # tsc --noEmit (strict)
 npm run motion:check # headless assertions on the mascot's movement curves
+npm run framing:check # re-solves the mascot's camera framing from the geometry
+npm run agent:check  # offline: the knowledge base is internally consistent
+npm run docs:check   # ONLINE: the knowledge base still agrees with StandX
 ```
 
 No test runner is configured. Do not invent one. Verify changes with `typecheck` + `lint` + manual dev run.
+
+`docs:check` is the only script that touches the network, so it is deliberately
+outside the offline gate — run it before a release or on a schedule, not in a
+tight loop. It exists because `agent:check` can only prove the knowledge base is
+*consistent*, never that it is still *true*: the `verifiedAt` stamps were written
+by hand and nothing read them, so the hub could drift for months while every
+check stayed green. `docs:check` closes the three ways that happens — a page we
+link to gets renamed (dead link), StandX documents something new (a gap nobody
+hears about), or a number we quote changes (stale stamp). The third can't be
+automated without a human reading the page, so `volatility` acts as an expiry
+date: `changeable` facts must be re-read within 30 days, `stable` within 90. When
+it fails on staleness it names the topic and the exact source pages to re-read.
 
 `motion:check` is not a test runner — it is a standalone script that transpiles
 `lib/mascot/motion.ts` (which has no imports, deliberately) and asserts the
@@ -151,7 +166,21 @@ The short version:
 - **`lib/mascot/motion.ts` has zero imports and must keep it that way** — that is
   what lets `scripts/verify-motion.mjs` transpile and exercise it with no
   bundler and no browser.
-- **`npm run motion:check` is the gate.** 37 assertions on curve shape: exhale
+- **The character reacts to being used, not just to a mood.** `MotionInput` carries an
+  `attention` target (stage-local, converted from a real DOM rect by the widget) and an
+  `interest` arousal level, plus four one-shot beats — `greet`, `perk`, `acknowledge`, `nod`.
+  `StandxAgent` owns a small `avatar` surface that routes dock hover/press, composer focus and
+  typing, suggestion hover, send, answer and navigation into them. Attention **blends** against
+  ambient wandering rather than replacing it; a locked eye stares. See
+  `.claude/skills/character-motion/INTERACTION.md`.
+- **`interest` decays on its own.** Callers signal that something IS happening (`avatar.engage()`
+  refreshes a single timer); nothing has to remember to say it stopped. Per-handler teardown is
+  how you end up with a character permanently stuck on alert.
+- **The motion preference is a runtime setter, never a remount key.** `HologramStage` creates the
+  scene once; `setMotionPreference` flips the render loop in place. Keying the creation effect on
+  it tore down the WebGL context, reloaded every texture and zeroed every spring — the visitor saw
+  a hard cut in the middle of their own toggle.
+- **`npm run motion:check` is the gate.** 63 assertions on curve shape: exhale
   longer than inhale, blink opens slower than it closes, gaze still for >80% of
   frames, speech at a real syllable rate, springs that settle rather than hunt,
   and identical output at 30fps and 144fps. Run it after any motion change.
@@ -186,13 +215,26 @@ The short version:
   sits at -0.63, which is `FLOOR_Y`, so the character stands on the emitter ring instead of
   hovering a third of a body above it. The `Framing` values in the scene are derived from the real
   ink bounds; change a part's size and they need re-solving.
-- **There are two framings, and small canvases recompose rather than blindly shrink.** The open
-  chamber keeps a roomy field; `FRAME_COMPACT` holds the face near 80% of the dock width and
-  preserves vertical room for the emitter rings. It may crop bloom and motes, never the connection
-  between the delta-loop and the body.
-  The trigger is **pixels per body diameter**, not container width or height: which dimension
-  constrains the drawing depends on the aspect, so a 708x141 landscape strip is "large" by width
-  and tiny in practice. Docks land at 48-68 px/unit, the open chamber at 217-300.
+- **There is one framing, and it is solved at module load — never typed in.** `solveFraming()`
+  unions the flat artwork envelope (`ARTWORK`) with the floor ring's extent and adds
+  `CONTENT_MARGIN` on every side. Run `npm run framing:check` after touching any of it: it
+  re-derives the frame from the sources and then projects the real torus through a real
+  `PerspectiveCamera` at every size the widget ships at.
+  There used to be a second, cropping frame for small canvases. It cut the leaf, and it is gone.
+- **The floor ring is the only thing in the scene with depth, and it must be sampled, not
+  reasoned about.** The hoop is tilted almost onto its edge, so parts of it sit 0.58 of a body
+  diameter nearer the camera and perspective magnifies them ~22%. Framing it flat put the ellipse
+  on the last row of pixels — twice. Worse, hand-picking a "worst point" also failed, because on a
+  tilted ring each extreme trades position against depth: the lowest point on screen is the tube's
+  **underside** on the near arc, and the widest point is not where the ellipse is widest but a
+  little around from it, where leaning toward the camera buys more than the smaller radius costs.
+  Flat maths puts the ring's bottom at -0.7014; it actually projects to -0.7270. That 0.0256 gap
+  is larger than the entire margin, which is why adding margin never fixed it.
+- Which dimension constrains the drawing depends on the aspect, so **pixels per body diameter** is
+  the size to reason about, not container width or height: a 720x143 landscape strip is "large" by
+  width and tiny in practice. Docks land at 65-81 px/unit, the open chamber at 160-360. The dock's
+  CSS size is kept in proportion to the solved frame so the margin costs no drawn size — 108x143
+  still draws the mascot at 80.7 px/unit.
 - **Colours in `mascot-art.ts` ship as drawn**, so they are the reference's real values, not
   values picked to survive a tint. Keep the shell charcoal (~#2e2e2e) and the outlines near-black:
   the outlines are the only thing separating an arm from the body at 104px.
@@ -216,8 +258,9 @@ The short version:
   it reads as a wireframe triangle. A hoop sweeping through the character is a special effect, not
   characterisation. The floor rings plus the CSS bloom on `.agent-overlay__stage` carry the
   staging instead.
-- `FRAME_FULL` / `FRAME_COMPACT` are solved against the real content extent — floor ellipse
-  ≈ -0.693, delta/leaf tip ≈ +0.60 — so the figure fills the frame instead of floating in padding.
+- `FRAME` is solved against the real content extent — leaf tip +0.997 at full lift, floor ellipse
+  projecting to -0.7270 — so the figure fills the frame instead of floating in padding, and no
+  edge ever sits on ink.
 - `HologramStage` imports the scene with a dynamic `import()`. three.js is ~300KB and this widget
   is decorative — keep it out of first load. Until the chunk lands (or if WebGL is unavailable)
   the `.hologram-stage--fallback` CSS silhouette holds the space.

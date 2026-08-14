@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "motion:check": "node scripts/verify-motion.mjs"
+    "motion:check": "node scripts/verify-motion.mjs",
+    "framing:check": "node scripts/check-framing.mjs",
+    "agent:check": "node scripts/check-agent-answers.mjs",
+    "docs:check": "node scripts/check-docs-freshness.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.116.0",

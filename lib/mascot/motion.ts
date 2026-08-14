@@ -23,9 +23,11 @@
  *    functions of time, so they overshoot and settle — follow-through.
  * 5. **Speech is a syllable train**, not a fast sine. Attack/decay envelopes,
  *    varying durations, and real pauses.
- * 6. **Mood changes get an impulse**, so the character reacts rather than
+ * 6. **Speaking has phrase gestures.** Sparse, alternating emphasis beats move
+ *    one arm more than the other, with quiet gaps so it never becomes waving.
+ * 7. **Mood changes get an impulse**, so the character reacts rather than
  *    cross-fading between two idles.
- * 7. **Everything is frame-rate independent.** Springs run on a fixed substep
+ * 8. **Everything is frame-rate independent.** Springs run on a fixed substep
  *    and smoothing uses `exp(-lambda * dt)`. The old code used
  *    `lerp(current, target, 0.06)` per frame, which literally ran twice as fast
  *    on a 120Hz display as on a 60Hz one.
@@ -45,6 +47,8 @@ export type MotionChannel =
   | "gaze"
   | "blink"
   | "speech"
+  | "gesture"
+  | "attention"
   | "arms"
   | "leaf"
   | "reaction";
@@ -55,6 +59,8 @@ export const motionChannels: readonly MotionChannel[] = [
   "gaze",
   "blink",
   "speech",
+  "gesture",
+  "attention",
   "arms",
   "leaf",
   "reaction"
@@ -69,10 +75,29 @@ export function allChannelsOn(): ChannelMask {
     gaze: true,
     blink: true,
     speech: true,
+    gesture: true,
+    attention: true,
     arms: true,
     leaf: true,
     reaction: true
   };
+}
+
+/**
+ * Something specific for the character to look at, in STAGE-LOCAL normalised
+ * space where (0, 0) is the mascot's own centre and 1 is roughly the edge of
+ * its frame. The widget converts a real DOM rect into this; the engine keeps
+ * zero imports and never touches the DOM itself.
+ */
+export interface AttentionTarget {
+  x: number;
+  y: number;
+  /**
+   * How hard to look. Blends against ambient wandering rather than replacing
+   * it — at 0 the character goes back to looking around the room, at 1 it locks
+   * on and its fixations lengthen.
+   */
+  weight: number;
 }
 
 export interface MotionInput {
@@ -82,10 +107,33 @@ export interface MotionInput {
   /** Pointer in normalised -1..1 space, already damped by the caller. */
   pointerX: number;
   pointerY: number;
+  /** A specific thing to look at. Null or omitted = wander. */
+  attention?: AttentionTarget | null;
+  /**
+   * 0..1 arousal. Deliberately not a mood: moods are semantic states the chat
+   * owns, interest is a physical alertness that rides on top of any of them.
+   * Shortens fixations, widens the eye slightly, adds a small lean.
+   */
+  interest?: number;
 }
 
-/** One-shot events the lab can fire to inspect a movement in isolation. */
-export type MotionTrigger = "blink" | "doubleBlink" | "saccade" | "react";
+/**
+ * One-shot beats. Velocity impulses into springs, never position jumps — a
+ * jumped position reads as a glitch, an impulse reads as a reaction.
+ */
+export type MotionTrigger =
+  | "blink"
+  | "doubleBlink"
+  | "saccade"
+  | "react"
+  /** Pointer reached the dock: look up, blink, small lift. */
+  | "greet"
+  /** Dock pressed: compress then release, before the chamber opens. */
+  | "perk"
+  /** Message sent: one downward beat. */
+  | "acknowledge"
+  /** Answer landed: two small nods, settling. */
+  | "nod";
 
 export interface MascotPose {
   root: {x: number; y: number; rotZ: number; rotY: number; scale: number};
@@ -298,6 +346,17 @@ const ARM_REST_ROT = 0.8;
 /** Hard bound on the sprig's bend. The camera framing depends on it. */
 const LEAF_MAX_ROT = 0.16;
 
+/**
+ * The eye reads a downward target as sulking long before it reads it as
+ * looking. Both numbers are deliberately mean: the character should acknowledge
+ * that something is down there, then go back to facing the visitor.
+ */
+/** Total idle rise, all of it above the resting pose. */
+const BREATH_LIFT = 0.016;
+
+const VERTICAL_ATTENTION_GAIN = 0.34;
+const MAX_LOOK_DOWN = 0.42;
+
 /* ------------------------------------------------------------------ engine */
 
 export function createMotionEngine(options: MotionEngineOptions = {}): MotionEngine {
@@ -320,6 +379,15 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
   let saccadeT = 1;
   let saccadeDuration = 0.06;
   let fixationLeft = 1.2;
+  // Attention + interest -----------------------------------------------------
+  // `attentionWeight` is damped rather than read raw so a target appearing or
+  // vanishing does not snap the eye; `interest` is the arousal level.
+  let attentionX = 0;
+  let attentionY = 0;
+  let attentionWeight = 0;
+  let interest = 0;
+  let lastAttentionX = 0;
+  let lastAttentionY = 0;
   let lastPointerX = 0;
   let lastPointerY = 0;
 
@@ -333,11 +401,32 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
   let jaw = 0;
   let mouthTalk = 0;
 
+  // Conversational gesture -------------------------------------------------
+  // A gesture is a phrase-level beat, not a second speech oscillator. Its
+  // long quiet gaps are as important as the movement itself.
+  let gestureT = 0;
+  let gestureDuration = 0;
+  let gestureCooldown = 0.38;
+  let gesturePeak = 0;
+  let gestureSide: -1 | 1 = -1;
+  let gestureSignal = 0;
+
   // Springs -----------------------------------------------------------------
   const rootY = new Spring(0, 90, 13);
   const rootScale = new Spring(1, 110, 15);
   const armL = new Spring(0, 70, 9.5);
   const armR = new Spring(0, 64, 9.0);
+  // Separate springs keep the gesture independently switchable in the lab.
+  // The dominant arm arrives first; the supporting arm and leaf trail it.
+  const gestureArmL = new Spring(0, 92, 14.5);
+  const gestureArmR = new Spring(0, 76, 12.5);
+  const gestureLean = new Spring(0, 88, 14);
+  const gestureLift = new Spring(0, 96, 15);
+  const gestureLeaf = new Spring(0, 38, 7.4);
+  // Beats: the one-shot acknowledgements. Vertical for nods, scale for the
+  // press anticipation. Separate from the mood impulse so the lab can solo them.
+  const beatY = new Spring(0, 128, 14);
+  const beatScale = new Spring(0, 150, 16);
   // Stiffer and better damped than the arms: a 0.9-unit blade pivoting at its
   // base magnifies every radian, so what read as a gentle sway on the old stubby
   // leaf swung this one clean out of frame.
@@ -367,6 +456,15 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
     return {duration: 0.09 + random() * 0.12, peak: 0.42 + random() * 0.58};
   }
 
+  function startGesture(): void {
+    gestureT = 0;
+    gestureDuration = 0.58 + random() * 0.24;
+    gesturePeak = 0.58 + random() * 0.34;
+    // Alternate the leading hand. Occasional same-side repetition would read
+    // as a habit at this scale, while perfect simultaneous arms read robotic.
+    gestureSide = gestureSide === -1 ? 1 : -1;
+  }
+
   function stepPhysics(dt: number, input: MotionInput): void {
     const {mood} = input;
 
@@ -393,8 +491,32 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
     // Breath ----------------------------------------------------------------
     // The period itself drifts slightly, so consecutive breaths differ.
     const periodJitter = 1 + organicNoise(time, 0.11, 4.1) * 0.09;
-    breathPhase += dt / (BREATH_PERIOD[mood] * periodJitter);
+    // Engagement tightens the breath a little. Small on purpose: a visible
+    // change of breathing rate reads as alarm, not attention.
+    const interestPace = 1 - interest * 0.12;
+    breathPhase += dt / (BREATH_PERIOD[mood] * periodJitter * interestPace);
     breathPhase -= Math.floor(breathPhase);
+
+    // Attention + interest ---------------------------------------------------
+    // Damped so that a target appearing, moving or vanishing never snaps the
+    // eye. `interest` decays on its own, so the widget only has to say when
+    // something IS happening, never when it stops.
+    const wantWeight = channels.attention ? (input.attention?.weight ?? 0) : 0;
+    if (input.attention && channels.attention) {
+      attentionX = damp(attentionX, input.attention.x, 9, dt);
+      // Vertical is compressed hard and floored. Almost every element the
+      // widget points at — composer, chips, transcript — is BELOW the stage, so
+      // a faithful target parks the eye on the floor and the character reads as
+      // sulking. It should register the direction, not stare at its own feet.
+      attentionY = damp(
+        attentionY,
+        clamp(input.attention.y * VERTICAL_ATTENTION_GAIN, -1, MAX_LOOK_DOWN),
+        9,
+        dt
+      );
+    }
+    attentionWeight = damp(attentionWeight, clamp(wantWeight, 0, 1), 6.5, dt);
+    interest = damp(interest, clamp(input.interest ?? 0, 0, 1), 3.4, dt);
 
     // Gaze ------------------------------------------------------------------
     if (channels.gaze) {
@@ -405,25 +527,57 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
       lastPointerX = input.pointerX;
       lastPointerY = input.pointerY;
 
+      // A target that moves far enough is a new thing to look at, so it earns a
+      // saccade of its own rather than waiting out the current fixation.
+      const attentionMoved = Math.hypot(
+        attentionX - lastAttentionX,
+        attentionY - lastAttentionY
+      );
+
       if (saccadeT >= 1) {
         fixationLeft -= dt;
         // A decisive pointer move re-targets immediately; small jitter does not,
         // which is what stops the eye from vibrating with a shaky mouse.
-        if (fixationLeft <= 0 || pointerMoved > 0.22) {
-          const lookAtPointer = mood === "listening" || mood === "speaking"
-            ? random() < 0.82
-            : random() < 0.55;
-          if (lookAtPointer) {
-            // Never dead-on — a fraction off-centre reads as looking AT you
-            // rather than through you.
+        const retarget =
+          fixationLeft <= 0 ||
+          pointerMoved > 0.22 ||
+          (attentionWeight > 0.35 && attentionMoved > 0.16);
+
+        if (retarget) {
+          lastAttentionX = attentionX;
+          lastAttentionY = attentionY;
+
+          // Attention beats the pointer and beats wandering, in that order. It
+          // is a specific element the visitor is using, not a guess at where
+          // they might be looking.
+          const lookAtTarget = attentionWeight > 0.3 && random() < attentionWeight;
+          const lookAtPointer =
+            mood === "listening" || mood === "speaking"
+              ? random() < 0.82
+              : random() < 0.55;
+
+          if (lookAtTarget) {
+            // Still not dead-on. A fraction off-centre reads as looking AT the
+            // thing rather than through it.
+            startSaccade(
+              attentionX + (random() - 0.5) * 0.12,
+              attentionY + (random() - 0.5) * 0.1
+            );
+          } else if (lookAtPointer) {
             startSaccade(
               input.pointerX + (random() - 0.5) * 0.18,
               input.pointerY + (random() - 0.5) * 0.14
             );
           } else {
-            startSaccade((random() - 0.5) * 1.1, (random() - 0.5) * 0.7);
+            // Biased slightly up: a character that wanders evenly spends half
+            // its idle time looking at the ground.
+            startSaccade((random() - 0.5) * 1.1, (random() - 0.55) * 0.6);
           }
-          fixationLeft = 0.55 + random() * (mood === "thinking" ? 1.1 : 2.0);
+
+          // Locked-on attention holds; an alert character re-targets sooner.
+          const base = 0.55 + random() * (mood === "thinking" ? 1.1 : 2.0);
+          fixationLeft =
+            base * (1 + attentionWeight * 0.55) * (1 - interest * 0.3);
         }
       } else {
         saccadeT = Math.min(1, saccadeT + dt / saccadeDuration);
@@ -498,11 +652,69 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
       syllableT = 0;
     }
 
+    // Conversational gesture ------------------------------------------------
+    if (channels.gesture) {
+      if (mood === "speaking" && input.active) {
+        if (gestureDuration > 0 && gestureT < gestureDuration) {
+          gestureT += dt;
+          const p = clamp(gestureT / gestureDuration, 0, 1);
+          // Quick intent, a tiny hold, then a relaxed return. The side is kept
+          // in the sign so the lab can verify that both hands take turns.
+          const envelope =
+            p < 0.22
+              ? easeOutCubic(p / 0.22)
+              : p < 0.36
+                ? 1
+                : 1 - easeInOutSine((p - 0.36) / 0.64);
+          gestureSignal = gestureSide * gesturePeak * envelope;
+        } else {
+          gestureSignal = 0;
+          gestureCooldown -= dt;
+          if (gestureCooldown <= 0) {
+            startGesture();
+            gestureCooldown = gestureDuration + 0.72 + random() * 0.7;
+          }
+        }
+      } else {
+        gestureSignal = 0;
+        gestureT = gestureDuration;
+        // Re-enter with a short listening beat, never mid-gesture.
+        gestureCooldown = 0.32;
+      }
+
+      const amount = Math.abs(gestureSignal);
+      const leftLeads = gestureSignal < 0;
+      gestureArmL.step(dt, leftLeads ? -amount * 0.18 : -amount * 0.052);
+      gestureArmR.step(dt, leftLeads ? amount * 0.052 : amount * 0.18);
+      gestureLean.step(dt, gestureSignal * 0.031);
+      gestureLift.step(dt, amount * 0.008);
+      gestureLeaf.step(dt, -gestureSignal * 0.04);
+    } else {
+      // Muting a channel must not leave a hidden spring accumulating state.
+      gestureSignal = 0;
+      gestureArmL.reset();
+      gestureArmR.reset();
+      gestureLean.reset();
+      gestureLift.reset();
+      gestureLeaf.reset();
+    }
+
+    // Beats -----------------------------------------------------------------
+    // Target is always rest; these only ever move because something kicked
+    // them. Stepped unconditionally so a beat already in flight settles even if
+    // the channel is muted mid-swing.
+    beatY.step(dt, 0);
+    beatScale.step(dt, 0);
+
     // Springs ---------------------------------------------------------------
     const breath = channels.breath ? breathCurve(breathPhase) : 0;
     const swayN = channels.sway ? organicNoise(time, 0.29, 0.0) : 0;
 
-    rootY.step(dt, breath * 0.02 + engagement * 0.012);
+    // The idle rise only ever goes UP from rest. Centring it on zero meant half
+    // of every breath was spent below the resting pose, which read as the
+    // character shrinking rather than breathing. Softer, too: 0.016 of total
+    // travel where the old symmetric version covered 0.04.
+    rootY.step(dt, (breath * 0.5 + 0.5) * BREATH_LIFT + engagement * 0.012);
     rootScale.step(dt, 1 + engagement * 0.03);
 
     // Arms are driven by the body but reach it late and overshoot. Different
@@ -528,12 +740,28 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
 
     // Weight shift: the body leans and counter-rotates, feet planted. Without
     // the rotZ coupling a lateral slide reads as the whole rig being dragged.
-    const rootX = channels.sway ? swayN2 * 0.022 : 0;
-    const rotZ = channels.sway ? swayN2 * 0.03 + swayN * 0.012 : 0;
-    const rotY = channels.sway ? swayN * 0.1 : 0;
+    const gestureX = channels.gesture ? gestureLean.value * 0.12 : 0;
 
-    // Squash and stretch, volume-preserving.
-    const squash = channels.breath ? breath * 0.014 : 0;
+    // Attention turns the body a fraction toward whatever has it. Eyes alone
+    // read as a doll following you around a room; eyes plus a partial turn read
+    // as somebody looking at something. It stays small — this rig has no neck,
+    // so the turn is the whole body and it oversells fast.
+    const attend = channels.attention ? attentionWeight : 0;
+    const attendTurn = attend * attentionX * 0.16;
+    const attendLean = attend * attentionX * 0.018;
+
+    const rootX = (channels.sway ? swayN2 * 0.022 : 0) + gestureX + attendLean;
+    const rotZ =
+      (channels.sway ? swayN2 * 0.03 + swayN * 0.012 : 0) +
+      (channels.gesture ? gestureLean.value : 0);
+    const rotY = (channels.sway ? swayN * 0.1 : 0) + attendTurn;
+
+    // Squash and stretch. The sign matters more than the amount: the old mapping
+    // made the shell WIDEST and SHORTEST at peak inhale, which on a round
+    // character is exactly the silhouette of a belly. An inhale should read as a
+    // chest lifting, so it now goes fractionally taller and narrower, at little
+    // over half the previous amplitude.
+    const squash = channels.breath ? breath * 0.008 : 0;
 
     // Blink -------------------------------------------------------------
     let eyeOpen = 1;
@@ -546,8 +774,11 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
         eyeOpen = easeOutCubic(clamp(blink.t / BLINK_OPEN_S, 0, 1));
       }
     }
+    // Interest widens the eye a few percent. Any more and it reads as a stare.
+    const alertOpen = channels.attention ? 1 + interest * 0.06 : 1;
     // Never fully zero: a plane scaled to 0 disappears rather than closing.
-    const eyeScale = Math.max(0.04, eyeOpen);
+    // Clamped above too, or the widening pushes the sclera past its socket.
+    const eyeScale = clamp(eyeOpen * alertOpen, 0.04, 1.06);
 
     // Gaze --------------------------------------------------------------
     // Micro-tremor during fixation. Tiny — but a perfectly still eye is
@@ -564,31 +795,51 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
     return {
       root: {
         x: rootX,
-        y: rootY.value,
+        y:
+          rootY.value +
+          (channels.gesture ? gestureLift.value : 0) +
+          (channels.attention ? beatY.value : 0),
         rotZ,
         rotY,
-        scale: rootScale.value
+        scale: rootScale.value + (channels.attention ? beatScale.value : 0)
       },
       // Half the torso's travel: the feet shuffle a little under a lean, they
       // do not slide with it.
       stand: {x: rootX * 0.5},
-      bodyScaleX: 1 + squash,
-      bodyScaleY: 1 - squash,
+      bodyScaleX: 1 - squash * 0.5,
+      bodyScaleY: 1 + squash,
       eyeOpen: eyeScale,
       lidOpacity: 1 - eyeOpen,
       irisX,
       irisY,
       mouthTalk,
       jawScaleY: mouthTalk > 0.01 ? jawScaleY : 1,
-      armLeft: channels.arms
-        ? {rot: ARM_REST_ROT + armL.value, y: armL.value * 0.05}
-        : {rot: ARM_REST_ROT, y: 0},
-      armRight: channels.arms
-        ? {rot: -ARM_REST_ROT + armR.value, y: armR.value * 0.05}
-        : {rot: -ARM_REST_ROT, y: 0},
+      armLeft: {
+        rot:
+          ARM_REST_ROT +
+          (channels.arms ? armL.value : 0) +
+          (channels.gesture ? gestureArmL.value : 0),
+        y:
+          (channels.arms ? armL.value * 0.05 : 0) +
+          (channels.gesture ? gestureArmL.value * 0.035 : 0)
+      },
+      armRight: {
+        rot:
+          -ARM_REST_ROT +
+          (channels.arms ? armR.value : 0) +
+          (channels.gesture ? gestureArmR.value : 0),
+        y:
+          (channels.arms ? armR.value * 0.05 : 0) +
+          (channels.gesture ? gestureArmR.value * 0.035 : 0)
+      },
       // Clamped, not just damped. HALF_WIDTH/HALF_HEIGHT are solved from this
       // bound, so a large impulse must not be able to swing the tip out of shot.
-      stemRot: channels.leaf ? clamp(leaf.value, -LEAF_MAX_ROT, LEAF_MAX_ROT) : 0,
+      stemRot: clamp(
+        (channels.leaf ? leaf.value : 0) +
+          (channels.gesture ? gestureLeaf.value : 0),
+        -LEAF_MAX_ROT,
+        LEAF_MAX_ROT
+      ),
       intensity,
       channels: {
         breath,
@@ -596,6 +847,8 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
         gaze: gazeX,
         blink: 1 - eyeOpen,
         speech: jaw,
+        gesture: gestureSignal,
+        attention: attentionWeight * attentionX,
         arms: armL.value,
         leaf: leaf.value,
         reaction: rootY.velocity
@@ -626,6 +879,8 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
         gaze: false,
         blink: false,
         speech: false,
+        gesture: false,
+        attention: false,
         arms: false,
         leaf: false,
         reaction: false
@@ -651,6 +906,33 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
       } else if (event === "saccade") {
         startSaccade((random() - 0.5) * 1.6, (random() - 0.5) * 0.9);
         fixationLeft = 0.6 + random() * 1.4;
+      } else if (event === "greet") {
+        // Noticed you. Look up toward the visitor, blink, and lift a little.
+        startSaccade((random() - 0.5) * 0.3, -0.35 - random() * 0.2);
+        fixationLeft = 0.9 + random() * 0.6;
+        blink.stage = "closing";
+        blink.t = 0;
+        beatY.impulse(0.42);
+        leaf.impulse(0.5);
+      } else if (event === "perk") {
+        // Anticipation before the chamber opens: compress, then the spring
+        // releases on its own. A character that braces before it moves reads as
+        // having decided to move.
+        beatScale.impulse(-0.9);
+        beatY.impulse(-0.5);
+        armL.impulse(-0.6);
+        armR.impulse(0.6);
+        leaf.impulse(0.9);
+      } else if (event === "acknowledge") {
+        // Got it. One downward beat, no bounce back past rest.
+        beatY.impulse(-0.6);
+        beatScale.impulse(0.32);
+        leaf.impulse(0.55);
+      } else if (event === "nod") {
+        // Here you go. Two small nods — the second is queued by the spring's
+        // own overshoot rather than by a second timer.
+        beatY.impulse(-0.85);
+        leaf.impulse(0.7);
       } else if (event === "react") {
         rootY.impulse(0.7);
         rootScale.impulse(0.3);
@@ -680,10 +962,29 @@ export function createMotionEngine(options: MotionEngineOptions = {}): MotionEng
       jaw = 0;
       mouthTalk = 0;
       syllableT = 0;
+      gestureT = 0;
+      gestureDuration = 0;
+      gestureCooldown = 0.38;
+      gesturePeak = 0;
+      gestureSide = -1;
+      gestureSignal = 0;
       rootY.reset();
       rootScale.reset();
       armL.reset();
       armR.reset();
+      gestureArmL.reset();
+      gestureArmR.reset();
+      gestureLean.reset();
+      gestureLift.reset();
+      gestureLeaf.reset();
+      beatY.reset();
+      beatScale.reset();
+      attentionX = 0;
+      attentionY = 0;
+      attentionWeight = 0;
+      interest = 0;
+      lastAttentionX = 0;
+      lastAttentionY = 0;
       leaf.reset();
     }
   };

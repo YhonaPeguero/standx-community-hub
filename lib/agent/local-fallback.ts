@@ -7,6 +7,10 @@ import {
   extraRoutes,
   hubSectionMap
 } from "@/lib/agent/hub-map";
+import {
+  matchCoreKnowledge,
+  normalizeKnowledgeText
+} from "@/lib/agent/standx-knowledge";
 import {findDoc, type DocEntry} from "@/lib/agent/standx-knowledge";
 import type {AgentLink, AgentMessage, AgentNavigation} from "@/lib/agent/types";
 
@@ -22,6 +26,7 @@ export interface LocalAnswer {
   text: string;
   navigation?: AgentNavigation;
   links: AgentLink[];
+  kind: "knowledge" | "navigation" | "docs" | "fallback";
 }
 
 type Copy = Record<AppLocale, string>;
@@ -48,13 +53,13 @@ const copy = {
     uk: "Це описано в офіційній документації. Ось сторінка:",
     ko: "공식 문서에 해당 내용이 있어요. 이 페이지를 확인하세요:"
   } satisfies Copy,
-  offline: {
-    en: "I am running in offline mode right now, so I can point you to the right page but I cannot chat properly. Try the sections below, the Discord, or the official docs.",
-    es: "Ahora mismo estoy en modo offline: puedo indicarte la página correcta, pero no conversar del todo. Prueba las secciones, el Discord o la documentación oficial.",
+  unknown: {
+    en: "I do not have a verified answer for that yet. I would rather point you to the official sources than guess.",
+    es: "Todavía no tengo una respuesta verificada para eso. Prefiero llevarte a las fuentes oficiales antes que adivinar.",
     "pt-br":
-      "Estou em modo offline agora: consigo te indicar a página certa, mas não conversar direito. Veja as seções, o Discord ou a documentação oficial.",
-    uk: "Зараз я в офлайн-режимі: можу підказати потрібну сторінку, але не поспілкуватись повноцінно. Спробуйте розділи, Discord або офіційну документацію.",
-    ko: "지금은 오프라인 모드예요. 알맞은 페이지는 안내할 수 있지만 대화는 어렵습니다. 아래 섹션이나 Discord, 공식 문서를 확인해 주세요."
+      "Ainda não tenho uma resposta verificada para isso. Prefiro indicar as fontes oficiais a inventar uma resposta.",
+    uk: "Я ще не маю перевіреної відповіді на це. Краще спрямую вас до офіційних джерел, ніж здогадуватимусь.",
+    ko: "아직 검증된 답변이 없습니다. 추측하기보다 공식 출처를 안내해 드릴게요."
   } satisfies Copy,
   discordLabel: {
     en: "StandX Discord",
@@ -127,6 +132,15 @@ const extraRouteLabels: Record<AppLocale, Record<string, string>> = {
   "pt-br": {"": "Início", "how-it-works": "Como Funciona"},
   uk: {"": "Головна", "how-it-works": "Як це працює"},
   ko: {"": "홈", "how-it-works": "작동 방식"}
+};
+
+/** Navigation is an action, so a topic keyword alone must never trigger it. */
+const navigationIntents: Record<AppLocale, readonly string[]> = {
+  en: ["take me", "go to", "open the", "where is", "where can i find", "show me the page"],
+  es: ["llevame", "ve a", "ir a", "abre", "donde esta", "donde encuentro", "muestrame la pagina"],
+  "pt-br": ["me leve", "va para", "ir para", "abra", "onde fica", "onde encontro", "mostre a pagina"],
+  uk: ["переведи мене", "перейди до", "відкрий", "де знаходиться", "де знайти", "покажи сторінку"],
+  ko: ["이동해", "가 줘", "열어", "어디에", "어디서 찾", "페이지 보여"]
 };
 
 /**
@@ -215,13 +229,6 @@ const docTopics: Array<{terms: string[]; doc: DocEntry}> = [
   {terms: ["api", "websocket", "rest", "endpoint"], doc: findDoc("API Reference")}
 ];
 
-function normalize(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
-}
-
 /**
  * Terms score a flat base plus a length bonus. Scoring purely on length would
  * systematically under-rank CJK, where a whole word ("키트", "커뮤니티") is two
@@ -234,7 +241,7 @@ const DOC_THRESHOLD = 7;
 function scoreTerms(haystack: string, terms: readonly string[]): number {
   let score = 0;
   for (const term of terms) {
-    const needle = normalize(term);
+    const needle = normalizeKnowledgeText(term);
     if (needle.length < 2) {
       continue;
     }
@@ -260,12 +267,18 @@ export function buildLocalAnswer(
   locale: AppLocale,
   currentRoute: string
 ): LocalAnswer {
-  const question = normalize(lastUserMessage(messages));
+  const rawQuestion = lastUserMessage(messages);
+  const question = normalizeKnowledgeText(rawQuestion);
   const links: AgentLink[] = [];
 
   if (!question) {
-    return {text: copy.offline[locale], links};
+    return {text: copy.unknown[locale], links, kind: "fallback"};
   }
+
+  const knowledgeMatch = matchCoreKnowledge(rawQuestion, locale);
+  const navigationRequested = navigationIntents[locale].some((intent) =>
+    question.includes(normalizeKnowledgeText(intent))
+  );
 
   const docMatch = docTopics
     .map((topic) => ({topic, score: scoreTerms(question, topic.terms)}))
@@ -295,7 +308,9 @@ export function buildLocalAnswer(
   let navigation: AgentNavigation | undefined;
   let text: string;
 
-  if (routeScore >= ROUTE_THRESHOLD) {
+  let kind: LocalAnswer["kind"];
+
+  if (navigationRequested && routeScore >= ROUTE_THRESHOLD) {
     const useExtra = extraScore > sectionScore;
     const route = useExtra ? bestExtra!.path : bestSection!.slug;
     const label = useExtra
@@ -314,13 +329,23 @@ export function buildLocalAnswer(
         reason: label
       };
     }
+    kind = "navigation";
+  } else if (knowledgeMatch) {
+    text = knowledgeMatch.topic.answer[locale];
+    kind = "knowledge";
+    for (const title of knowledgeMatch.topic.docTitles.slice(0, 2)) {
+      const doc = findDoc(title);
+      links.push({label: doc.title, url: doc.url});
+    }
   } else if (docMatch) {
     text = copy.docs[locale];
+    kind = "docs";
   } else {
-    text = copy.offline[locale];
+    text = copy.unknown[locale];
+    kind = "fallback";
   }
 
-  if (docMatch) {
+  if (docMatch && links.length === 0) {
     links.push({label: docMatch.topic.doc.title, url: docMatch.topic.doc.url});
   }
 
@@ -329,5 +354,5 @@ export function buildLocalAnswer(
     links.push({label: copy.docsLabel[locale], url: DOCS_ROOT_URL});
   }
 
-  return {text, navigation, links};
+  return {text, navigation, links, kind};
 }
