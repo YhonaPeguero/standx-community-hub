@@ -185,7 +185,7 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "StandX Stats — community stats dashboard",
       "Stand Cup — community tournament matches",
       "StandX SIP Visual Guide — the SIPs explained visually",
-      "Featured creators: Aifilho (@FilhoIsmae), Jovan (@JovanNeves), Dias (@diaserdropes), Dan (@DanielAnge9499)"
+      "Featured creators: Jovan (@JovanNeves), RyuDex (@RyuuDefi), Victor (@victordesouza96), Dias (@diaserdropes)"
     ],
     keywords: [
       "community",

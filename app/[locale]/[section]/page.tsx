@@ -924,19 +924,6 @@ const communityProjects: CommunityProjectItem[] = [
 
 const creatorItems: CreatorItem[] = [
   {
-    name: "Aifilho",
-    handle: "@FilhoIsmae",
-    link: "https://x.com/FilhoIsmae",
-    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
-    bio: lv(
-      "Skilled, innovative, and consistently helpful creator who raises visual quality standards.",
-      "Creador hábil, innovador y siempre colaborativo que eleva el nivel visual de la comunidad.",
-      "Criador habilidoso, inovador e sempre colaborativo que eleva o nível visual da comunidade.",
-      "Талановитий, інноваційний і стабільно корисний креатор, який піднімає візуальні стандарти.",
-      "실력과 창의성을 갖추고 꾸준히 도움을 주며 커뮤니티의 비주얼 퀄리티 기준을 끌어올리는 크리에이터입니다."
-    )
-  },
-  {
     name: "Jovan",
     handle: "@JovanNeves",
     link: "https://x.com/JovanNeves",
@@ -950,6 +937,32 @@ const creatorItems: CreatorItem[] = [
     )
   },
   {
+    name: "RyuDex",
+    handle: "@RyuuDefi",
+    link: "https://x.com/RyuuDefi",
+    squad: lv("Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad"),
+    bio: lv(
+      "A consistent content voice who breaks StandX down clearly and keeps the community informed.",
+      "Una voz de contenido constante que explica StandX con claridad y mantiene informada a la comunidad.",
+      "Uma voz de conteúdo constante que explica a StandX com clareza e mantém a comunidade informada.",
+      "Стабільний голос контенту, який зрозуміло пояснює StandX і тримає спільноту в курсі.",
+      "StandX를 명확하게 풀어내며 커뮤니티에 꾸준히 정보를 전하는 콘텐츠 크리에이터입니다."
+    )
+  },
+  {
+    name: "Victor",
+    handle: "@victordesouza96",
+    link: "https://x.com/victordesouza96",
+    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
+    bio: lv(
+      "Builder-creator behind community games and visual pieces, turning ideas into things people actually use.",
+      "Creador y builder detrás de juegos y piezas visuales de la comunidad, que convierte ideas en cosas que la gente realmente usa.",
+      "Criador e builder por trás de jogos e peças visuais da comunidade, transformando ideias em coisas que as pessoas realmente usam.",
+      "Креатор і білдер, що стоїть за спільнотними іграми та візуальними роботами — перетворює ідеї на те, чим справді користуються.",
+      "커뮤니티 게임과 비주얼 작업을 만들어내는 크리에이터이자 빌더로, 아이디어를 실제로 쓰이는 결과물로 만듭니다."
+    )
+  },
+  {
     name: "Dias",
     handle: "@diaserdropes",
     link: "https://x.com/diaserdropes",
@@ -960,19 +973,6 @@ const creatorItems: CreatorItem[] = [
       "Reconhecido por presença, resiliência e suporte comunitário dentro e fora do servidor.",
       "Відомий за активність, стійкість і підтримку спільноти всередині та поза сервером.",
       "서버 안팎에서 꾸준함과 회복력, 커뮤니티 지원으로 인정받는 크리에이터입니다."
-    )
-  },
-  {
-    name: "Dan",
-    handle: "@DanielAnge9499",
-    link: "https://x.com/DanielAnge9499",
-    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
-    bio: lv(
-      "A quality benchmark in visual execution, art direction, and creator discipline.",
-      "Un referente de calidad en ejecución visual, dirección de arte y disciplina creativa.",
-      "Uma referência de qualidade em execução visual, direção de arte e disciplina criativa.",
-      "Еталон якості у візуальному виконанні, артдирекшні та творчій дисципліні.",
-      "비주얼 실행력, 아트 디렉션, 작업 규율에서 높은 기준을 보여주는 벤치마크입니다."
     )
   }
 ];
