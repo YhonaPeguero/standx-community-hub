@@ -476,6 +476,19 @@ check(
  */
 const OBSERVED = [
   [
+    // Filmed off the live endpoint: the model invented a citation format for
+    // the hub route it had just recommended and printed it beside the chip the
+    // interface already renders.
+    "an invented hub-page citation on its own line",
+    "You can visit the Getting Started section of this hub.\n\n(Hub page: Getting Started)",
+    "You can visit the Getting Started section of this hub."
+  ],
+  [
+    "but a parenthesis inside a sentence is the answer's own English",
+    "The fee (page 3 of the docs) is 0.01%.",
+    "The fee (page 3 of the docs) is 0.01%."
+  ],
+  [
     "brace call with a colon",
     'StandX is a perps DEX.\n\nopen_link: {\n  "label": "About StandX docs",\n  "url": "https://docs.standx.com/docs/about-standx"\n}',
     "StandX is a perps DEX."

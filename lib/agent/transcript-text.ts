@@ -31,6 +31,9 @@
 const TOOL_NAMES = ["open_link", "navigate", "read_doc"] as const;
 const NAMES = "open_link|navigate|read_doc";
 
+/** The words a model puts in front of the colon when it invents a citation. */
+const ANNOTATION_KEYS = ["hub page", "hub-page", "page", "section", "route", "link"];
+
 /**
  * How far a held-back tail may grow before it is judged prose after all.
  * Longer than any real artifact — the longest is a label plus a documentation
@@ -50,6 +53,14 @@ const REWRITES: Array<[RegExp, string | ((...args: string[]) => string)]> = [
   [new RegExp(`[ \\t]*(?:${NAMES})\\s*\\((?:[^()]|\\([^()]*\\))*\\)`, "g"), ""],
   // open_link {"label":…}  /  open_link: {…}  — by far the most common.
   [new RegExp(`[ \\t]*(?:${NAMES})\\s*[:=]?\\s*\\{[^{}]*\\}`, "g"), ""],
+  /**
+   * `(Hub page: Getting Started)` on a line of its own. No prompt asks for this
+   * and no tool is named that — the model invented a citation format for the
+   * hub route it had just recommended, and wrote it into the prose beside the
+   * chip the interface already renders. Only the standalone form is removed:
+   * a parenthesis inside a sentence is the visitor's own English.
+   */
+  [/(^|\n)[ \t]*\((?:hub[ \-]?page|page|section|route|link)\s*:[^()\n]{0,80}\)[ \t]*(?=\n|$)/gi, "$1"],
   // [Funding Rate](https://…) keeps its text.
   [/\[([^\]\n]*)\]\([^)\s]*\)/g, "$1"],
   // [About StandX docs] — a label the model bracketed for no one. Unwrapped
@@ -122,6 +133,17 @@ function couldStartArtifact(tail: string): boolean {
 
   const parenthesised = tail.startsWith("(");
   const body = parenthesised ? tail.slice(1).trimStart() : tail;
+
+  // `(Hub page: Getting Star…` — held until its closing bracket arrives, or the
+  // opening half streams to the visitor and only the tail of it is removed.
+  // A parenthesis that turns out to be ordinary prose is released unchanged;
+  // MAX_ARTIFACT_CHARS bounds the wait either way.
+  if (parenthesised && !body.includes(")")) {
+    const lower = body.toLowerCase();
+    if (ANNOTATION_KEYS.some((key) => key.startsWith(lower) || lower.startsWith(key))) {
+      return true;
+    }
+  }
 
   for (const name of TOOL_NAMES) {
     // Still spelling the name out: "open_li".
