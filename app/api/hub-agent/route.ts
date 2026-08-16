@@ -583,7 +583,10 @@ export async function POST(request: Request): Promise<Response> {
             tool_calls: turn.toolCalls.map((call) => ({
               id: call.id,
               type: "function" as const,
-              function: {name: call.name, arguments: call.arguments}
+              function: {name: call.name, arguments: call.arguments},
+              // Gemini signs its own tool calls and refuses the next round if the
+              // signature does not come back with them.
+              ...(call.extraContent === undefined ? {} : {extra_content: call.extraContent})
             }))
           });
 

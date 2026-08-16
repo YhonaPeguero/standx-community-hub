@@ -41,11 +41,52 @@ export interface AgentProvider {
  * returns ids that a free key is then refused for, and the refusal is a
  * misleading `401 Invalid API Key`. Confirm a default by generating with it.
  *
- * The primary is picked for latency as much as quality: Groq answers this
- * prompt in about 1.4 seconds against OpenRouter's 4 to 15, and a hologram that
- * stares silently for fifteen seconds reads as broken.
+ * The order is by measured latency, because a hologram that stares silently for
+ * fifteen seconds reads as broken: Gemini 1.3s, Mistral 1.4s, Groq 1.4s,
+ * OpenRouter 4-15s.
+ *
+ * Order does not decide total capacity — each link is used until it returns 429
+ * and then the next takes over, so the day's budget is their sum either way.
+ * What it decides is which one answers a typical question, and that is a
+ * latency and quality question.
+ *
+ * Capacity is why there are four. Groq allows 200,000 tokens a day and
+ * OpenRouter 50 requests, which together came to roughly a hundred answers for
+ * the whole site — a single busy afternoon. The chain exists so that ceiling is
+ * a sum rather than a wall.
  */
 const PROVIDER_DEFAULTS = [
+  {
+    id: "gemini",
+    keyVar: "GEMINI_API_KEY",
+    baseUrlVar: "GEMINI_BASE_URL",
+    modelVar: "GEMINI_MODEL",
+    // Google's OpenAI-compatibility layer, so it needs no special handling.
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
+    /**
+     * First because it is the fastest measured on the real prompt (1.3s) and
+     * gave the fullest answer — it explained the Premium Index and the
+     * five-second calculation rather than only quoting the rate.
+     *
+     * The id matters more than it looks. `gemini-2.5-flash` and
+     * `gemini-2.5-flash-lite` are both listed by `/models` and both 404 on
+     * generation; `gemini-3.5-flash` and `gemini-3-flash-preview` answer but
+     * take 18s or time out. Only the ones below were verified end to end.
+     */
+    model: "gemini-flash-lite-latest",
+    maxTokens: 1200
+  },
+  {
+    id: "mistral",
+    keyVar: "MISTRAL_API_KEY",
+    baseUrlVar: "MISTRAL_BASE_URL",
+    modelVar: "MISTRAL_MODEL",
+    baseUrl: "https://api.mistral.ai/v1",
+    // Second at 1.4s, and the cleanest output of the four: correct figures, no
+    // tool call typed into the prose, nothing for the filter to remove.
+    model: "mistral-small-latest",
+    maxTokens: 1200
+  },
   {
     id: "groq",
     keyVar: "GROQ_API_KEY",
@@ -110,6 +151,16 @@ export interface ChatToolCall {
   name: string;
   /** Raw JSON string as the model emitted it. Never trusted — always parsed. */
   arguments: string;
+  /**
+   * Whatever the provider hung off its own tool call, carried back verbatim on
+   * the assistant message that replays it. Opaque on purpose: we neither read
+   * nor validate it, we only refuse to lose it.
+   *
+   * Gemini puts a signed `google.thought_signature` here and rejects the second
+   * round without it — a 400 that reads like a schema error but is really the
+   * provider asking for its own token back.
+   */
+  extraContent?: unknown;
 }
 
 export interface ChatMessage {
@@ -119,6 +170,7 @@ export interface ChatMessage {
     id: string;
     type: "function";
     function: {name: string; arguments: string};
+    extra_content?: unknown;
   }[];
   tool_call_id?: string;
 }
@@ -366,6 +418,9 @@ export async function streamChatTurn(
           }
           if (typeof fn?.arguments === "string") {
             existing.arguments += fn.arguments;
+          }
+          if (call.extra_content !== undefined) {
+            existing.extraContent = call.extra_content;
           }
           partials.set(index, existing);
         }

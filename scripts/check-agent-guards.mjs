@@ -14,7 +14,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import {fileURLToPath} from "node:url";
+import {fileURLToPath, pathToFileURL} from "node:url";
 import ts from "typescript";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -225,6 +225,122 @@ check(
   "a 401 from a provider that already answered is not reported as a bad key",
   /provenProviders/.test(providers),
   "otherwise every busy minute cries wolf about a working key"
+);
+
+// Adding a provider is copy-paste, which is exactly how a duplicated env var
+// name ends up silently pointing two links of the chain at the same key.
+const presets = [...providers.matchAll(/id: "([a-z]+)",\s*\n\s*keyVar: "([A-Z_]+)"/g)].map(
+  (m) => ({id: m[1], keyVar: m[2]})
+);
+check(
+  "every provider in the chain is declared",
+  presets.length >= 2,
+  presets.map((p) => p.id).join(" -> ")
+);
+check(
+  "no two providers share an id or an API key variable",
+  new Set(presets.map((p) => p.id)).size === presets.length &&
+    new Set(presets.map((p) => p.keyVar)).size === presets.length
+);
+check(
+  "each provider names its own key variable after itself",
+  presets.every((p) => p.keyVar === `${p.id.toUpperCase()}_API_KEY`),
+  "the misconfiguration log tells operators which variable to check"
+);
+check(
+  "every provider sets an output budget",
+  (providers.match(/maxTokens:/g) ?? []).length >= presets.length,
+  "an unset budget is an unbounded answer against a metered tier"
+);
+
+const example = fs.readFileSync(path.join(root, ".env.example"), "utf8");
+check(
+  "and every one is documented for whoever has to configure it",
+  presets.every((p) => example.includes(p.keyVar)),
+  presets.map((p) => p.keyVar).join(", ")
+);
+
+// A tool call is a round trip, and the second half is where it breaks. Gemini
+// signs its own call and answers 400 when the signature does not come back, so
+// anything a provider attaches has to survive the accumulator untouched.
+const providersOut = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "prov-")), "providers.mjs");
+fs.writeFileSync(
+  providersOut,
+  ts.transpileModule(providers, {
+    compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022}
+  }).outputText
+);
+const {streamChatTurn} = await import(pathToFileURL(providersOut).href);
+
+const signature = {google: {thought_signature: "El4KXAERTTIPlz4aS1UJPpCe"}};
+const sse = [
+  {
+    choices: [
+      {
+        delta: {
+          tool_calls: [
+            {
+              index: 0,
+              id: "call_1331186",
+              type: "function",
+              function: {name: "read_doc", arguments: '{"title":"Fun'},
+              extra_content: signature
+            }
+          ]
+        }
+      }
+    ]
+  },
+  // The arguments arrive split, and the second fragment carries no envelope —
+  // the first one must not be overwritten by its absence.
+  {
+    choices: [
+      {
+        delta: {tool_calls: [{index: 0, function: {arguments: 'ding Rate"}'}}]},
+        finish_reason: "tool_calls"
+      }
+    ]
+  }
+];
+
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => ({
+  ok: true,
+  status: 200,
+  body: new ReadableStream({
+    start(controller) {
+      const encoder = new TextEncoder();
+      for (const event of sse) {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
+      }
+      controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+      controller.close();
+    }
+  })
+});
+
+const turn = await streamChatTurn(
+  {id: "gemini", baseUrl: "https://example.invalid", apiKey: "x", model: "m", maxTokens: 100},
+  [],
+  [],
+  () => {}
+);
+globalThis.fetch = originalFetch;
+
+check(
+  "arguments split across chunks are reassembled",
+  turn.toolCalls[0]?.arguments === '{"title":"Funding Rate"}',
+  turn.toolCalls[0]?.arguments
+);
+check(
+  "a provider's own tool-call envelope survives the round trip",
+  JSON.stringify(turn.toolCalls[0]?.extraContent) === JSON.stringify(signature),
+  "Gemini rejects the second round with 400 when its thought_signature is dropped"
+);
+check(
+  "and the assistant message replays it verbatim",
+  /extra_content: call\.extraContent/.test(route),
+  "accumulating it and then not sending it back fixes nothing"
 );
 
 section("Doc reader — the model names a page, it never supplies a URL");
