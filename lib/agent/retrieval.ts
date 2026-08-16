@@ -1,6 +1,7 @@
 import type {AppLocale} from "@/i18n/request";
 import {hubSections, type HubSectionSlug} from "@/lib/hub-navigation";
 import {hubSectionMap} from "@/lib/agent/hub-map";
+import {buildSystemPrompt} from "@/lib/agent/prompt";
 import {
   coreKnowledgeTopics,
   docAliases,
@@ -70,6 +71,23 @@ export interface RetrievedContext {
  */
 export const PREREAD_THRESHOLD = 8;
 
+/**
+ * Renders the prompt with nothing retrieved, to price its fixed parts.
+ *
+ * `pt-br` because the locale name is interpolated into the prompt and that one
+ * is the longest — measuring the cheapest locale would under-budget the rest.
+ * The import is one-directional at runtime: `prompt.ts` takes only a type from
+ * this module, and types are erased, so there is no cycle.
+ */
+function measureFixedPrompt(): number {
+  return buildSystemPrompt("pt-br", {
+    topics: [],
+    docs: [],
+    detailedSections: [],
+    topDocScore: 0
+  }).length;
+}
+
 /* ------------------------------------------------------------------ budget */
 
 const MAX_TOPICS = 5;
@@ -77,22 +95,38 @@ const MAX_DOCS = 12;
 const MAX_DETAILED_SECTIONS = 2;
 
 /**
- * A ceiling on the part of the prompt that varies with the question, enforced
- * rather than assumed.
+ * What the whole system prompt is allowed to cost, in characters.
  *
- * Counts alone are not a budget: a question that matches five long fact blocks
- * and twelve pages produces a far bigger prompt than one that matches two of
- * each, and it is exactly the broad question — "tell me about StandX, DUSD,
- * perps and points" — that hits both ceilings at once. Trimming to a character
- * budget is what makes the worst case bounded instead of merely typical.
- *
- * Rendered length is approximated from the same fields the prompt renders, so
- * the estimate cannot drift far from the thing it is estimating.
+ * Set from the provider's limit, not from taste: the default Groq model allows
+ * 8,000 tokens per minute on the free tier, shared by every visitor, and one
+ * answer also carries a documentation page. At roughly four characters to the
+ * token this keeps a typical answer near 3,900 tokens all-in — about two a
+ * minute before the chain falls through to OpenRouter.
  */
-const VARIABLE_BUDGET_CHARS = 3250;
+const PROMPT_BUDGET_CHARS = 10_400;
 
-/** The itemised contents of hub sections, budgeted separately for the same reason. */
+/** The itemised contents of hub sections, rationed separately. */
 const SECTION_DETAIL_BUDGET_CHARS = 800;
+
+/**
+ * What is left for the retrieved slice once the prompt's fixed prose is paid
+ * for — measured at load rather than hand-tuned.
+ *
+ * The rules, the voice, and every route summary ride in the prompt whatever the
+ * question is, and they share one budget with retrieval. When this was a
+ * constant, every sentence added to `prompt.ts` quietly took room away from
+ * retrieval and the overflow surfaced somewhere unrelated — a Korean question
+ * failing a size assertion, three edits after the sentence that caused it.
+ * Deriving it means prose and retrieval can no longer silently rob each other.
+ *
+ * The floor matters: a prompt so verbose that retrieval gets nothing would
+ * otherwise "fit" while answering no questions at all. Better to blow the token
+ * budget and be told about it by `npm run retrieval:check`.
+ */
+const VARIABLE_BUDGET_CHARS = Math.max(
+  2200,
+  PROMPT_BUDGET_CHARS - SECTION_DETAIL_BUDGET_CHARS - measureFixedPrompt()
+);
 
 /** Kept regardless of the question, so no answer is ever left without a root. */
 const ANCHOR_DOC_TITLES = ["About StandX"];

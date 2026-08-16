@@ -466,7 +466,10 @@ export default function StandxAgent({locale}: StandxAgentProps) {
             <motion.div variants={m.mesh} className="agent-overlay__mesh" aria-hidden="true" />
             <div className="agent-overlay__vignette" aria-hidden="true" />
 
-            <div className="agent-overlay__inner">
+            {/* Drives the reflow in globals.css: the projection is the hero of
+                the empty state and steps back once there is a conversation to
+                read. */}
+            <div className="agent-overlay__inner" data-conversing={entries.length > 0}>
               <motion.div variants={m.rail} className="agent-overlay__rail">
                 <button
                   type="button"

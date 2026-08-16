@@ -20,6 +20,10 @@ export interface AgentProvider {
   baseUrl: string;
   apiKey: string;
   model: string;
+  /** Output budget. Per provider because their scarce resources differ. */
+  maxTokens: number;
+  /** Provider-specific request fields, merged into the body verbatim. */
+  extraBody?: Record<string, unknown>;
 }
 
 /**
@@ -48,7 +52,11 @@ const PROVIDER_DEFAULTS = [
     baseUrlVar: "GROQ_BASE_URL",
     modelVar: "GROQ_MODEL",
     baseUrl: "https://api.groq.com/openai/v1",
-    model: "openai/gpt-oss-120b"
+    model: "openai/gpt-oss-120b",
+    // Output counts against the same per-minute token allowance the prompt
+    // does, and here that allowance is the binding constraint. Roughly triple
+    // the longest answer the voice rules ask for.
+    maxTokens: 1000
   },
   {
     id: "openrouter",
@@ -56,7 +64,20 @@ const PROVIDER_DEFAULTS = [
     baseUrlVar: "OPENROUTER_BASE_URL",
     modelVar: "OPENROUTER_MODEL",
     baseUrl: "https://openrouter.ai/api/v1",
-    model: "nvidia/nemotron-3-super-120b-a12b:free"
+    model: "nvidia/nemotron-3-super-120b-a12b:free",
+    /**
+     * More than double Groq's, because this model thinks before it writes and
+     * the thinking is billed to the same budget: a measured turn spent 375 of
+     * its 649 completion tokens on reasoning nobody sees. At 1,000 the visible
+     * answer ran out mid-clause — one battery answer stopped at "…inside the
+     * qualifying band around the mark price;". OpenRouter meters requests per
+     * day rather than tokens per minute, so the room is free here.
+     */
+    maxTokens: 2400,
+    // Keep the reasoning, bound it, and drop it from the response. `exclude`
+    // matters for more than bandwidth: without it the reasoning text streams
+    // through the same channel as the answer.
+    extraBody: {reasoning: {effort: "low", exclude: true}}
   }
 ] as const;
 
@@ -73,7 +94,9 @@ export function resolveProviders(): AgentProvider[] {
       id: preset.id,
       apiKey,
       baseUrl: process.env[preset.baseUrlVar]?.trim() || preset.baseUrl,
-      model: process.env[preset.modelVar]?.trim() || preset.model
+      model: process.env[preset.modelVar]?.trim() || preset.model,
+      maxTokens: preset.maxTokens,
+      extraBody: "extraBody" in preset ? preset.extraBody : undefined
     });
   }
 
@@ -218,15 +241,12 @@ export async function streamChatTurn(
       },
       body: JSON.stringify({
         model: provider.model,
-        // Output counts against the same per-minute token allowance the prompt
-        // does. The voice rules ask for two to seven sentences, so this is
-        // roughly triple the longest answer we actually want and still leaves
-        // the budget for the next visitor.
-        max_tokens: 1000,
+        max_tokens: provider.maxTokens,
         stream: true,
         messages,
         tools,
-        tool_choice: "auto"
+        tool_choice: "auto",
+        ...(provider.extraBody ?? {})
       }),
       signal: controller.signal
     });

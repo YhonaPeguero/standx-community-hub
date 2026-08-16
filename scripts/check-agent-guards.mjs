@@ -268,7 +268,9 @@ fs.writeFileSync(
     compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022}
   }).outputText
 );
-const {createTranscriptFilter} = await import(`file://${filterOut.split(path.sep).join("/")}`);
+const {createTranscriptFilter, trimToLastSentence} = await import(
+  `file://${filterOut.split(path.sep).join("/")}`
+);
 
 /** Runs text through the filter in the given chunks, as the stream would. */
 function filtered(chunks) {
@@ -350,9 +352,112 @@ check(
   JSON.stringify(filtered(["El cálculo es 2*3 y nada más."]))
 );
 
+/*
+ * Every case below is a verbatim ending from the 25-question run against the
+ * live endpoint, which put an artifact in 16 of 25 answers. Note what is NOT
+ * here: the parenthesised `open_link(...)` this filter was first written for
+ * never occurred once. These are what models actually emit.
+ */
+const OBSERVED = [
+  [
+    "brace call with a colon",
+    'StandX is a perps DEX.\n\nopen_link: {\n  "label": "About StandX docs",\n  "url": "https://docs.standx.com/docs/about-standx"\n}',
+    "StandX is a perps DEX."
+  ],
+  [
+    "brace call with a space",
+    'You can transfer instantly.\n\nopen_link {"label":"StandX Wallet Guide","url":"https://docs.standx.com/x"}',
+    "You can transfer instantly."
+  ],
+  [
+    "brace call with no space at all",
+    'Confirm the position.\n\nopen_link{\n  "label": "Docs",\n  "url": "https://docs.standx.com/x"\n}',
+    "Confirm the position."
+  ],
+  [
+    "parenthesised attribute style",
+    "Check the app for live numbers.\n\n(open_link label=\"Documentation home\" url=\"https://docs.standx.com/x\")",
+    "Check the app for live numbers."
+  ],
+  [
+    "a bare bracketed label keeps its words",
+    "See the full page for context.\n\n[About StandX docs]",
+    "See the full page for context.\n\nAbout StandX docs"
+  ],
+  [
+    "a raw URL is dropped — the chip below already carries it",
+    "The token has not been issued yet.\n\nhttps://docs.standx.com/docs/about-standx\nDocumentation home",
+    "The token has not been issued yet.\n\nDocumentation home"
+  ]
+];
+
+for (const [label, input, expected] of OBSERVED) {
+  const got = filtered([input]);
+  check(label, got === expected, got === expected ? "" : JSON.stringify(got));
+  // Streamed one character at a time, because that is how it really arrives.
+  const streamed = filtered(input.split(""));
+  check(
+    `  …and the same split across single-character deltas`,
+    streamed === expected,
+    streamed === expected ? "" : JSON.stringify(streamed)
+  );
+}
+
+// Verbatim from round two of the battery: removing the URL was correct, and it
+// left the sentence that introduced it pointing at nothing.
+const leadIn =
+  "DUSD is the unified margin asset. \n\nYou can verify the details in the official documentation:\nhttps://docs.standx.com/docs/dusd-overview";
+const leadInWanted =
+  "DUSD is the unified margin asset. \n\nYou can verify the details in the official documentation.";
+check(
+  "a lead-in whose link was removed ends as a sentence",
+  filtered([leadIn]) === leadInWanted,
+  JSON.stringify(filtered([leadIn]))
+);
+check(
+  "  …and the same split across single-character deltas",
+  filtered(leadIn.split("")) === leadInWanted,
+  JSON.stringify(filtered(leadIn.split("")))
+);
+check(
+  "but a heading followed by its list is untouched",
+  filtered(["The vault types are:\n- Strategy\n- Reward\n- Shield"]) ===
+    "The vault types are:\n- Strategy\n- Reward\n- Shield",
+  JSON.stringify(filtered(["The vault types are:\n- Strategy\n- Reward\n- Shield"]))
+);
+
+section("A truncated answer ends on a sentence, not a comma");
+
+check(
+  "a clause cut off at the token cap is trimmed back",
+  trimToLastSentence(
+    "The lowest-risk route is maker yield. You post two-sided orders inside the qualifying band around the mark price;"
+  ) === "The lowest-risk route is maker yield.",
+  JSON.stringify(
+    trimToLastSentence(
+      "The lowest-risk route is maker yield. You post two-sided orders inside the qualifying band around the mark price;"
+    )
+  )
+);
+check(
+  "a complete answer is left exactly as it is",
+  trimToLastSentence("Maker fees are 0.01% and taker fees are 0.04%.") ===
+    "Maker fees are 0.01% and taker fees are 0.04%."
+);
+// Trimming a reply that is nearly all one sentence would delete the answer.
+check(
+  "a single long truncated sentence is kept rather than emptied",
+  trimToLastSentence("StandX charges a maker fee that is calculated from the notional value and")
+    .length > 40
+);
+
 check(
   "the filter is actually wired into the streamed answer",
   /createTranscriptFilter\(\)/.test(route) && /transcript\.push\(delta\)/.test(route)
+);
+check(
+  "and truncation is trimmed only when the provider reports it",
+  /finishReason === "length"[\s\S]{0,80}trimToLastSentence/.test(route)
 );
 
 /* -------------------------------------------------------------------- done */

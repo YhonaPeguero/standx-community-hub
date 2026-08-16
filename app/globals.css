@@ -706,10 +706,20 @@
   /* Stander remains the visual host, but the conversation is the task. A
      bounded basis keeps the projection cinematic without letting it consume
      three quarters of a tall screen; the console receives the remaining room. */
+  /* The projection owns the empty state — it is the reason anyone opens this —
+     and steps back the moment there is something to read. At 56dvh the stage
+     left the transcript about 220px, so any answer longer than a paragraph
+     arrived already scrolled, with its first sentence above the fold. A chat
+     that has to be scrolled backwards to be read is a chat nobody reads.
+
+     Transitioning the basis rather than swapping it keeps the connection
+     between the two states legible: the mascot visibly makes room for the
+     answer instead of jumping. */
   .agent-overlay__stage {
     position: relative;
     flex: 0 1 clamp(19rem, 56dvh, 40rem);
     min-height: 0;
+    transition: flex-basis var(--dur-scene) var(--ease-out);
     /* The projection is not a control. Clicks fall through to the scrim, so
        anywhere outside the console closes the chamber. Beats the blanket
        `.agent-overlay__inner > *` rule above on source order, same specificity. */
@@ -724,6 +734,10 @@
   /* One continuous surface running off the bottom of the screen, not a stack of
      cards. Its top edge is a hairline that fades out at both ends, so the deck
      has no corners and the projection appears to stand on it. */
+
+  .agent-overlay__inner[data-conversing="true"] .agent-overlay__stage {
+    flex-basis: clamp(9rem, 24dvh, 14rem);
+  }
 
   .agent-console {
     position: relative;
@@ -788,7 +802,9 @@
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: 0.9rem;
+    /* One question and its answer are one thought; the gap has to separate
+       thoughts, not lines, or a long exchange reads as one wall of text. */
+    gap: 1.45rem;
     min-height: 4.5rem;
     max-height: none;
     padding-top: 0.75rem;
@@ -815,10 +831,12 @@
     margin-top: auto;
   }
 
+  /* Tighter than the gap between turns, so a source link reads as belonging to
+     the answer above it rather than floating between two of them. */
   .agent-turn {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.55rem;
   }
 
   .agent-line {
@@ -1316,6 +1334,14 @@
     filter: drop-shadow(0 0 18px rgba(0, 255, 135, 0.4));
   }
 
+  /* Yields harder here than on a desktop: the same answer needs roughly twice
+     the height in a 375px column, and the on-screen keyboard is about to take
+     another third of what is left. */
+  .agent-overlay__inner[data-conversing="true"] .agent-overlay__stage {
+    flex-basis: clamp(7.5rem, 19dvh, 11rem);
+    min-height: 6rem;
+  }
+
   .agent-overlay__close {
     height: 2.25rem;
     padding: 0 0.55rem;
@@ -1363,6 +1389,11 @@
     min-height: 6rem;
   }
 
+  .agent-overlay__inner[data-conversing="true"] .agent-overlay__stage {
+    flex-basis: 20dvh;
+    min-height: 4rem;
+  }
+
   .agent-console {
     flex-basis: 12rem;
   }
@@ -1377,6 +1408,12 @@
      for why a `useReducedMotion()` early-return breaks hydration. */
   .scroll-progress {
     display: none !important;
+  }
+
+  /* The stage still yields its space, it just stops animating on the way. The
+     layout is the point; the easing was only there to explain it. */
+  .agent-overlay__stage {
+    transition: none !important;
   }
 
   /* Same rule for the reveal wrapper: one variant is emitted on both render

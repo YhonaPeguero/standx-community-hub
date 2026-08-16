@@ -18,7 +18,7 @@ import {
   type ChatTurn
 } from "@/lib/agent/providers";
 import {agentTools, allowedLinkUrls} from "@/lib/agent/tools";
-import {createTranscriptFilter} from "@/lib/agent/transcript-text";
+import {createTranscriptFilter, trimToLastSentence} from "@/lib/agent/transcript-text";
 import {chargeQuota, quotaCookie, readQuota} from "@/lib/agent/visitor-quota";
 import type {
   AgentMessage,
@@ -557,7 +557,13 @@ export async function POST(request: Request): Promise<Response> {
             send({type: "text", value: safe});
           });
 
-          const tail = transcript.flush();
+          // `length` means the provider stopped mid-thought at its token cap.
+          // Ending on half a clause reads as a crash, so the held tail is cut
+          // back to the last complete sentence — one sentence fewer still
+          // reads as an answer.
+          const rawTail = transcript.flush();
+          const tail =
+            turn.finishReason === "length" ? trimToLastSentence(rawTail) : rawTail;
           if (tail) {
             if (!emitted) {
               emitted = true;
