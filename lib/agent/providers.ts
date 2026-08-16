@@ -23,9 +23,23 @@ export interface AgentProvider {
 }
 
 /**
- * Defaults are the same model family across both providers on purpose: when the
- * chain fails over mid-conversation the visitor should not notice a change of
- * voice. Both are overridable per deployment.
+ * Both defaults were chosen by running the real prompt through the candidates
+ * and reading the answers, which is the only way this particular choice can be
+ * made honestly. Two findings are worth keeping:
+ *
+ * `llama-3.3-70b-versatile` cannot use these tools. It has the most generous
+ * token allowance on Groq's free tier and looked like the obvious primary, but
+ * with the real tool schema it fails every time with 400 `tool_use_failed` —
+ * Groq rejecting the model's own malformed tool JSON. It answers fine without
+ * tools, which is exactly why a smoke test misses this.
+ *
+ * A model being LISTED is not the same as being usable. Groq's `/models`
+ * returns ids that a free key is then refused for, and the refusal is a
+ * misleading `401 Invalid API Key`. Confirm a default by generating with it.
+ *
+ * The primary is picked for latency as much as quality: Groq answers this
+ * prompt in about 1.4 seconds against OpenRouter's 4 to 15, and a hologram that
+ * stares silently for fifteen seconds reads as broken.
  */
 const PROVIDER_DEFAULTS = [
   {
@@ -42,7 +56,7 @@ const PROVIDER_DEFAULTS = [
     baseUrlVar: "OPENROUTER_BASE_URL",
     modelVar: "OPENROUTER_MODEL",
     baseUrl: "https://openrouter.ai/api/v1",
-    model: "openai/gpt-oss-20b:free"
+    model: "nvidia/nemotron-3-super-120b-a12b:free"
   }
 ] as const;
 
@@ -105,11 +119,50 @@ export class ProviderUnavailableError extends Error {
 }
 
 /**
- * Statuses worth moving down the chain for. A 400 or 401 is our bug or a bad
- * key — failing over would just repeat the mistake at the next provider and
- * hide the cause, so those are thrown as ordinary errors.
+ * Transient trouble: the provider is fine, it is busy or briefly down. Routine
+ * on a free tier, and the next provider is the whole answer.
  */
-const FAILOVER_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504, 529]);
+const TRANSIENT_STATUSES = new Set([408, 409, 425, 429, 500, 502, 503, 504, 529]);
+
+/**
+ * Rejected credentials, a plan that does not cover the model, a model id that
+ * does not exist — and, on Groq, a plain lie.
+ *
+ * These used to be fatal, on the theory that failing over would "repeat the
+ * mistake at the next provider and hide the cause". Two things were wrong with
+ * that. Every provider has its own key and its own model id, so this is
+ * per-provider by definition — precisely what the chain exists for. And a 401
+ * here is not even reliably about credentials: when a Groq free key exhausts
+ * its per-minute TOKEN allowance it answers `401 Invalid API Key`, alternating
+ * with a truthful 429 on the very next request. Treating that as fatal took the
+ * assistant down for a limit it was supposed to ride out.
+ *
+ * So it fails over, and it is logged loudly — if it really is a bad key, the
+ * log is the only place that will ever say so.
+ */
+const MISCONFIGURED_STATUSES = new Set([401, 403, 404]);
+
+/**
+ * Some models answer a tool-enabled request with malformed tool JSON, and the
+ * provider rejects their output as a 400 on our behalf. Nothing about the
+ * request is wrong, so the next provider — a different model — usually just
+ * answers it.
+ */
+function isRecoverableBadRequest(status: number, body: string): boolean {
+  return status === 400 && /tool[_ ]use[_ ]failed|failed to call a function/i.test(body);
+}
+
+/**
+ * Which providers have answered at least once in this process.
+ *
+ * Without this the log cries wolf. Groq reports an exhausted token allowance as
+ * `401 Invalid API Key`, so a busy minute would print "check your key" over and
+ * over about a key that is perfectly fine — and a log that is wrong most of the
+ * time is a log nobody reads on the day it is right. A provider that has
+ * already answered has a working key by demonstration, so its 401 is reported
+ * as the rate limit it almost certainly is.
+ */
+const provenProviders = new Set<string>();
 
 /** Anthropic-shaped tool definitions rendered into OpenAI's function schema. */
 export function toOpenAITools(
@@ -129,7 +182,14 @@ export function toOpenAITools(
 
 /* -------------------------------------------------------------- streaming */
 
-const REQUEST_TIMEOUT_MS = 45_000;
+/**
+ * Covers the whole stream, and the chain can spend it once per provider — so
+ * this is really "half the worst case a visitor waits before the offline answer
+ * appears". At 45 seconds that worst case was a minute and a half of a blinking
+ * cursor, which no one waits through. Free-tier answers stream in under ten
+ * seconds; a provider still silent at twenty-five is not coming.
+ */
+const REQUEST_TIMEOUT_MS = 25_000;
 
 /**
  * One streamed turn against one provider.
@@ -158,7 +218,11 @@ export async function streamChatTurn(
       },
       body: JSON.stringify({
         model: provider.model,
-        max_tokens: 1400,
+        // Output counts against the same per-minute token allowance the prompt
+        // does. The voice rules ask for two to seven sentences, so this is
+        // roughly triple the longest answer we actually want and still leaves
+        // the budget for the next visitor.
+        max_tokens: 1000,
         stream: true,
         messages,
         tools,
@@ -181,11 +245,35 @@ export async function streamChatTurn(
     clearTimeout(timeout);
     const detail = await response.text().catch(() => "");
     const message = `${provider.id} returned ${response.status}: ${detail.slice(0, 200)}`;
-    if (FAILOVER_STATUSES.has(response.status) || !response.body) {
+
+    if (MISCONFIGURED_STATUSES.has(response.status)) {
+      if (provenProviders.has(provider.id)) {
+        console.warn(
+          `hub-agent: ${provider.id} refused a request with ${response.status} after` +
+            ` previously succeeding — almost certainly its per-minute token limit,` +
+            ` not the key. Falling through.`
+        );
+      } else {
+        console.error(
+          `hub-agent: ${provider.id} has never answered and returned ${response.status} —` +
+            ` check ${provider.id.toUpperCase()}_API_KEY and that the model` +
+            ` "${provider.model}" is available on that plan. ${message}`
+        );
+      }
+    }
+
+    if (
+      TRANSIENT_STATUSES.has(response.status) ||
+      MISCONFIGURED_STATUSES.has(response.status) ||
+      isRecoverableBadRequest(response.status, detail) ||
+      !response.body
+    ) {
       throw new ProviderUnavailableError(provider.id, response.status, message);
     }
     throw new Error(message);
   }
+
+  provenProviders.add(provider.id);
 
   const reader = response.body.getReader();
   const decoder = new TextDecoder();

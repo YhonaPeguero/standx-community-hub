@@ -11,7 +11,7 @@ import {
   matchCoreKnowledge,
   normalizeKnowledgeText
 } from "@/lib/agent/standx-knowledge";
-import {findDoc, type DocEntry} from "@/lib/agent/standx-knowledge";
+import {docAliases, findDoc, type DocEntry} from "@/lib/agent/standx-knowledge";
 import type {AgentLink, AgentMessage, AgentNavigation} from "@/lib/agent/types";
 
 /**
@@ -144,90 +144,20 @@ const navigationIntents: Record<AppLocale, readonly string[]> = {
 };
 
 /**
- * Doc topics the fallback can resolve without a model. Pages are referenced by
- * title through `findDoc`, which throws on a miss — an index into `docPages`
- * would silently shift the moment a page is inserted.
+ * Doc topics the fallback can resolve without a model.
+ *
+ * Built from the shared `docAliases` table rather than a private copy, because
+ * these terms are the same bridge the model path needs to find a page from a
+ * question asked in Spanish or Korean. When the two lists were separate, only
+ * this one had the terms — so the offline brain could route "liquidación" to
+ * the right page and the model, which is supposed to be the better path, could
+ * not. `findDoc` throws on an unknown title, so a renamed page fails at module
+ * load rather than quietly dropping a term.
  */
-const docTopics: Array<{terms: string[]; doc: DocEntry}> = [
-  {
-    terms: [
-      "what is standx",
-      "que es standx",
-      "o que e standx",
-      "що таке standx",
-      "standx가 무엇"
-    ],
-    doc: findDoc("About StandX")
-  },
-  {
-    terms: ["dusd", "stablecoin", "estable", "estável", "стейблкоїн", "스테이블"],
-    doc: findDoc("$DUSD Overview")
-  },
-  {
-    terms: ["mint", "minting", "mintear", "acuñar", "cunhar", "мінт", "민팅"],
-    doc: findDoc("Minting DUSD")
-  },
-  {
-    terms: ["redeem", "redimir", "resgatar", "погашення", "상환"],
-    doc: findDoc("Redeeming DUSD")
-  },
-  {
-    terms: [
-      "fee",
-      "fees",
-      "comision",
-      "comisiones",
-      "taxa",
-      "taxas",
-      "maker",
-      "taker",
-      "комісія",
-      "комісії",
-      "수수료"
-    ],
-    doc: findDoc("Trading Fee")
-  },
-  {
-    terms: [
-      "leverage",
-      "margin",
-      "apalancamiento",
-      "margen",
-      "alavancagem",
-      "margem",
-      "плече",
-      "маржа",
-      "레버리지",
-      "마진"
-    ],
-    doc: findDoc("Margin & Leverage")
-  },
-  {
-    terms: ["liquidation", "liquidacion", "liquidação", "ліквідація", "청산"],
-    doc: findDoc("Liquidation")
-  },
-  {
-    terms: ["funding", "funding rate", "financiamento", "фандинг", "펀딩"],
-    doc: findDoc("Funding Rate")
-  },
-  {
-    terms: ["wallet", "billetera", "cartera", "carteira", "гаманець", "지갑"],
-    doc: findDoc("StandX Wallet Guide")
-  },
-  {
-    terms: ["withdraw", "withdrawal", "retirar", "sacar", "виведення", "출금"],
-    doc: findDoc("Withdrawal")
-  },
-  {
-    terms: ["referral", "network yield", "referido", "indicação", "реферал", "레퍼럴"],
-    doc: findDoc("Network Yield")
-  },
-  {
-    terms: ["sip", "sips", "proposal", "propuesta", "proposta"],
-    doc: findDoc("SIPs (StandX Improvement Proposals)")
-  },
-  {terms: ["api", "websocket", "rest", "endpoint"], doc: findDoc("API Reference")}
-];
+const docTopics: Array<{terms: readonly string[]; doc: DocEntry}> = docAliases.map(
+  (alias) => ({terms: alias.terms, doc: findDoc(alias.title)})
+);
+
 
 /**
  * Terms score a flat base plus a length bonus. Scoring purely on length would

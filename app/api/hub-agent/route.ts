@@ -4,6 +4,11 @@ import {readDocPage} from "@/lib/agent/doc-reader";
 import {buildLocalAnswer, type LocalAnswer} from "@/lib/agent/local-fallback";
 import {buildSystemPrompt, buildUserContext} from "@/lib/agent/prompt";
 import {
+  PREREAD_THRESHOLD,
+  buildRetrievalQuery,
+  retrieveContext
+} from "@/lib/agent/retrieval";
+import {
   ProviderUnavailableError,
   resolveProviders,
   streamChatTurn,
@@ -13,6 +18,7 @@ import {
   type ChatTurn
 } from "@/lib/agent/providers";
 import {agentTools, allowedLinkUrls} from "@/lib/agent/tools";
+import {createTranscriptFilter} from "@/lib/agent/transcript-text";
 import {chargeQuota, quotaCookie, readQuota} from "@/lib/agent/visitor-quota";
 import type {
   AgentMessage,
@@ -390,13 +396,32 @@ export async function POST(request: Request): Promise<Response> {
 
   const providers = resolveProviders();
   const localAnswer = buildLocalAnswer(messages, locale, currentRoute);
-  const isLocallyResolved = localAnswer.kind !== "fallback";
   const key = clientKey(request);
 
+  /**
+   * The offline brain is a fallback, not a filter.
+   *
+   * It used to intercept anything it recognised at all, which quietly made the
+   * assistant worse the moment a provider existed. "What exactly is the funding
+   * rate per hour?" matched the keyword `funding`, was classified as a docs
+   * topic, and got answered with a bare link and no number — while a configured
+   * model sat unused. Every keyword in `local-fallback.ts` was, in effect, a
+   * question Stander was forbidden to actually answer.
+   *
+   * With a provider available the only thing still short-circuited is an
+   * explicit navigation request: that is an action rather than an answer,
+   * it is deterministic, and it is instant.
+   *
+   * Nothing is lost by handing the rest over. The same curated knowledge is in
+   * the model's system prompt, so its answers rest on the identical verified
+   * facts — and it can read the page for the detail the summary leaves out.
+   */
+  const handledWithoutModel = localAnswer.kind === "navigation";
+
   // Budget is charged against the path that will actually serve the request, so
-  // a curated answer never spends provider quota or gets throttled at a model
-  // call's price. Unknown and conversational questions may use a provider.
-  const usesModel = providers.length > 0 && !isLocallyResolved;
+  // a routed navigation never spends provider quota or gets throttled at a
+  // model call's price.
+  const usesModel = providers.length > 0 && !handledWithoutModel;
   const verdict = checkRate(key, usesModel ? MODEL_MAX_REQUESTS : LOCAL_MAX_REQUESTS);
   if (verdict.limited) {
     return errorResponse(
@@ -407,8 +432,8 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  // A curated answer costs nothing to serve, so it is never charged against the
-  // visitor's daily budget — only turns that can reach a provider are.
+  // An offline answer costs nothing to serve, so it is never charged against
+  // the visitor's daily budget — only turns that can reach a provider are.
   if (!usesModel) {
     return localStream(messages, locale, currentRoute, localAnswer, null, "");
   }
@@ -446,20 +471,19 @@ export async function POST(request: Request): Promise<Response> {
       let docsRead = 0;
       const seenLinks = new Set<string>();
 
-      const conversation: ChatMessage[] = [
-        {role: "system", content: buildSystemPrompt(locale)},
-        ...messages.map((message, index) => {
-          if (index === messages.length - 1 && message.role === "user") {
-            return {
-              role: "user" as const,
-              content: `${buildUserContext(currentRoute, locale)}\n\n${message.content}`
-            };
-          }
-          return {role: message.role, content: message.content};
-        })
-      ];
+      // Retrieval runs once, against the whole exchange, and its result is
+      // reused for every round of this answer. Re-retrieving after a tool call
+      // would let the context drift out from under a half-written reply.
+      const retrieved = retrieveContext(
+        buildRetrievalQuery(messages),
+        locale,
+        currentRoute
+      );
 
       try {
+        // Sent before the documentation fetch below, not after: the visitor
+        // should see the assistant start thinking immediately, not sit on a
+        // blank panel for however long docs.standx.com takes to answer.
         send({type: "status", value: "thinking"});
 
         // The throttled tier is paced here rather than refused. It sits between
@@ -468,17 +492,79 @@ export async function POST(request: Request): Promise<Response> {
           await wait(quota.delayMs);
         }
 
+        /**
+         * When retrieval is confident which page the question is about, read it
+         * now instead of waiting to be asked.
+         *
+         * This is what makes the answer verifiable rather than merely
+         * confident. Left to decide for itself, the free-tier model skipped the
+         * tool and wrote a fluent paragraph about liquidation from nothing,
+         * citing a page that does not cover it. It is also the cheaper path:
+         * one model call carrying the page beats two calls, the second of which
+         * re-sends the whole prompt anyway.
+         *
+         * A failed read is not an error — the page text is an upgrade to the
+         * answer, not a precondition for it, so the turn proceeds without it.
+         */
+        let preRead: {title: string; url: string; content: string} | undefined;
+        if (retrieved.topDocScore >= PREREAD_THRESHOLD && retrieved.docs[0]) {
+          const page = await readDocPage(retrieved.docs[0].title);
+          if (page.ok && page.page) {
+            preRead = {title: page.page.title, url: page.page.url, content: page.content};
+            docsRead += 1;
+          } else {
+            // Silently degrading here is what made this hard to see: the answer
+            // still arrives, just ungrounded, and nothing anywhere says why.
+            console.warn(
+              `hub-agent: pre-read of "${retrieved.docs[0].title}" failed — ${page.content.slice(0, 160)}`
+            );
+          }
+        }
+
+        const conversation: ChatMessage[] = [
+          {role: "system", content: buildSystemPrompt(locale, retrieved, preRead)},
+          ...messages.map((message, index) => {
+            if (index === messages.length - 1 && message.role === "user") {
+              return {
+                role: "user" as const,
+                content: `${buildUserContext(currentRoute, locale)}\n\n${message.content}`
+              };
+            }
+            return {role: message.role, content: message.content};
+          })
+        ];
+
         const chain = createProviderChain(providers);
         let servedBy = providers[0]?.id ?? "local";
+        let rounds = 0;
 
         for (let round = 0; round <= MAX_TOOL_ROUNDS; round += 1) {
+          rounds = round + 1;
+
+          // One filter per round: a held-back tail belongs to the turn that
+          // produced it and must not bleed into the next one.
+          const transcript = createTranscriptFilter();
+
           const {turn, provider} = await chain.run(conversation, tools, (delta) => {
+            const safe = transcript.push(delta);
+            if (!safe) {
+              return;
+            }
             if (!emitted) {
               emitted = true;
               send({type: "status", value: "answering"});
             }
-            send({type: "text", value: delta});
+            send({type: "text", value: safe});
           });
+
+          const tail = transcript.flush();
+          if (tail) {
+            if (!emitted) {
+              emitted = true;
+              send({type: "status", value: "answering"});
+            }
+            send({type: "text", value: tail});
+          }
           servedBy = provider.id;
 
           if (turn.toolCalls.length === 0) {
@@ -567,6 +653,32 @@ export async function POST(request: Request): Promise<Response> {
             });
           }
         }
+
+        /**
+         * If the server read a page to produce this answer, the visitor gets
+         * that page — whether or not the model remembered to offer it.
+         *
+         * "Check my source" is the entire proposition here, and leaving it to
+         * the model meant it arrived sometimes: the same question answered
+         * perfectly, with the exact formula off the page, and shipped no link
+         * at all. A source that appears at the model's discretion is not a
+         * source. Skipped when it already sent one, so nothing doubles up.
+         */
+        if (preRead && !seenLinks.has(preRead.url)) {
+          send({type: "link", value: {label: preRead.title, url: preRead.url}});
+          seenLinks.add(preRead.url);
+        }
+
+        // One line per answered question. The whole diagnosis of why this
+        // assistant did not work lived in facts none of which were visible from
+        // outside: how big the prompt was, whether a page had been read, which
+        // provider actually served it. Cheap to print, and the only thing that
+        // makes a production report actionable.
+        console.log(
+          `hub-agent: ${locale} served=${servedBy} rounds=${rounds}` +
+            ` prompt=${conversation[0].content?.length ?? 0}c` +
+            ` preread=${preRead?.title ?? "none"} docsRead=${docsRead}`
+        );
 
         send({type: "done", value: {provider: servedBy}});
       } catch (error) {

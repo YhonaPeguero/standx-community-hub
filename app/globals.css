@@ -802,12 +802,16 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem);
   }
 
-  /* Messages hug the bottom of the transcript. The box is `flex: 1 1 auto` so a
-     long conversation can grow into it, but with only the greeting in it that
-     left ~190px of dead space between the greeting and the suggestions.
+  /* The empty state hugs the bottom: with only the greeting in a `flex: 1 1 auto`
+     box there was ~190px of dead space between it and the suggestions.
      `margin-top: auto` on the first child rather than `justify-content: flex-end`
-     — the latter clips the top of overflowing content in a scrolling column. */
-  .agent-transcript > *:first-child {
+     — the latter clips the top of overflowing content in a scrolling column.
+
+     A real conversation does the opposite and starts at the top, growing
+     downward the way every chat people already use behaves. Bottom-anchoring it
+     too meant a two-line exchange floated at the foot of a tall panel under a
+     wall of nothing, which read as the transcript having been cut off. */
+  .agent-transcript[data-empty="true"] > *:first-child {
     margin-top: auto;
   }
 

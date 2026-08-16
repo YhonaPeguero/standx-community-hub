@@ -191,6 +191,42 @@ check(
   /docsRead >= MAX_DOC_READS/.test(route) && /docsRead \+= 1/.test(route)
 );
 
+// The offline brain used to intercept anything it recognised, so a question
+// containing "funding" was answered with a bare link while a working model sat
+// unused. Only an explicit navigation request may skip the model now.
+check(
+  "the offline brain only short-circuits navigation",
+  /handledWithoutModel = localAnswer\.kind === "navigation"/.test(route),
+  "a recognised keyword must not preempt a configured model"
+);
+
+// The prompt is per-question now. If this ever goes back to a constant the
+// whole knowledge base rides along on every round and the free tier's
+// per-minute token budget is gone — see scripts/check-retrieval.mjs.
+check(
+  "the prompt is built from retrieved context, not the whole knowledge base",
+  /retrieveContext\(/.test(route) && /buildSystemPrompt\(locale, retrieved/.test(route)
+);
+
+section("Providers — one bad provider must not take the chain down");
+
+const providers = fs.readFileSync(path.join(root, "lib", "agent", "providers.ts"), "utf8");
+
+check(
+  "a rejected key or model fails over instead of ending the request",
+  /MISCONFIGURED_STATUSES = new Set\(\[401, 403, 404\]\)/.test(providers),
+  "Groq reports an exhausted token allowance as 401"
+);
+check(
+  "a model that emits malformed tool JSON fails over too",
+  /isRecoverableBadRequest/.test(providers) && /tool\[_ \]use\[_ \]failed/.test(providers)
+);
+check(
+  "a 401 from a provider that already answered is not reported as a bad key",
+  /provenProviders/.test(providers),
+  "otherwise every busy minute cries wolf about a working key"
+);
+
 section("Doc reader — the model names a page, it never supplies a URL");
 
 const tools = fs.readFileSync(path.join(root, "lib", "agent", "tools.ts"), "utf8");
@@ -218,6 +254,105 @@ check(
 check(
   "page text is bounded before it enters the conversation",
   /MAX_CHARS/.test(reader) && /slice\(0, MAX_CHARS\)/.test(reader)
+);
+
+/* --------------------------------------------------- tool calls as prose */
+
+section("A tool call typed into the answer never reaches the visitor");
+
+const filterSource = path.join(root, "lib", "agent", "transcript-text.ts");
+const filterOut = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "tfilter-")), "filter.mjs");
+fs.writeFileSync(
+  filterOut,
+  ts.transpileModule(fs.readFileSync(filterSource, "utf8"), {
+    compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022}
+  }).outputText
+);
+const {createTranscriptFilter} = await import(`file://${filterOut.split(path.sep).join("/")}`);
+
+/** Runs text through the filter in the given chunks, as the stream would. */
+function filtered(chunks) {
+  const filter = createTranscriptFilter();
+  let out = "";
+  for (const chunk of chunks) {
+    out += filter.push(chunk);
+  }
+  return out + filter.flush();
+}
+
+const artifact =
+  'open_link({"label":"Comisiones de Trading","url":"https://docs.standx.com/docs/x"})';
+
+check(
+  "a whole artifact arriving at once is removed",
+  filtered([`La comisión maker es 0,01%.\n\n${artifact}`]) === "La comisión maker es 0,01%.",
+  JSON.stringify(filtered([`La comisión maker es 0,01%.\n\n${artifact}`]))
+);
+
+// The real case: it arrives a few tokens at a time, so the opening is already
+// on screen by the time the artifact is recognisable — unless text is held.
+const streamed = ["La comisión maker es 0,01%.\n\n", "open_", "link(", '{"label":"C', 'omisiones"', ',"url":"https://docs.standx.com/docs/x"', "})"];
+check(
+  "an artifact split across deltas is still removed",
+  filtered(streamed) === "La comisión maker es 0,01%.",
+  JSON.stringify(filtered(streamed))
+);
+
+check(
+  "an artifact in the middle of a sentence is removed without a double space",
+  filtered([`Mira ${artifact} y listo.`]) === "Mira y listo.",
+  JSON.stringify(filtered([`Mira ${artifact} y listo.`]))
+);
+
+// A filter that eats ordinary prose is worse than the leak it prevents.
+check(
+  "prose that merely mentions a tool name survives",
+  filtered(["Puedes navigate por la documentación oficial."]) ===
+    "Puedes navigate por la documentación oficial.",
+  JSON.stringify(filtered(["Puedes navigate por la documentación oficial."]))
+);
+check(
+  "a normal answer passes through byte for byte",
+  filtered(["StandX cobra 0,01% maker ", "y 0,04% taker."]) ===
+    "StandX cobra 0,01% maker y 0,04% taker.",
+);
+check(
+  "an unterminated tool name is released rather than swallowed",
+  filtered([`Habla de read_doc${"x".repeat(500)}`]).length > 400
+);
+
+// The transcript has no markdown parser on purpose — that is what keeps model
+// output from ever being interpreted as markup — so markdown the model writes
+// anyway lands as literal punctuation in front of the visitor.
+check(
+  "bold markers are stripped, split across deltas like a real stream",
+  filtered(["La tasa maker es ", "**0.0", "1 %**", " del nocional."]) ===
+    "La tasa maker es 0.01 % del nocional.",
+  JSON.stringify(filtered(["La tasa maker es ", "**0.0", "1 %**", " del nocional."]))
+);
+check(
+  "backticks and single emphasis go too",
+  filtered(["Usa `read_doc` para leer la *página* oficial."]) ===
+    "Usa read_doc para leer la página oficial.",
+  JSON.stringify(filtered(["Usa `read_doc` para leer la *página* oficial."]))
+);
+check(
+  "a markdown link keeps its text and loses the syntax",
+  filtered(["Mira [Funding Rate](https://docs.standx.com/x) ahora."]) ===
+    "Mira Funding Rate ahora.",
+  JSON.stringify(filtered(["Mira [Funding Rate](https://docs.standx.com/x) ahora."]))
+);
+
+// Stripping every asterisk would be simpler and would corrupt real answers.
+check(
+  "an asterisk between word characters is left alone",
+  filtered(["El cálculo es 2*3 y nada más."]) === "El cálculo es 2*3 y nada más.",
+  JSON.stringify(filtered(["El cálculo es 2*3 y nada más."]))
+);
+
+check(
+  "the filter is actually wired into the streamed answer",
+  /createTranscriptFilter\(\)/.test(route) && /transcript\.push\(delta\)/.test(route)
 );
 
 /* -------------------------------------------------------------------- done */

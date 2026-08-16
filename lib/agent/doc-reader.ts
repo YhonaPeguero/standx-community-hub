@@ -16,8 +16,13 @@ import {docPages, type DocEntry} from "@/lib/agent/standx-knowledge";
  * — the set of reachable URLs is fixed at build time.
  */
 
-/** Enough for any single page here; the longest run about 12k characters. */
-const MAX_CHARS = 6000;
+/**
+ * A read page is re-sent to the model on every remaining round, so its size is
+ * charged more than once against a per-minute token budget. Measured pages run
+ * around 1,800 characters, so this only bites on the few long references — and
+ * there, losing the tail costs less than losing the answer to a rate limit.
+ */
+const MAX_CHARS = 5000;
 const FETCH_TIMEOUT_MS = 8000;
 
 /**
@@ -35,22 +40,69 @@ export interface DocReadResult {
   page?: DocEntry;
 }
 
+const titleWords = (value: string): Set<string> =>
+  new Set(
+    value
+      .toLowerCase()
+      .replace(/\$/g, "")
+      .split(/[^a-z0-9]+/)
+      .filter((word) => word.length > 1)
+  );
+
+/**
+ * Resolution is deliberately forgiving. The prompt now lists only the pages
+ * retrieved for the current question rather than all fifty, so the model is
+ * more likely to name one from memory and slightly wrong. A near miss costing a
+ * whole tool round — of two — is a wasted answer, and on this budget rounds are
+ * the scarce resource.
+ */
 function findPage(title: string): DocEntry | null {
   const wanted = title.trim().toLowerCase();
   if (!wanted) {
     return null;
   }
-  return (
-    docPages.find((page) => page.title.toLowerCase() === wanted) ??
-    // The model paraphrases titles more often than it gets them exactly right
-    // ("Trading Fees" for "Trading Fee"), and a near miss should not cost a
-    // whole tool round.
-    docPages.find((page) => {
-      const actual = page.title.toLowerCase();
-      return actual.startsWith(wanted) || wanted.startsWith(actual);
-    }) ??
-    null
-  );
+
+  const exact = docPages.find((page) => page.title.toLowerCase() === wanted);
+  if (exact) {
+    return exact;
+  }
+
+  const prefixed = docPages.find((page) => {
+    const actual = page.title.toLowerCase();
+    return actual.startsWith(wanted) || wanted.startsWith(actual);
+  });
+  if (prefixed) {
+    return prefixed;
+  }
+
+  // "Fees for trading" -> "Trading Fee". Scored both ways so a short real title
+  // is not beaten by a long one that merely contains more of the guess.
+  const asked = titleWords(wanted);
+  let best: {page: DocEntry; score: number} | null = null;
+  for (const page of docPages) {
+    const actual = titleWords(page.title);
+    let shared = 0;
+    for (const word of asked) {
+      if (actual.has(word)) {
+        shared += 1;
+      }
+    }
+    const score = shared / Math.max(asked.size, actual.size);
+    if (score > 0.5 && (!best || score > best.score)) {
+      best = {page, score};
+    }
+  }
+
+  return best?.page ?? null;
+}
+
+/** Titles sharing any word with the guess, so a miss is correctable in one go. */
+function suggestTitles(title: string): string[] {
+  const asked = titleWords(title);
+  return docPages
+    .filter((page) => [...titleWords(page.title)].some((word) => asked.has(word)))
+    .slice(0, 5)
+    .map((page) => page.title);
 }
 
 const ENTITIES: Record<string, string> = {
@@ -98,9 +150,14 @@ function htmlToText(html: string): string {
 export async function readDocPage(title: string): Promise<DocReadResult> {
   const page = findPage(title);
   if (!page) {
+    const suggestions = suggestTitles(title);
     return {
       ok: false,
-      content: `error: no documentation page is called "${title}". Use one of the titles exactly as they appear in your documentation list.`
+      content:
+        `error: no documentation page is called "${title}".` +
+        (suggestions.length
+          ? ` Did you mean one of: ${suggestions.join(", ")}?`
+          : " Use a title exactly as it appears in your documentation list.")
     };
   }
 

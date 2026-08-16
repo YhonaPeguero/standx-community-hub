@@ -703,14 +703,11 @@ export function matchCoreKnowledge(input: string, locale: AppLocale): KnowledgeM
   return best && best.score >= MATCH_THRESHOLD ? best : null;
 }
 
-export function renderCoreKnowledge(): string {
-  return coreKnowledgeTopics
-    .map(
-      (topic) =>
-        `## ${topic.title}\n${topic.fact}\nVerified: ${topic.verifiedAt}. Volatility: ${topic.volatility}. Sources: ${topic.docTitles.join(", ")}.`
-    )
-    .join("\n\n");
-}
+// `renderCoreKnowledge()` and `renderDocIndex()` used to live here, rendering
+// every fact and all fifty pages into one constant for the system prompt. They
+// are gone rather than merely unused: that constant is what pushed a single
+// question past the free tier's per-minute token budget. The prompt now renders
+// only what `lib/agent/retrieval.ts` selected for the question in hand.
 
 
 
@@ -989,11 +986,107 @@ export const docPages: DocEntry[] = [
 ];
 
 /**
- * Prompt digest generated from the same records that power deterministic
- * answers. This prevents the local and model paths from learning different
- * versions of core StandX concepts.
+ * Curated search terms that point at a documentation page, in every locale.
+ *
+ * This is the bridge between how a visitor asks and how the docs are titled.
+ * The pages are English and always will be, so a lexical index over their
+ * titles and summaries answers "funding rate" and "liquidation" perfectly and
+ * "¿cómo se calcula la liquidación?" not at all — and the fact blocks cannot
+ * cover the gap, because there is no curated topic for every page.
+ *
+ * Terms only. Nothing here is a claim about StandX, so this list carries no
+ * `verifiedAt` and cannot go stale in the way a fact does; it can only become
+ * incomplete, which shows up as a retrieval miss rather than a wrong answer.
+ *
+ * Titles are validated against `docPages` at module load by `findDoc`.
  */
-export const standxKnowledge = renderCoreKnowledge();
+export const docAliases: ReadonlyArray<{terms: readonly string[]; title: string}> = [
+  {
+    terms: ["what is standx", "que es standx", "o que e standx", "що таке standx", "standx가 무엇"],
+    title: "About StandX"
+  },
+  {
+    terms: ["dusd", "stablecoin", "estable", "estável", "стейблкоїн", "스테이블"],
+    title: "$DUSD Overview"
+  },
+  {
+    terms: [
+      "mint", "minting", "mintear", "acuñar", "cunhar", "mintar",
+      "мінт", "мінтити", "민팅", "발행"
+    ],
+    title: "Minting DUSD"
+  },
+  {
+    terms: ["redeem", "redimir", "resgatar", "погашення", "상환"],
+    title: "Redeeming DUSD"
+  },
+  {
+    terms: [
+      "fee", "fees", "comision", "comisiones", "tarifa", "tarifas",
+      "taxa", "taxas", "maker", "taker", "комісія", "комісії", "수수료"
+    ],
+    title: "Trading Fee"
+  },
+  {
+    terms: [
+      "leverage", "margin", "apalancamiento", "margen", "alavancagem", "margem",
+      "плече", "маржа", "레버리지", "마진", "증거금"
+    ],
+    title: "Margin & Leverage"
+  },
+  {
+    terms: [
+      "liquidation", "liquidate", "liquidacion", "liquidación", "liquidado",
+      "liquidação", "ліквідація", "ліквідації", "청산"
+    ],
+    title: "Liquidation"
+  },
+  {
+    terms: [
+      "funding", "funding rate", "financiamento", "financiacion",
+      "фандинг", "ставка фінансування", "펀딩"
+    ],
+    title: "Funding Rate"
+  },
+  {
+    terms: ["wallet", "billetera", "cartera", "carteira", "гаманець", "지갑"],
+    title: "StandX Wallet Guide"
+  },
+  {
+    terms: ["withdraw", "withdrawal", "retirar", "retiro", "sacar", "saque", "виведення", "출금"],
+    title: "Withdrawal"
+  },
+  {
+    terms: ["referral", "network yield", "referido", "indicação", "реферал", "레퍼럴"],
+    title: "Network Yield"
+  },
+  {
+    terms: ["sip", "sips", "proposal", "propuesta", "proposta", "пропозиція", "제안"],
+    title: "SIPs (StandX Improvement Proposals)"
+  },
+  {
+    terms: ["api", "websocket", "rest", "endpoint", "엔드포인트"],
+    title: "API Reference"
+  },
+  {
+    terms: [
+      "points", "puntos", "pontos", "бали", "поінти", "포인트",
+      "earn", "ganar", "ganhar", "заробити"
+    ],
+    title: "Earn on StandX"
+  },
+  {
+    terms: [
+      "order", "orders", "orden", "ordenes", "órdenes", "ordem", "ordens",
+      "ордер", "주문", "limit order", "market order"
+    ],
+    title: "The Execution Panel"
+  },
+  {
+    terms: ["stop loss", "take profit", "tp/sl", "stop", "손절", "익절"],
+    title: "Take Profit and Stop Loss (TP/SL)"
+  }
+];
 
 /**
  * Look a page up by title. Throws rather than returning undefined so a typo or
@@ -1007,9 +1100,3 @@ export function findDoc(title: string): DocEntry {
   return page;
 }
 
-/** Compact "title — url" list injected into the prompt so links are never invented. */
-export function renderDocIndex(): string {
-  return docPages
-    .map((page) => `- ${page.title} (${page.covers}): ${page.url}`)
-    .join("\n");
-}

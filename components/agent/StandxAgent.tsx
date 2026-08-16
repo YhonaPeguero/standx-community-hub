@@ -532,6 +532,7 @@ export default function StandxAgent({locale}: StandxAgentProps) {
                   className="agent-transcript"
                   ref={transcriptRef}
                   role="log"
+                  data-empty={entries.length === 0 ? "true" : "false"}
                 >
                   {entries.length === 0 ? (
                     <p className="agent-line agent-line--assistant">{t("greeting")}</p>

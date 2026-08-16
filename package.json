@@ -11,6 +11,7 @@
     "motion:check": "node scripts/verify-motion.mjs",
     "framing:check": "node scripts/check-framing.mjs",
     "agent:check": "node scripts/check-agent-answers.mjs",
+    "retrieval:check": "node scripts/check-retrieval.mjs",
     "docs:check": "node scripts/check-docs-freshness.mjs",
     "guards:check": "node scripts/check-agent-guards.mjs"
   },
