@@ -386,10 +386,16 @@ export default function StandxAgent({locale}: StandxAgentProps) {
   }, [avatar, open, prefersReducedMotion]);
 
   // One-time nudge so first-time visitors notice the projection is interactive.
+  //
+  // 5200ms is not arbitrary and should not be shortened: the splash holds for
+  // 4400ms and takes another 750ms to leave (see components/SplashIntro.tsx),
+  // so anything sooner opens the nudge underneath it.
+  //
+  // It used to be withheld from anyone asking for reduced motion, which took the
+  // information away along with the movement — and the splash is withheld on
+  // that same preference, so those visitors met a character with nothing at all
+  // to explain it. The travel is dropped in CSS instead; the fade stays.
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
     let dismissed = false;
     try {
       dismissed = window.localStorage.getItem(HINT_STORAGE_KEY) === "seen";
@@ -402,7 +408,7 @@ export default function StandxAgent({locale}: StandxAgentProps) {
 
     const timer = window.setTimeout(() => setShowHint(true), 5200);
     return () => window.clearTimeout(timer);
-  }, [prefersReducedMotion]);
+  }, []);
 
   const dismissHint = useCallback(() => {
     setShowHint(false);
@@ -813,11 +819,22 @@ export default function StandxAgent({locale}: StandxAgentProps) {
             aria-expanded={false}
             aria-haspopup="dialog"
             aria-label={t("dockAria")}
+            // While the nudge is up it carries the invitation on its own; the
+            // standing label fades out rather than saying it twice.
+            data-nudging={showHint ? "true" : "false"}
             className="agent-dock focus-ring"
           >
             {/* Feathered backdrop — the only thing keeping page copy from
                 showing through the transparent canvas. No edges anywhere. */}
             <span className="agent-dock__aura" aria-hidden="true" />
+
+            {/* The standing affordance. `aria-hidden` because `dockAria` is
+                already the button's accessible name and this only repeats it
+                for the people reading the screen. */}
+            <span className="agent-dock__label" aria-hidden="true">
+              <span className="agent-dock__label-text">{t("dockLabel")}</span>
+              <span className="agent-dock__label-tie" />
+            </span>
 
             <span className="agent-dock__stage">
               <HologramStage

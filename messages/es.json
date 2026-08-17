@@ -172,6 +172,7 @@
   "agent": {
     "name": "Stander",
     "dockAria": "Abrir a Stander",
+    "dockLabel": "Habla con Stander",
     "dialogLabel": "Chat con Stander",
     "close": "Cerrar Stander",
     "newChat": "Nueva conversación",

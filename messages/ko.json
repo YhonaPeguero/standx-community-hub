@@ -172,6 +172,7 @@
   "agent": {
     "name": "Stander",
     "dockAria": "Stander 열기",
+    "dockLabel": "Stander와 대화하기",
     "dialogLabel": "Stander와 대화",
     "close": "Stander 닫기",
     "newChat": "새 대화",

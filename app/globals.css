@@ -537,6 +537,104 @@
     pointer-events: none;
   }
 
+  /* --- Dock label --- */
+  /* The affordance. A frameless projection gets none of the cues a button
+     gets for free — no housing, no border, no icon in a circle — so a floating
+     character reads as decoration and visitors never find out it answers
+     questions. `dockAria` said so to screen readers; the first-visit nudge said
+     it to everyone else once and then never again, and not at all to anyone who
+     asked for reduced motion. This says it on every visit, on touch as well as
+     hover, and whether or not motion is welcome.
+
+     Written as a caption on the projection rather than a control on the page:
+     no box, no border, and a hairline running into the figure so the words and
+     the character read as one target. It sits outside the dock's 108px box but
+     inside its button, so the whole phrase is part of the same hit area. */
+  .agent-dock__label {
+    position: absolute;
+    top: 45%;
+    right: calc(100% - 0.4rem);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transform: translateY(-50%);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  /* The nudge is the same invitation, louder. Both at once is just noise. */
+  .agent-dock[data-nudging="true"] .agent-dock__label {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Legibility over whatever the page put behind it — the dock's own aura stops
+     at the dock's box, so the label has to carry its own.
+
+     A blurred capsule rather than the aura's masked-gradient trick, because a
+     radial mask cannot cover a line of text: sized to feather within its box,
+     its opaque core dies well before the last word does, and over the growth
+     path's pink section the page read straight through the label. Blurring a
+     solid shape instead keeps the core fully opaque across the whole phrase and
+     still feathers on all four sides, so there is no edge, corner or seam here
+     either — and on the right it runs into the aura as one pool of shade. */
+  .agent-dock__label::before {
+    content: "";
+    position: absolute;
+    inset: -0.5rem -1rem;
+    border-radius: 9999px;
+    background: rgba(3, 6, 5, 0.96);
+    filter: blur(9px);
+    pointer-events: none;
+  }
+
+  .agent-dock__label-text {
+    position: relative;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.005em;
+    white-space: nowrap;
+    color: #cfe9dc;
+    /* Tight shadow for the letterforms, wide one for the ground under them. */
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.95),
+      0 0 12px rgba(0, 0, 0, 0.8);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  /* Hairline leader into the projection — the deck's own line, doing the one
+     job a caption needs done: binding the words to the thing they name. */
+  .agent-dock__label-tie {
+    position: relative;
+    width: 1.15rem;
+    height: 1px;
+    background: linear-gradient(to right, rgba(0, 255, 135, 0.14), rgba(0, 255, 135, 0.66));
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .agent-dock__label-tie::after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    width: 3px;
+    height: 3px;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: rgba(0, 255, 135, 0.85);
+    box-shadow: 0 0 6px rgba(0, 255, 135, 0.7);
+  }
+
+  .agent-dock:hover .agent-dock__label-text,
+  .agent-dock:focus-visible .agent-dock__label-text {
+    color: #ffffff;
+  }
+
+  .agent-dock:hover .agent-dock__label-tie,
+  .agent-dock:focus-visible .agent-dock__label-tie {
+    background: linear-gradient(to right, rgba(0, 255, 135, 0.3), rgba(0, 255, 135, 1));
+  }
+
   /* --- First-visit nudge --- */
 
   .agent-hint {
@@ -1375,6 +1473,25 @@
     height: 116px;
   }
 
+  /* Tighter, because the phone is where the label matters most and where it has
+     the least room: at 360px there are 260px left of the dock, and Ukrainian
+     needs about 190 of them once the leader and the backdrop are counted. */
+  .agent-dock__label {
+    gap: 0.4rem;
+  }
+
+  .agent-dock__label::before {
+    inset: -0.45rem -0.85rem;
+  }
+
+  .agent-dock__label-text {
+    font-size: 0.6875rem;
+  }
+
+  .agent-dock__label-tie {
+    width: 0.85rem;
+  }
+
   .agent-hint {
     max-width: 12.5rem;
   }
@@ -1440,6 +1557,23 @@
   .agent-dock:focus-visible {
     transition: none;
     transform: none;
+  }
+
+  /* The nudge used to be withheld from anyone asking for reduced motion, which
+     traded away the information along with the movement — and since the splash
+     is withheld on the same preference, those visitors met an unexplained
+     character and nothing else. It renders for them now; framer writes the
+     translate inline, so the travel comes off here. Same rule as
+     .section-reveal, and the fade stays because it carries no vestibular
+     motion. The dock's own label keeps its centring transform. */
+  .agent-hint {
+    transform: none !important;
+  }
+
+  .agent-dock__label,
+  .agent-dock__label-text,
+  .agent-dock__label-tie {
+    transition: none;
   }
 
   /* Keep the fade, drop the travel — same rule as .section-reveal. */
