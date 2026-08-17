@@ -828,12 +828,21 @@ export default function StandxAgent({locale}: StandxAgentProps) {
                 showing through the transparent canvas. No edges anywhere. */}
             <span className="agent-dock__aura" aria-hidden="true" />
 
-            {/* The standing affordance. `aria-hidden` because `dockAria` is
-                already the button's accessible name and this only repeats it
-                for the people reading the screen. */}
-            <span className="agent-dock__label" aria-hidden="true">
-              <span className="agent-dock__label-text">{t("dockLabel")}</span>
-              <span className="agent-dock__label-tie" />
+            {/* The standing affordance, shaped as the character's own thought:
+                bubble, then three orbs trailing back to the figure. Order is
+                left to right, so the last one is the smallest and sits nearest
+                Stander. `aria-hidden` because `dockAria` is already the button's
+                accessible name and this only repeats it for the people reading
+                the screen. */}
+            <span className="agent-dock__thought" aria-hidden="true">
+              <span className="agent-dock__bubble">
+                <span className="agent-dock__bubble-text">{t("dockLabel")}</span>
+              </span>
+              <span className="agent-dock__orbs">
+                <i />
+                <i />
+                <i />
+              </span>
             </span>
 
             <span className="agent-dock__stage">

@@ -537,7 +537,7 @@
     pointer-events: none;
   }
 
-  /* --- Dock label --- */
+  /* --- Dock thought --- */
   /* The affordance. A frameless projection gets none of the cues a button
      gets for free — no housing, no border, no icon in a circle — so a floating
      character reads as decoration and visitors never find out it answers
@@ -546,93 +546,170 @@
      asked for reduced motion. This says it on every visit, on touch as well as
      hover, and whether or not motion is welcome.
 
-     Written as a caption on the projection rather than a control on the page:
-     no box, no border, and a hairline running into the figure so the words and
-     the character read as one target. It sits outside the dock's 108px box but
-     inside its button, so the whole phrase is part of the same hit area. */
-  .agent-dock__label {
+     Shaped as the character's own thought rather than a control bolted to the
+     page: a small round bubble with three orbs trailing back to the figure, the
+     smallest closest to it. That convention does in one glance what a caption
+     and a leader line only implied — the words belong to Stander, and Stander
+     is something you talk to. It sits outside the dock's 108px box but inside
+     its button, so the whole thought is part of the same hit area. */
+  /* Up and to the left of the head, close enough to belong to it.
+   *
+   * Both numbers are percentages of the dock, which is what lets one rule serve
+   * 108x143 and 88x116 — they share an aspect ratio to within 0.5%.
+   *
+   * The character does not fill its box: the ball starts about 35% of the way
+   * down, so the whole top third is sprig and air. Sitting the bubble above the
+   * BOX therefore parked it some 60px clear of the actual head and it read as
+   * unmoored. 72% puts its underside just above the crown instead.
+   *
+   * Left, because the sprig leans up and to the RIGHT — that corner is where the
+   * leaf lives, and anything placed there covers it. Up-left is the one quadrant
+   * next to the head that is reliably empty.
+   *
+   * 60% and not less: the stem rises out of the crown at about 44% of the width,
+   * so the vertical strip above the head is taken. At 38% the bubble's near edge
+   * landed in that strip and the stem drew straight through the last word. */
+  .agent-dock__thought {
     position: absolute;
-    top: 45%;
-    right: calc(100% - 0.4rem);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transform: translateY(-50%);
+    bottom: 78%;
+    right: 63%;
     transition: opacity var(--dur-base) var(--ease-out);
   }
 
   /* The nudge is the same invitation, louder. Both at once is just noise. */
-  .agent-dock[data-nudging="true"] .agent-dock__label {
+  .agent-dock[data-nudging="true"] .agent-dock__thought {
     opacity: 0;
     pointer-events: none;
   }
 
-  /* Legibility over whatever the page put behind it — the dock's own aura stops
-     at the dock's box, so the label has to carry its own.
-
-     A blurred capsule rather than the aura's masked-gradient trick, because a
-     radial mask cannot cover a line of text: sized to feather within its box,
-     its opaque core dies well before the last word does, and over the growth
-     path's pink section the page read straight through the label. Blurring a
-     solid shape instead keeps the core fully opaque across the whole phrase and
-     still feathers on all four sides, so there is no edge, corner or seam here
-     either — and on the right it runs into the aura as one pool of shade. */
-  .agent-dock__label::before {
-    content: "";
-    position: absolute;
-    inset: -0.5rem -1rem;
-    border-radius: 9999px;
-    background: rgba(3, 6, 5, 0.96);
-    filter: blur(9px);
-    pointer-events: none;
+  /* Round on every side, and lit rather than drawn: the rim is an inset shadow
+     instead of a border, so nothing here is a hairline rectangle and the shape
+     still reads as projected light. The wide dark shadow is doing real work and
+     is not decoration — the dock's aura stops at the dock's box, so over the
+     growth path's pink section this is the only thing standing between the page
+     and the words. Blurred rather than spread, so it has no edge of its own. */
+  .agent-dock__bubble {
+    position: relative;
+    /* Not optional. It is a span, and an inline box does not let padding open
+       the line box: the fill collapsed to the text and the 1px inset rim
+       stretched down the whole inline height as a stray vertical stroke. It only
+       looked right before because a flex parent was blockifying it. */
+    display: block;
+    padding: 0.34rem 0.62rem;
+    border-radius: 999px;
+    background: rgba(6, 13, 10, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* Quiet at rest. Walking all nine routes at three scroll depths, the loud
+       version out-shouted the body copy it floats over on the reference and
+       insights pages — so the rim sits at 0.15 and the lime spill at 0.07, and
+       both only come up on hover. The dark halo stays, because that is the part
+       doing work: it is the only thing between the page and these words. */
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 255, 135, 0.15),
+      inset 0 1px 0 rgba(214, 255, 236, 0.06),
+      0 0 14px 7px rgba(3, 6, 5, 0.7),
+      0 0 18px rgba(0, 255, 135, 0.07);
+    transition:
+      box-shadow var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
   }
 
-  .agent-dock__label-text {
-    position: relative;
-    font-size: 0.75rem;
+  .agent-dock__bubble-text {
+    display: block;
+    font-size: 0.6875rem;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.005em;
     white-space: nowrap;
-    color: #cfe9dc;
+    color: #bcd6c9;
     /* Tight shadow for the letterforms, wide one for the ground under them. */
     text-shadow:
-      0 1px 2px rgba(0, 0, 0, 0.95),
-      0 0 12px rgba(0, 0, 0, 0.8);
+      0 1px 2px rgba(0, 0, 0, 0.9),
+      0 0 12px rgba(0, 0, 0, 0.7);
     transition: color var(--dur-fast) var(--ease-out);
   }
 
-  /* Hairline leader into the projection — the deck's own line, doing the one
-     job a caption needs done: binding the words to the thing they name. */
-  .agent-dock__label-tie {
-    position: relative;
-    width: 1.15rem;
-    height: 1px;
-    background: linear-gradient(to right, rgba(0, 255, 135, 0.14), rgba(0, 255, 135, 0.66));
-    transition: background var(--dur-fast) var(--ease-out);
-  }
+  /* The tail: a short diagonal from under the bubble down to the crown, stepping
+     RIGHT as it falls, because the bubble now sits up-LEFT of the head. Each orb
+     is smaller than the one above it, so the trail narrows into the character.
+     Lit from the upper left like the mascot's own body, so they read as the same
+     material rather than as three lime dots.
 
-  .agent-dock__label-tie::after {
-    content: "";
+     Placed one by one rather than stacked in a flex column: the gap it has to
+     cross is only about 14px now that the bubble sits beside the head instead of
+     over the box, and three orbs on an explicit diagonal is easier to aim — and
+     to read here — than gaps plus per-child margins. Anchored from the right, so
+     the trail keeps its place under the bubble's near end in every locale.
+
+     Nearly vertical, stepping only about 7px right over an 11px fall: the crown
+     is directly below the bubble's near edge, and any more lean than this walks
+     the trail into the stem. */
+  .agent-dock__orbs {
     position: absolute;
-    right: -1px;
-    top: 50%;
-    width: 3px;
-    height: 3px;
-    transform: translateY(-50%);
-    border-radius: 9999px;
-    background: rgba(0, 255, 135, 0.85);
-    box-shadow: 0 0 6px rgba(0, 255, 135, 0.7);
+    top: calc(100% + 0.1rem);
+    right: 0.45rem;
+    width: 1rem;
+    height: 0.85rem;
   }
 
-  .agent-dock:hover .agent-dock__label-text,
-  .agent-dock:focus-visible .agent-dock__label-text {
+  .agent-dock__orbs i {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 34% 30%,
+      rgba(206, 245, 224, 0.88),
+      rgba(0, 255, 135, 0.6) 55%,
+      rgba(0, 176, 92, 0.34)
+    );
+    /* The lime glow alone vanished against the ball's own rim light, which is
+       the same colour — the thin dark ring is what keeps each orb separate from
+       whatever it happens to be crossing. */
+    box-shadow:
+      0 0 0 1.5px rgba(3, 8, 5, 0.78),
+      0 0 6px rgba(0, 255, 135, 0.38);
+    /* The thought travels toward the bubble, so the delays run the other way:
+       see the nth-child rules, where the orb nearest the character goes first. */
+    animation: dock-thought 3.1s var(--ease-in-out) infinite;
+  }
+
+  .agent-dock__orbs i:nth-child(1) {
+    width: 6px;
+    height: 6px;
+    top: 0;
+    right: 0.5rem;
+    animation-delay: 0.36s;
+  }
+
+  .agent-dock__orbs i:nth-child(2) {
+    width: 4px;
+    height: 4px;
+    top: 0.3rem;
+    right: 0.28rem;
+    animation-delay: 0.18s;
+  }
+
+  .agent-dock__orbs i:nth-child(3) {
+    width: 2.5px;
+    height: 2.5px;
+    top: 0.58rem;
+    right: 0.08rem;
+    animation-delay: 0s;
+  }
+
+  .agent-dock:hover .agent-dock__bubble-text,
+  .agent-dock:focus-visible .agent-dock__bubble-text {
     color: #ffffff;
   }
 
-  .agent-dock:hover .agent-dock__label-tie,
-  .agent-dock:focus-visible .agent-dock__label-tie {
-    background: linear-gradient(to right, rgba(0, 255, 135, 0.3), rgba(0, 255, 135, 1));
+  .agent-dock:hover .agent-dock__bubble,
+  .agent-dock:focus-visible .agent-dock__bubble {
+    background: rgba(8, 17, 13, 0.93);
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 255, 135, 0.42),
+      inset 0 1px 0 rgba(214, 255, 236, 0.1),
+      0 0 16px 10px rgba(3, 6, 5, 0.76),
+      0 0 26px rgba(0, 255, 135, 0.22);
   }
 
   /* --- First-visit nudge --- */
@@ -1347,6 +1424,27 @@
   }
 }
 
+/* The thought forming. Each orb swells and settles in turn, and because the
+   delays run from the character outward the pulse travels into the bubble —
+   which is the direction a thought goes. Long cycle and a shallow floor, so it
+   reads as something alive next to the mascot's own breathing rather than as a
+   loading indicator asking to be waited on. */
+@keyframes dock-thought {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.82);
+  }
+  22% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  55% {
+    opacity: 0.6;
+    transform: scale(0.94);
+  }
+}
+
 /* The dock arrives once on load, and again each time the chamber stands down
    and hands the projection back to the corner. */
 @keyframes agent-dock-in {
@@ -1473,23 +1571,13 @@
     height: 116px;
   }
 
-  /* Tighter, because the phone is where the label matters most and where it has
-     the least room: at 360px there are 260px left of the dock, and Ukrainian
-     needs about 190 of them once the leader and the backdrop are counted. */
-  .agent-dock__label {
-    gap: 0.4rem;
-  }
-
-  .agent-dock__label::before {
-    inset: -0.45rem -0.85rem;
-  }
-
-  .agent-dock__label-text {
-    font-size: 0.6875rem;
-  }
-
-  .agent-dock__label-tie {
-    width: 0.85rem;
+  /* Position needs no override: it is written in percentages of the dock, and
+     the two dock sizes share an aspect ratio to within half a percent, so 72/38
+     lands on the same spot on the character at 88x116 as at 108x143. Only the
+     type and its padding shrink — the phone is where the thought matters most
+     and where it has the least room, with Ukrainian the longest of the five. */
+  .agent-dock__bubble {
+    padding: 0.3rem 0.55rem;
   }
 
   .agent-hint {
@@ -1542,8 +1630,16 @@
 
   .agent-typing i,
   .agent-dock__glow,
+  .agent-dock__orbs i,
   .agent-caret {
     animation: none !important;
+  }
+
+  /* The orbs still have to read as a thought once they stop travelling, so they
+     hold the lit end of the cycle rather than its resting floor. */
+  .agent-dock__orbs i {
+    opacity: 1;
+    transform: none;
   }
 
   /* The dock's entrance is a CSS animation rather than a framer `initial`, so
@@ -1570,9 +1666,9 @@
     transform: none !important;
   }
 
-  .agent-dock__label,
-  .agent-dock__label-text,
-  .agent-dock__label-tie {
+  .agent-dock__thought,
+  .agent-dock__bubble,
+  .agent-dock__bubble-text {
     transition: none;
   }
 
