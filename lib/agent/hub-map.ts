@@ -68,7 +68,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "가이드",
       "はじめかた",
       "始め方",
+      "始め方は",
+      "始めかた",
       "オンボーディング",
+      "参加方法",
       "昇格"
     ],
     links: [{label: "StandX Discord", url: DISCORD_URL}]
@@ -113,8 +116,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "ブランド",
       "アセット",
       "ロゴ",
+      "ロゴ素材",
       "マスコット",
-      "素材"
+      "素材",
+      "画像素材"
     ],
     links: [
       {
@@ -154,7 +159,9 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "템플릿",
       "구조",
       "テンプレート",
+      "テンプレ",
       "ひな形",
+      "ひな形は",
       "雛形"
     ]
   },
@@ -188,6 +195,8 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "예시",
       "リファレンス",
       "参考",
+      "参考事例",
+      "参考リンク",
       "事例"
     ]
   },
@@ -233,6 +242,7 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "프로젝트",
       "コミュニティ",
       "参加",
+      "参加したい",
       "ゲーム",
       "プロジェクト"
     ],
@@ -279,7 +289,9 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "분석",
       "インサイト",
       "記事",
-      "分析"
+      "記事一覧",
+      "分析",
+      "分析記事"
     ]
   },
   about: {
@@ -308,7 +320,11 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "소개",
       "누가",
       "概要",
+      "概要ページ",
+      "概要のページ",
       "誰が",
+      "誰が作った",
+      "作った人",
       "このハブ"
     ]
   }
@@ -321,7 +337,7 @@ export const extraRoutes = [
     label: "Home",
     summary:
       "The landing page: hero, what the hub is, the live ticker, and the directory of every section.",
-    keywords: ["home", "landing", "start page", "inicio", "casa", "головна", "홈", "ホーム", "トップ"]
+    keywords: ["home", "landing", "start page", "inicio", "casa", "головна", "홈", "ホーム", "ホームに", "ホームへ", "トップ", "トップページ"]
   },
   {
     path: "how-it-works",
@@ -350,8 +366,13 @@ export const extraRoutes = [
       "지갑",
       "용어",
       "仕組み",
+      "仕組みは",
+      "仕組みを",
+      "仕組みの",
+      "使いかた",
       "ウォレット",
-      "用語"
+      "用語",
+      "用語集は"
     ]
   }
 ] as const;
