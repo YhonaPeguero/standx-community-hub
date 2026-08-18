@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import SectionReveal from "@/components/SectionReveal";
 import SectionDirectory from "@/components/SectionDirectory";
 import {defaultLocale, isAppLocale, type AppLocale} from "@/i18n/request";
+import {alternatesFor} from "@/lib/seo";
 
 interface HomePageProps {
   params: {
@@ -20,6 +21,7 @@ export async function generateMetadata({params}: HomePageProps): Promise<Metadat
       absolute: "StandX Community Hub"
     },
     description: t("description"),
+    alternates: alternatesFor(locale),
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),

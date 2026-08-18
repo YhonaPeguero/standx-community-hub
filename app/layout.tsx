@@ -3,10 +3,11 @@ import {GeistMono} from "geist/font/mono";
 import {GeistSans} from "geist/font/sans";
 import {cookies} from "next/headers";
 import {defaultLocale, isAppLocale} from "@/i18n/request";
+import {SITE_URL} from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://standx-community-hub.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: "StandX Community Hub",
   description:
     "Multilingual community hub for StandX Perpetuals DEX onboarding, DUSD education, and community growth."

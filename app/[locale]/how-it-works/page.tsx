@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import SectionReveal from "@/components/SectionReveal";
 import {defaultLocale, isAppLocale} from "@/i18n/request";
+import {alternatesFor} from "@/lib/seo";
 
 interface HowItWorksPageProps {
   params: {
@@ -38,6 +39,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    alternates: alternatesFor(locale, "how-it-works"),
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),

@@ -14,6 +14,7 @@ import {
   locales,
   type AppLocale
 } from "@/i18n/request";
+import {alternatesFor} from "@/lib/seo";
 
 interface SectionPageProps {
   params: {
@@ -1228,7 +1229,8 @@ export async function generateMetadata({params}: SectionPageProps): Promise<Meta
 
   return {
     title: localized(locale, header.title),
-    description: localized(locale, header.subtitle)
+    description: localized(locale, header.subtitle),
+    alternates: alternatesFor(locale, section)
   };
 }
 
