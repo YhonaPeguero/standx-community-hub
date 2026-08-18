@@ -65,7 +65,11 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "почати",
       "початок",
       "시작",
-      "가이드"
+      "가이드",
+      "はじめかた",
+      "始め方",
+      "オンボーディング",
+      "昇格"
     ],
     links: [{label: "StandX Discord", url: DISCORD_URL}]
   },
@@ -104,7 +108,13 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "логотип",
       "브랜드",
       "키트",
-      "에셋"
+      "에셋",
+      "ブランドキット",
+      "ブランド",
+      "アセット",
+      "ロゴ",
+      "マスコット",
+      "素材"
     ],
     links: [
       {
@@ -142,7 +152,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "шаблон",
       "шаблони",
       "템플릿",
-      "구조"
+      "구조",
+      "テンプレート",
+      "ひな形",
+      "雛形"
     ]
   },
   references: {
@@ -172,7 +185,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "приклад",
       "приклади",
       "레퍼런스",
-      "예시"
+      "예시",
+      "リファレンス",
+      "参考",
+      "事例"
     ]
   },
   community: {
@@ -214,7 +230,11 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "проєкти",
       "커뮤니티",
       "게임",
-      "프로젝트"
+      "프로젝트",
+      "コミュニティ",
+      "参加",
+      "ゲーム",
+      "プロジェクト"
     ],
     links: [
       {label: "StandX Discord", url: DISCORD_URL},
@@ -256,7 +276,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "аналітика",
       "인사이트",
       "아티클",
-      "분석"
+      "분석",
+      "インサイト",
+      "記事",
+      "分析"
     ]
   },
   about: {
@@ -283,7 +306,10 @@ export const hubSectionMap: Record<HubSectionSlug, HubSectionEntry> = {
       "про",
       "хто",
       "소개",
-      "누가"
+      "누가",
+      "概要",
+      "誰が",
+      "このハブ"
     ]
   }
 };
@@ -295,7 +321,7 @@ export const extraRoutes = [
     label: "Home",
     summary:
       "The landing page: hero, what the hub is, the live ticker, and the directory of every section.",
-    keywords: ["home", "landing", "start page", "inicio", "casa", "головна", "홈"]
+    keywords: ["home", "landing", "start page", "inicio", "casa", "головна", "홈", "ホーム", "トップ"]
   },
   {
     path: "how-it-works",
@@ -322,7 +348,10 @@ export const extraRoutes = [
       "словник",
       "작동",
       "지갑",
-      "용어"
+      "용어",
+      "仕組み",
+      "ウォレット",
+      "用語"
     ]
   }
 ] as const;

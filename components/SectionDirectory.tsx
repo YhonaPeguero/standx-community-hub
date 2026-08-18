@@ -69,6 +69,15 @@ const descriptions: Record<AppLocale, Record<HubSectionSlug, string>> = {
     community: "Discord 진입점, 커뮤니티 프로젝트, 신규 기여자를 이끄는 크리에이터 소개.",
     "standers-insights": "활동 중인 커뮤니티 트레이더들의 큐레이션 분석 아카이브.",
     about: "이 허브를 만든 사람과 목적, 그리고 커뮤니티 이니셔티브의 배경."
+  },
+  ja: {
+    "getting-started": "Growth Path、段階ごとの進み方、squads の構成、SPROUT 昇格の条件。",
+    "brand-kit": "コミュニティのビジュアルアセットと使い方の文脈、公式フォルダをまとめて。",
+    templates: "記事、X スレッド、競合レーダー、用語集にそのまま使えるテンプレート集。",
+    references: "StandX エコシステムで実際に作られたコンテンツのリファレンス。",
+    community: "Discord の入口、コミュニティプロジェクト、新しい貢献者を導くクリエイター。",
+    "standers-insights": "活動中のコミュニティトレーダーによる分析と学習コンテンツのアーカイブ。",
+    about: "このハブを作った人と目的、そしてコミュニティ活動のこれまで。"
   }
 };
 
@@ -102,6 +111,12 @@ const directoryCopy: Record<AppLocale, DirectoryCopy> = {
     title: "허브 둘러보기",
     subtitle: "트레이더, 크리에이터, 리서처를 위한 7개의 집중된 공간.",
     openSection: "열기"
+  },
+  ja: {
+    eyebrow: "ハブのセクション",
+    title: "ハブを見てまわる",
+    subtitle: "トレーダー、クリエイター、リサーチャーのための 7 つの専用スペース。",
+    openSection: "開く"
   }
 };
 

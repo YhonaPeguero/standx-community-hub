@@ -37,21 +37,24 @@ const copy = {
     es: "Eso está en {section}. Te llevo ahí ahora.",
     "pt-br": "Isso fica em {section}. Estou te levando pra lá.",
     uk: "Це в розділі {section} — переходжу туди.",
-    ko: "{section} 섹션에 있어요. 지금 이동할게요."
+    ko: "{section} 섹션에 있어요. 지금 이동할게요.",
+    ja: "それは {section} にあります。今そこへ移動します。"
   } satisfies Copy,
   alreadyHere: {
     en: "You are already on {section} — it is all on this page.",
     es: "Ya estás en {section}: está todo en esta página.",
     "pt-br": "Você já está em {section} — está tudo nesta página.",
     uk: "Ви вже в розділі {section} — усе на цій сторінці.",
-    ko: "이미 {section} 페이지에 계세요. 필요한 내용이 여기 있어요."
+    ko: "이미 {section} 페이지에 계세요. 필요한 내용이 여기 있어요.",
+    ja: "すでに {section} にいます。必要なものはこのページにそろっています。"
   } satisfies Copy,
   docs: {
     en: "The official documentation covers that. Here is the page:",
     es: "La documentación oficial lo cubre. Aquí tienes la página:",
     "pt-br": "A documentação oficial cobre isso. Aqui está a página:",
     uk: "Це описано в офіційній документації. Ось сторінка:",
-    ko: "공식 문서에 해당 내용이 있어요. 이 페이지를 확인하세요:"
+    ko: "공식 문서에 해당 내용이 있어요. 이 페이지를 확인하세요:",
+    ja: "公式ドキュメントに載っています。こちらのページです:"
   } satisfies Copy,
   unknown: {
     en: "I do not have a verified answer for that yet. I would rather point you to the official sources than guess.",
@@ -59,21 +62,24 @@ const copy = {
     "pt-br":
       "Ainda não tenho uma resposta verificada para isso. Prefiro indicar as fontes oficiais a inventar uma resposta.",
     uk: "Я ще не маю перевіреної відповіді на це. Краще спрямую вас до офіційних джерел, ніж здогадуватимусь.",
-    ko: "아직 검증된 답변이 없습니다. 추측하기보다 공식 출처를 안내해 드릴게요."
+    ko: "아직 검증된 답변이 없습니다. 추측하기보다 공식 출처를 안내해 드릴게요.",
+    ja: "それについてはまだ確認の取れた答えがありません。推測するより、公式の情報源をご案内します。"
   } satisfies Copy,
   discordLabel: {
     en: "StandX Discord",
     es: "Discord de StandX",
     "pt-br": "Discord da StandX",
     uk: "StandX Discord",
-    ko: "StandX Discord"
+    ko: "StandX Discord",
+    ja: "StandX Discord"
   } satisfies Copy,
   docsLabel: {
     en: "Official documentation",
     es: "Documentación oficial",
     "pt-br": "Documentação oficial",
     uk: "Офіційна документація",
-    ko: "공식 문서"
+    ko: "공식 문서",
+    ja: "公式ドキュメント"
   } satisfies Copy
 };
 
@@ -122,6 +128,15 @@ const sectionLabels: Record<AppLocale, Record<HubSectionSlug, string>> = {
     community: "커뮤니티",
     "standers-insights": "Standers Insights",
     about: "소개"
+  },
+  ja: {
+    "getting-started": "はじめかた",
+    "brand-kit": "ブランドキット",
+    templates: "テンプレート",
+    references: "リファレンス",
+    community: "コミュニティ",
+    "standers-insights": "Standers Insights",
+    about: "概要"
   }
 };
 
@@ -131,7 +146,8 @@ const extraRouteLabels: Record<AppLocale, Record<string, string>> = {
   es: {"": "Inicio", "how-it-works": "Cómo Funciona"},
   "pt-br": {"": "Início", "how-it-works": "Como Funciona"},
   uk: {"": "Головна", "how-it-works": "Як це працює"},
-  ko: {"": "홈", "how-it-works": "작동 방식"}
+  ko: {"": "홈", "how-it-works": "작동 방식"},
+  ja: {"": "ホーム", "how-it-works": "仕組み"}
 };
 
 /** Navigation is an action, so a topic keyword alone must never trigger it. */
@@ -140,7 +156,8 @@ const navigationIntents: Record<AppLocale, readonly string[]> = {
   es: ["llevame", "ve a", "ir a", "abre", "donde esta", "donde encuentro", "muestrame la pagina"],
   "pt-br": ["me leve", "va para", "ir para", "abra", "onde fica", "onde encontro", "mostre a pagina"],
   uk: ["переведи мене", "перейди до", "відкрий", "де знаходиться", "де знайти", "покажи сторінку"],
-  ko: ["이동해", "가 줘", "열어", "어디에", "어디서 찾", "페이지 보여"]
+  ko: ["이동해", "가 줘", "열어", "어디에", "어디서 찾", "페이지 보여"],
+  ja: ["に移動", "へ移動", "を開いて", "はどこ", "どこにある", "ページを見せ", "に行きたい"]
 };
 
 /**

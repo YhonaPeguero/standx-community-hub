@@ -25,13 +25,15 @@ interface LocaleOption {
     | "languageCodeEs"
     | "languageCodePtBr"
     | "languageCodeUk"
-    | "languageCodeKo";
+    | "languageCodeKo"
+    | "languageCodeJa";
   nameKey:
     | "languageNameEn"
     | "languageNameEs"
     | "languageNamePtBr"
     | "languageNameUk"
-    | "languageNameKo";
+    | "languageNameKo"
+    | "languageNameJa";
   nativeName: string;
 }
 
@@ -40,12 +42,13 @@ const localeOptions: LocaleOption[] = [
   {value: "es", codeKey: "languageCodeEs", nameKey: "languageNameEs", nativeName: "Español"},
   {value: "pt-br", codeKey: "languageCodePtBr", nameKey: "languageNamePtBr", nativeName: "Português (BR)"},
   {value: "uk", codeKey: "languageCodeUk", nameKey: "languageNameUk", nativeName: "Українська"},
-  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo", nativeName: "한국어"}
+  {value: "ko", codeKey: "languageCodeKo", nameKey: "languageNameKo", nativeName: "한국어"},
+  {value: "ja", codeKey: "languageCodeJa", nameKey: "languageNameJa", nativeName: "日本語"}
 ];
 
 function buildLocalePath(pathname: string, nextLocale: AppLocale): string {
   const localizedPath = pathname.replace(
-    /^\/(en|es|pt-br|uk|ko)(?=\/|$)/,
+    /^\/(en|es|pt-br|uk|ko|ja)(?=\/|$)/,
     `/${nextLocale}`
   );
   return localizedPath === pathname ? `/${nextLocale}` : localizedPath;

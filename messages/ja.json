@@ -1,0 +1,216 @@
+{
+  "metadata": {
+    "layout": {
+      "title": "StandX Community Hub",
+      "titleSuffix": "StandX Community Hub",
+      "description": "StandX Perpetuals DEX のオンボーディング、DUSD の解説、コミュニティ成長のためのプレミアム多言語コミュニティハブです。",
+      "ogTitle": "StandX Community Hub",
+      "ogDescription": "StandX をすばやく理解し、DUSD の仕組みを学び、活発な Trading コミュニティに参加しましょう。"
+    },
+    "home": {
+      "title": "ホーム",
+      "description": "StandX をわかりやすく紹介します。Perpetuals Trading、stablecoin DUSD のユーティリティ、コミュニティ主導のオンボーディング。",
+      "ogTitle": "StandX Community Hub | DUSD ユーティリティと Perpetuals Trading",
+      "ogDescription": "明確な解説、DUSD スポットライト、コミュニティリンクを備えた StandX のプレミアムオンボーディングハブ。"
+    },
+    "howItWorks": {
+      "title": "仕組み",
+      "description": "StandX のステップ別ビジュアルオンボーディング。wallet を接続し、DUSD を準備して、Perpetuals Trading を自信を持って始めましょう。",
+      "ogTitle": "StandX の仕組み | 接続、準備、Trading",
+      "ogDescription": "Perpetuals、DUSD、Yield の流れをやさしく理解できるビジュアルガイド。"
+    }
+  },
+  "links": {
+    "startTrading": "https://standx.com/",
+    "standxOfficial": "https://x.com/StandX_Official",
+    "discord": "https://discord.gg/standx",
+    "docs": "https://docs.standx.com/docs/about-standx"
+  },
+  "common": {
+    "brand": "StandX Community Hub",
+    "brandShort": "StandX Hub",
+    "languageNameEn": "英語",
+    "languageNameEs": "スペイン語",
+    "languageNamePtBr": "ポルトガル語 (ブラジル)",
+    "languageNameUk": "ウクライナ語",
+    "languageNameKo": "韓国語",
+    "languageNameJa": "日本語",
+    "languageCodeEn": "EN",
+    "languageCodeEs": "ES",
+    "languageCodePtBr": "PT-BR",
+    "languageCodeUk": "UK",
+    "languageCodeKo": "KO",
+    "languageCodeJa": "JA",
+    "languageSwitcherAria": "言語を切り替えます。現在の言語: {locale}。",
+    "startTradingAria": "新しいタブで StandX の Trading を始める",
+    "learnHowAria": "仕組みのページを開く",
+    "visitStandX": "StandX 公式プロフィールを開く",
+    "joinDiscord": "StandX Discord コミュニティに参加する",
+    "openDocs": "StandX コミュニティリソースを開く",
+    "openNavigation": "ナビゲーションメニューを開く",
+    "closeNavigation": "ナビゲーションメニューを閉じる",
+    "approximateValues": "表示されている数値は目安です"
+  },
+  "navbar": {
+    "home": "ホーム",
+    "howItWorks": "仕組み",
+    "community": "コミュニティ",
+    "resources": "リソース",
+    "about": "概要",
+    "primaryCta": "Trading を始める",
+    "menuLabel": "メニュー",
+    "languageLabel": "言語",
+    "drawerTitle": "ハブを見る",
+    "drawerDescription": "オンボーディングガイド、コミュニティチャンネル、主要リソースにアクセスできます。"
+  },
+  "hero": {
+    "eyebrow": "StandX · コミュニティインフラ",
+    "title": "Perpetuals をより明確に Trading しましょう。ポジションの合間も DUSD を働かせ続けます。",
+    "titlePartOne": "StandX への",
+    "titlePartTwo": "あなたの",
+    "titleHighlight": "入り口。",
+    "description": "テンプレート、アセット、ガイド、そして実際のリファレンス。StandX エコシステムを理解し、参加し、貢献したいすべての人のためのオープンなハブです。",
+    "ctaPrimary": "はじめる",
+    "ctaSecondary": "仕組みを見る",
+    "ctaCommunity": "Discord に参加",
+    "mobileStickyCta": "StandX で Trading を始める",
+    "badges": {
+      "free": "無料",
+      "noLogin": "ログイン不要",
+      "languages": "EN · ES · PT-BR · UK · KO · JA"
+    },
+    "trustLabel": "公式リンク",
+    "trustStandx": "StandX 公式",
+    "trustDiscord": "コミュニティ Discord",
+    "trustDocs": "リソースを開く",
+    "stats": {
+      "onboarding": {
+        "label": "Growth Path",
+        "value": "SEED -> SPROUT -> FLOWER",
+        "hint": "3 段階 · 純粋な実力主義"
+      },
+      "dusd": {
+        "label": "5 つの squads が参加可能",
+        "value": "Content · Creative · Tech · Outreach · Offline",
+        "hint": "自分に合った役割を選べます"
+      },
+      "activity": {
+        "label": "すべてが動いている場所",
+        "value": "StandX Discord",
+        "hint": "discord.gg/standx"
+      }
+    },
+    "ticker": {
+      "one": "Perpetuals をやさしい言葉で解説",
+      "two": "Yield の話の前に stablecoin DUSD のユーティリティから",
+      "three": "画面に振り回されない Long / Short の執行",
+      "four": "そのまま共有できるコミュニティリソース"
+    }
+  },
+  "footer": {
+    "description": "StandX Perpetuals DEX のためのコミュニティ運営によるオンボーディング＆学習ハブ。",
+    "navigationLabel": "ナビゲーション",
+    "connectLabel": "つながる",
+    "social": {
+      "discord": "Discord",
+      "x": "X / Twitter",
+      "docs": "Docs"
+    },
+    "attribution": "<link>@Thisnotmeeme</link> によるリデザイン ❤️",
+    "legal": "教育目的のコンテンツです。本サイトは公式の金融アドバイスではありません。"
+  },
+  "howItWorksPage": {
+    "eyebrow": "StandX オンボーディング",
+    "title": "StandX の仕組みを 3 つの実践ステップで理解する",
+    "description": "この流れは初めて使う方のために作られています。余計なリスクを取る前に、Perpetuals Trading、DUSD、Yield の流れがどうつながっているかを確認できます。",
+    "primaryCta": "Trading を始める",
+    "secondaryCta": "ホームに戻る",
+    "steps": {
+      "connect": {
+        "number": "01",
+        "title": "wallet を接続する",
+        "description": "お使いの wallet で StandX のインターフェースにアクセスします。",
+        "whyItMatters": "wallet はアカウントの層そのものです。アクセスと承認の管理を自分の手に残せます。"
+      },
+      "deposit": {
+        "number": "02",
+        "title": "collateral を入金し DUSD を理解する",
+        "description": "レバレッジをかける前に、資金の流れを整えて DUSD に慣れておきましょう。",
+        "whyItMatters": "DUSD の仕組みが分かっていると、ポジションサイズとリスクのペース配分がぐっと扱いやすくなります。"
+      },
+      "trade": {
+        "number": "03",
+        "title": "Perpetuals を Trading し Yield の流れを見る",
+        "description": "Long または Short のポジションを持ち、規律を持って成績を追跡します。",
+        "whyItMatters": "良い執行は、エントリーの質、Leverage の制御、そして継続的な振り返りの組み合わせです。"
+      }
+    },
+    "terms": {
+      "title": "Trading の前に用語をさっと整理",
+      "subtitle": "これらの用語は DeFi と Perpetuals の会話に何度も出てきます。今のうちに押さえておくと、後の混乱が減ります。",
+      "perpetuals": {
+        "label": "Perpetuals",
+        "definition": "満期日なしに価格の方向を Trading できる契約です。"
+      },
+      "collateral": {
+        "label": "collateral",
+        "definition": "ポジションを支える資金です。リスクが大きくなりすぎると、この残高が危険にさらされます。"
+      },
+      "yield": {
+        "label": "Yield",
+        "definition": "プロトコル内部の活動と市場の仕組みから、時間をかけて生まれるリターンです。"
+      },
+      "risk": {
+        "label": "Leverage とリスク",
+        "definition": "Leverage は利益も損失も拡大させます。ポジションサイズの規律は必ず守るべきものとして扱ってください。"
+      }
+    },
+    "finalBlock": {
+      "title": "見ている途中で困ったときは？",
+      "description": "StandX コミュニティが、setup の疑問、プラットフォームの使い方、初めての方の実践的な次の一歩まで案内します。",
+      "cta": "コミュニティに参加"
+    }
+  },
+  "agent": {
+    "name": "Stander",
+    "dockAria": "Stander を開く",
+    "dockLabel": "Stander と話す",
+    "dialogLabel": "Stander と話す",
+    "close": "Stander を閉じる",
+    "newChat": "新しい会話",
+    "motionOn": "Stander の動きをオンにする",
+    "motionOff": "Stander の動きを一時停止する",
+    "greeting": "こんにちは、Stander です。StandX、DUSD、SIP、Trading、コミュニティのことなど何でも聞いてください。",
+    "hint": "StandX について気になることは？ Stander に聞いてみてください。",
+    "placeholder": "Stander に質問する",
+    "send": "メッセージを送信",
+    "stop": "停止",
+    "statusOnline": "オンライン",
+    "statusThinking": "考え中",
+    "statusAnswering": "回答中",
+    "statusListening": "聞いています",
+    "statusSpeaking": "話しています",
+    "statusError": "回答できませんでした",
+    "errorGeneric": "今の質問はうまく届きませんでした。もう一度試すか、下のリンクをご利用ください。",
+    "errorRateLimit": "一度にたくさんの質問が届きました — 数秒おいてからもう一度聞いてください。",
+    "retry": "もう一度試す",
+    "micStart": "話す",
+    "micStop": "音声入力を止める",
+    "voiceOn": "音声をオンにする",
+    "voiceOff": "音声をオフにする",
+    "voiceUnsupported": "このブラウザは音声に対応していません。入力でご利用いただけます。",
+    "micDenied": "ブラウザがマイクをブロックしました。入力でご利用いただけます。",
+    "navigatingTo": "移動中: {label}",
+    "openLinkAria": "{label} を新しいタブで開く",
+    "voiceShort": "音声",
+    "micShort": "マイク",
+    "sendShort": "送信",
+    "stopShort": "停止",
+    "suggestions": {
+      "one": "StandX とは何ですか？",
+      "two": "DUSD はどう機能しますか？",
+      "three": "SIP とは何ですか？",
+      "four": "どうやって始めますか？"
+    }
+  }
+}

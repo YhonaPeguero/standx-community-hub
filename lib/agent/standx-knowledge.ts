@@ -73,6 +73,11 @@ export const coreKnowledgeTopics = [
         "standx에 대해",
         "standx란",
         "standx 설명"
+      ],
+      ja: [
+        "standxとは", "standxって", "standxについて", "standxの仕組み", "standxを説明", "standxとは何",
+        "standx とは", "standx って", "standx について", "standx の仕組み", "standx を説明",
+        "standx とは何", "standxを紹介", "standx を紹介"
       ]
     },
     answer: {
@@ -80,7 +85,8 @@ export const coreKnowledgeTopics = [
       es: "StandX es un exchange descentralizado de futuros perpetuos que utiliza DUSD como activo de margen y cotización con rendimiento.\n\nLo importante es cómo se conectan las piezas: DUSD busca mantener productivo el colateral de trading, mientras StandX Perps utiliza el mismo activo para precios, margen, PnL y comisiones. Su visión más amplia combina Universal Yield con Universal Markets; SIP-5 es el marco en desarrollo para que las comunidades creen y respalden mercados bajo reglas públicas. StandX opera en BNB Chain y Solana, y su equipo principal incluye miembros del equipo fundador original de Binance Futures.\n\nSi quieres, puedo explicarte DUSD, Perps o los SIPs a continuación.",
       "pt-br": "StandX é uma exchange descentralizada de futuros perpétuos que usa DUSD como ativo de margem e cotação com rendimento.\n\nO ponto principal é como as partes se conectam: o DUSD busca manter o colateral de trading produtivo, enquanto a StandX Perps usa o mesmo ativo para preços, margem, PnL e taxas. A visão mais ampla combina Universal Yield com Universal Markets; o SIP-5 é o framework em desenvolvimento para que comunidades criem e apoiem mercados sob regras públicas. A StandX opera na BNB Chain e na Solana, e sua equipe principal inclui membros da equipe fundadora original da Binance Futures.\n\nSe quiser, posso explicar DUSD, Perps ou os SIPs em seguida.",
       uk: "StandX — це децентралізована біржа безстрокових ф'ючерсів, де DUSD є дохідним активом маржі та котирування.\n\nГоловне — як поєднані її частини: DUSD має робити торгове забезпечення продуктивним, а StandX Perps використовує той самий актив для ціноутворення, маржі, PnL і комісій. Ширше бачення поєднує Universal Yield та Universal Markets; SIP-5 — це рамкова система в розробці, за якою спільноти зможуть створювати й підтримувати ринки за публічними правилами. StandX працює в BNB Chain і Solana, а до основної команди входять учасники початкової команди Binance Futures.\n\nЯкщо хочете, далі можу пояснити DUSD, Perps або SIP.",
-      ko: "StandX는 DUSD를 수익형 증거금·호가 자산으로 사용하는 무기한 선물 탈중앙화 거래소입니다.\n\n핵심은 각 요소가 연결되는 방식입니다. DUSD는 거래 담보가 유휴 상태로 남지 않도록 설계되고, StandX Perps는 같은 자산을 가격 표시, 증거금, PnL, 수수료에 사용합니다. 더 큰 비전은 Universal Yield와 Universal Markets를 결합하는 것이며, SIP-5는 커뮤니티가 공개 규칙에 따라 시장을 만들고 지원하기 위해 개발 중인 프레임워크입니다. StandX는 BNB Chain과 Solana에서 운영되며 핵심 팀에는 초기 Binance Futures 창립 팀 멤버들이 포함됩니다.\n\n원하시면 다음으로 DUSD, Perps 또는 SIP를 설명해 드릴게요."
+      ko: "StandX는 DUSD를 수익형 증거금·호가 자산으로 사용하는 무기한 선물 탈중앙화 거래소입니다.\n\n핵심은 각 요소가 연결되는 방식입니다. DUSD는 거래 담보가 유휴 상태로 남지 않도록 설계되고, StandX Perps는 같은 자산을 가격 표시, 증거금, PnL, 수수료에 사용합니다. 더 큰 비전은 Universal Yield와 Universal Markets를 결합하는 것이며, SIP-5는 커뮤니티가 공개 규칙에 따라 시장을 만들고 지원하기 위해 개발 중인 프레임워크입니다. StandX는 BNB Chain과 Solana에서 운영되며 핵심 팀에는 초기 Binance Futures 창립 팀 멤버들이 포함됩니다.\n\n원하시면 다음으로 DUSD, Perps 또는 SIP를 설명해 드릴게요.",
+      ja: "StandX は無期限先物の分散型取引所で、DUSD を利回りの付く証拠金・建値資産として使っています。\n\n大事なのは各要素のつながり方です。DUSD は取引の担保を遊ばせないように設計されていて、StandX Perps は同じ資産を価格表示、証拠金、PnL、手数料に使います。より大きな構想は Universal Yield と Universal Markets を組み合わせるもので、SIP-5 はコミュニティが公開されたルールのもとで市場を作り支えるための、開発中のフレームワークです。StandX は BNB Chain と Solana で稼働していて、コアチームには Binance Futures の創業メンバーが含まれます。\n\nよければ次は DUSD、Perps、SIP のどれでも説明します。"
     },
     fact: "StandX is a perpetual-futures DEX live across BNB Chain and Solana, listing both crypto perps and equity (stock) perps. DUSD is its yield-bearing unified margin and quote asset. The core team includes founders of Binance Futures alongside people from Goldman Sachs; the official About page says the project is fully self-funded and has not accepted any external investment.",
     docTitles: ["About StandX", "Perps Overview"],
@@ -137,14 +143,16 @@ export const coreKnowledgeTopics = [
         "시작하려면",
         "첫 단계",
         "초보"
-      ]
+      ],
+      ja: ["始め方", "はじめかた", "どうやって始め", "何から始め", "初めての取引", "初心者", "最初の一歩", "使い方"]
     },
     answer: {
       en: "Start with a wallet, then DUSD, then your first trade.\n\nConnect a supported wallet to StandX Perps — the wallet guide walks through the setup, and there is a dedicated walkthrough for a first trade using Binance Wallet. Fund the account and get DUSD, which is the unified margin and quote asset, so the same balance both earns and backs your positions. Then open a small position from the execution panel, where margin, leverage and TP/SL are set before you confirm.\n\nBefore sizing up it is worth reading how margin and liquidation work. On this hub, the Getting Started section collects the community walkthroughs, and Discord is where people ask the questions that are not in the docs yet.",
       es: "Empieza por la wallet, luego DUSD y después tu primera operación.\n\nConecta una wallet compatible a StandX Perps — la guía de wallet cubre la configuración, y hay un tutorial dedicado para la primera operación con Binance Wallet. Financia la cuenta y consigue DUSD, que es el activo unificado de margen y cotización, así el mismo saldo genera rendimiento y respalda tus posiciones. Luego abre una posición pequeña desde el panel de ejecución, donde se define margen, apalancamiento y TP/SL antes de confirmar.\n\nAntes de aumentar el tamaño conviene leer cómo funcionan el margen y la liquidación. En este hub, la sección Getting Started reúne las guías de la comunidad, y Discord es donde se pregunta lo que aún no está en la documentación.",
       "pt-br": "Comece pela carteira, depois DUSD e então sua primeira operação.\n\nConecte uma carteira compatível ao StandX Perps — o guia de carteira cobre a configuração, e há um tutorial dedicado para a primeira operação com a Binance Wallet. Deposite e obtenha DUSD, que é o ativo unificado de margem e cotação, assim o mesmo saldo rende e sustenta suas posições. Depois abra uma posição pequena pelo painel de execução, onde margem, alavancagem e TP/SL são definidos antes de confirmar.\n\nAntes de aumentar o tamanho vale ler como funcionam margem e liquidação. Neste hub, a seção Getting Started reúne os guias da comunidade, e o Discord é onde se pergunta o que ainda não está na documentação.",
       uk: "Почніть із гаманця, далі DUSD, а потім перша угода.\n\nПідключіть підтримуваний гаманець до StandX Perps — посібник із гаманця описує налаштування, а для першої угоди є окрема інструкція з Binance Wallet. Поповніть рахунок і отримайте DUSD — єдиний актив маржі та котирування, тож той самий баланс і приносить дохід, і забезпечує позиції. Далі відкрийте невелику позицію в панелі виконання, де маржа, плече і TP/SL задаються до підтвердження.\n\nПерш ніж збільшувати обсяг, варто прочитати, як працюють маржа та ліквідація. На цьому хабі розділ Getting Started збирає спільнотні інструкції, а Discord — місце для питань, яких ще немає в документації.",
-      ko: "지갑, DUSD, 첫 거래 순서로 시작하세요.\n\n지원되는 지갑을 StandX Perps에 연결합니다 — 지갑 가이드에 설정 과정이 있고, Binance Wallet으로 첫 거래를 하는 전용 안내도 있습니다. 입금 후 DUSD를 확보하세요. DUSD는 통합 증거금·호가 자산이므로 같은 잔액이 수익도 쌓고 포지션도 뒷받침니다. 그다음 실행 패널에서 작은 포지션을 열어보세요. 확인 전에 증거금, 레버리지, TP/SL을 설정합니다.\n\n규모를 늘리기 전에 증거금과 청산이 어떻게 작동하는지 읽어두면 좋습니다. 이 허브의 Getting Started 섹션에 커뮤니티 가이드가 모여 있고, 문서에 아직 없는 질문은 Discord에서 물어볼 수 있습니다."
+      ko: "지갑, DUSD, 첫 거래 순서로 시작하세요.\n\n지원되는 지갑을 StandX Perps에 연결합니다 — 지갑 가이드에 설정 과정이 있고, Binance Wallet으로 첫 거래를 하는 전용 안내도 있습니다. 입금 후 DUSD를 확보하세요. DUSD는 통합 증거금·호가 자산이므로 같은 잔액이 수익도 쌓고 포지션도 뒷받침니다. 그다음 실행 패널에서 작은 포지션을 열어보세요. 확인 전에 증거금, 레버리지, TP/SL을 설정합니다.\n\n규모를 늘리기 전에 증거금과 청산이 어떻게 작동하는지 읽어두면 좋습니다. 이 허브의 Getting Started 섹션에 커뮤니티 가이드가 모여 있고, 문서에 아직 없는 질문은 Discord에서 물어볼 수 있습니다.",
+      ja: "まず wallet、次に DUSD、そして最初の取引です。\n\n対応している wallet を StandX Perps に接続します。wallet ガイドが設定手順を案内していて、Binance Wallet を使った初めての取引の解説も用意されています。資金を入れて DUSD を用意しましょう。DUSD は証拠金と建値を兼ねる資産なので、同じ残高が利回りを生みながらポジションを支えます。そのうえで、執行パネルから小さめのポジションを開きます。確定する前に、証拠金、レバレッジ、TP/SL をここで設定します。\n\nサイズを上げる前に、証拠金と清算の仕組みを読んでおく価値があります。このハブでは「はじめかた」のセクションにコミュニティの解説がまとまっていて、ドキュメントにまだ載っていないことは Discord で聞けます。"
     },
     fact: "Getting started on StandX: connect a supported wallet to StandX Perps (see the wallet guide, and the dedicated first-trade walkthrough using Binance Wallet), fund the account and obtain DUSD as the unified margin and quote asset, then open a small position from the execution panel where margin, leverage and TP/SL are configured before confirming. Reading Margin & Leverage and Liquidation before sizing up is recommended. This hub's Getting Started section collects community walkthroughs.",
     docTitles: [
@@ -164,14 +172,20 @@ export const coreKnowledgeTopics = [
       es: ["que es dusd", "dusd", "stablecoin con rendimiento", "respaldo de dusd"],
       "pt-br": ["o que e dusd", "dusd", "stablecoin com rendimento", "lastro do dusd"],
       uk: ["що таке dusd", "dusd", "дохідний стейблкоїн", "забезпечення dusd"],
-      ko: ["dusd가 무엇", "dusd", "수익형 스테이블코인", "dusd 담보"]
+      ko: ["dusd가 무엇", "dusd", "수익형 스테이블코인", "dusd 담보"],
+      ja: [
+        "dusdとは", "dusdって", "dusdについて", "利回りのあるステーブルコイン", "dusdの裏付け", "dusdの仕組み",
+        "dusdはどう", "dusdはなに", "dusd とは", "dusd って", "dusd について", "dusd の裏付け",
+        "dusd の仕組み", "dusd はどう", "dusd はなに"
+      ]
     },
     answer: {
       en: "DUSD is StandX's yield-bearing stablecoin and the unified margin and quote asset for Perps.\n\nEligible balances accrue rewards automatically, with no staking or lockup required. According to the official docs, yield comes mainly from staking rewards on backing spot assets and funding income from short-futures hedges; the design also uses market-neutral backing, custody controls, and a reserve fund to manage risk. That lets the same DUSD remain liquid and useful as trading collateral instead of forcing users to choose between utility and yield.\n\nThe yield is variable, not guaranteed. I can also explain minting, redemption, or the hedging model.",
       es: "DUSD es la stablecoin con rendimiento de StandX y el activo unificado de margen y cotización para Perps.\n\nLos saldos elegibles acumulan recompensas automáticamente, sin staking ni bloqueo. Según la documentación oficial, el rendimiento proviene principalmente de recompensas de staking sobre los activos spot de respaldo y del funding de coberturas con futuros en corto; el diseño también utiliza respaldo neutral al mercado, controles de custodia y un fondo de reserva para gestionar el riesgo. Así, el mismo DUSD puede conservar liquidez y servir como colateral de trading sin obligar al usuario a elegir entre utilidad y rendimiento.\n\nEl rendimiento es variable, no garantizado. También puedo explicarte el mint, el canje o el modelo de cobertura.",
       "pt-br": "DUSD é a stablecoin com rendimento da StandX e o ativo unificado de margem e cotação para Perps.\n\nOs saldos elegíveis acumulam recompensas automaticamente, sem staking ou bloqueio. Segundo a documentação oficial, o rendimento vem principalmente das recompensas de staking dos ativos spot de lastro e do funding de proteções com futuros vendidos; o design também usa lastro neutro ao mercado, controles de custódia e um fundo de reserva para gerenciar risco. Assim, o mesmo DUSD pode manter liquidez e servir como colateral de trading sem obrigar o usuário a escolher entre utilidade e rendimento.\n\nO rendimento é variável, não garantido. Também posso explicar mint, resgate ou o modelo de hedge.",
       uk: "DUSD — це дохідний стейблкоїн StandX і єдиний актив маржі та котирування для Perps.\n\nНа придатні баланси винагорода нараховується автоматично, без стейкінгу чи блокування. За офіційною документацією, дохід переважно надходить від стейкінгових винагород активів спотового забезпечення та funding-доходу коротких ф'ючерсних хеджів; для керування ризиком також використовуються ринково-нейтральне забезпечення, контроль зберігання активів і резервний фонд. Завдяки цьому той самий DUSD залишається ліквідним і придатним як торгове забезпечення, без вибору між корисністю та доходом.\n\nДохідність змінна й не гарантована. Також можу пояснити мінт, погашення або модель хеджування.",
-      ko: "DUSD는 StandX의 수익형 스테이블코인이자 Perps의 통합 증거금·호가 자산입니다.\n\n적격 잔액에는 스테이킹이나 락업 없이 보상이 자동 적립됩니다. 공식 문서에 따르면 수익은 주로 담보 현물 자산의 스테이킹 보상과 숏 선물 헤지의 펀딩 수익에서 나오며, 시장 중립적 담보 구조, 커스터디 통제, 준비금으로 위험을 관리합니다. 따라서 사용자는 유동성과 수익 중 하나를 포기하지 않고 같은 DUSD를 거래 담보로 활용할 수 있습니다.\n\n수익률은 변동하며 보장되지 않습니다. 원하시면 민팅, 상환 또는 헤지 모델도 설명해 드릴게요."
+      ko: "DUSD는 StandX의 수익형 스테이블코인이자 Perps의 통합 증거금·호가 자산입니다.\n\n적격 잔액에는 스테이킹이나 락업 없이 보상이 자동 적립됩니다. 공식 문서에 따르면 수익은 주로 담보 현물 자산의 스테이킹 보상과 숏 선물 헤지의 펀딩 수익에서 나오며, 시장 중립적 담보 구조, 커스터디 통제, 준비금으로 위험을 관리합니다. 따라서 사용자는 유동성과 수익 중 하나를 포기하지 않고 같은 DUSD를 거래 담보로 활용할 수 있습니다.\n\n수익률은 변동하며 보장되지 않습니다. 원하시면 민팅, 상환 또는 헤지 모델도 설명해 드릴게요.",
+      ja: "DUSD は StandX の利回りが付くステーブルコインで、Perps の証拠金と建値を兼ねる資産です。\n\n対象となる残高には自動で報酬が積み上がり、ステーキングやロックアップは必要ありません。公式ドキュメントによると、利回りは主に裏付けとなる現物資産のステーキング報酬と、ショート先物ヘッジからのファンディング収入から生まれます。設計にはマーケットニュートラルな裏付け、カストディの管理、リスクに備える準備基金も含まれます。これにより同じ DUSD が流動性を保ったまま取引担保として使えるので、利便性と利回りのどちらかを選ぶ必要がなくなります。\n\n利回りは変動するもので、保証されたものではありません。発行や償還、ヘッジの仕組みについても説明できます。"
     },
     fact: "DUSD is StandX's yield-bearing stablecoin and the unified margin and quote asset for Perps. No staking or lock is required. Rewards accrue to eligible balances automatically. The backing design combines spot assets with short perpetual positions to target market neutrality, supported by custody and reserve controls.",
     docTitles: ["$DUSD Overview", "Risks & Hedging System"],
@@ -187,14 +201,16 @@ export const coreKnowledgeTopics = [
       es: ["rendimiento de dusd", "recompensas de dusd", "como genera rendimiento dusd", "de donde sale el rendimiento"],
       "pt-br": ["rendimento do dusd", "recompensas do dusd", "como dusd rende", "de onde vem o rendimento"],
       uk: ["дохідність dusd", "винагороди dusd", "як dusd приносить дохід", "звідки дохідність"],
-      ko: ["dusd 수익", "dusd 보상", "dusd 수익 구조", "수익은 어디서"]
+      ko: ["dusd 수익", "dusd 보상", "dusd 수익 구조", "수익은 어디서"],
+      ja: ["dusdの利回り", "dusd 利回り", "dusdの報酬", "利回りはどこから", "どうやって利回り", "dusd の利回り", "dusd の報酬"]
     },
     answer: {
       en: "DUSD yield comes primarily from staking rewards on backing assets and funding income from the short-perpetual hedge. It accrues automatically to eligible DUSD balances; the rate is variable, so the live app or docs are the right place for the current figure.",
       es: "El rendimiento de DUSD proviene principalmente de recompensas de staking de los activos de respaldo y del funding de la cobertura con perpetuos en corto. Se acumula automáticamente en saldos DUSD elegibles; la tasa es variable, así que conviene revisar la app o documentación en vivo.",
       "pt-br": "O rendimento do DUSD vem principalmente das recompensas de staking dos ativos de lastro e do funding da proteção com perpétuos vendidos. Ele acumula automaticamente nos saldos DUSD elegíveis; a taxa varia, então consulte o app ou a documentação ao vivo.",
       uk: "Дохід DUSD переважно походить від стейкінгових винагород активів забезпечення та funding-доходу від короткого хеджу у безстрокових ф'ючерсах. Він автоматично нараховується на придатні баланси DUSD; ставка змінюється, тому актуальне значення слід перевіряти в застосунку або документації.",
-      ko: "DUSD 수익은 주로 담보 자산의 스테이킹 보상과 숏 무기한 선물 헤지의 펀딩 수익에서 나옵니다. 적격 DUSD 잔액에 자동 적립되며 수익률은 변동되므로 현재 수치는 앱이나 공식 문서에서 확인해야 합니다."
+      ko: "DUSD 수익은 주로 담보 자산의 스테이킹 보상과 숏 무기한 선물 헤지의 펀딩 수익에서 나옵니다. 적격 DUSD 잔액에 자동 적립되며 수익률은 변동되므로 현재 수치는 앱이나 공식 문서에서 확인해야 합니다.",
+      ja: "DUSD の利回りは主に、裏付け資産のステーキング報酬と、ショート無期限先物ヘッジからのファンディング収入によるものです。対象となる DUSD 残高に自動で積み上がります。レートは変動するので、現在の数値はアプリまたはドキュメントで確認してください。"
     },
     fact: "DUSD yield primarily comes from staking rewards on backing assets and funding income from the short-perpetual hedge. It accrues automatically to eligible DUSD balances without staking. Yield is variable and current rates must be checked in the live app or official docs.",
     docTitles: ["DUSD Yielding Circle", "$DUSD Overview"],
@@ -210,14 +226,20 @@ export const coreKnowledgeTopics = [
       es: ["mintear dusd", "redimir dusd", "comprar dusd", "comision de mint de dusd", "canjear dusd"],
       "pt-br": ["cunhar dusd", "resgatar dusd", "comprar dusd", "taxa de mint do dusd"],
       uk: ["мінт dusd", "погашення dusd", "купити dusd", "комісія мінту dusd"],
-      ko: ["dusd 민팅", "dusd 상환", "dusd 구매", "dusd 민팅 수수료"]
+      ko: ["dusd 민팅", "dusd 상환", "dusd 구매", "dusd 민팅 수수료"],
+      ja: [
+        "dusdを発行", "dusdの発行", "dusdを償還", "dusdの償還", "dusdを買う", "発行手数料", "dusd を発行",
+        "dusd の発行", "dusd を償還", "dusd の償還", "dusd を買う", "発行手数料はいくら",
+        "発行の手数料", "償還手数料"
+      ]
     },
     answer: {
       en: "The official guide currently supports minting DUSD with USDT or USDC, with a $5 minimum and no minting fee; network gas still applies. Redemption carries a 0.1% fee and a seven-day processing period, so verify the live terms before acting.",
       es: "La guía oficial permite actualmente mintear DUSD con USDT o USDC, con un mínimo de $5 y sin comisión de mint; el gas de red sí aplica. El canje tiene una comisión de 0.1% y un plazo de procesamiento de siete días, por lo que debes verificar las condiciones vigentes.",
       "pt-br": "O guia oficial permite atualmente cunhar DUSD com USDT ou USDC, com mínimo de US$ 5 e sem taxa de mint; o gas da rede ainda se aplica. O resgate tem taxa de 0,1% e prazo de processamento de sete dias, então confirme as condições atuais.",
       uk: "Офіційний посібник наразі дозволяє мінтити DUSD за USDT або USDC з мінімумом $5 і без комісії за мінт; мережевий gas оплачується окремо. Погашення має комісію 0,1% і семиденний строк обробки, тому перевіряйте актуальні умови.",
-      ko: "공식 가이드상 현재 USDT 또는 USDC로 최소 5달러부터 DUSD를 민팅할 수 있고 민팅 수수료는 없지만 네트워크 가스비는 발생합니다. 상환 수수료는 0.1%이고 처리 기간은 7일이므로 실행 전 최신 조건을 확인하세요."
+      ko: "공식 가이드상 현재 USDT 또는 USDC로 최소 5달러부터 DUSD를 민팅할 수 있고 민팅 수수료는 없지만 네트워크 가스비는 발생합니다. 상환 수수료는 0.1%이고 처리 기간은 7일이므로 실행 전 최신 조건을 확인하세요.",
+      ja: "公式ガイドでは現在、USDT または USDC で DUSD を発行できます。最低 5 ドルから、発行手数料は無料です (ネットワークのガス代は別途かかります)。償還には 0.1% の手数料と 7 日間の処理期間があるので、実行する前に最新の条件を確認してください。"
     },
     fact: "The official guides currently say users can mint DUSD from USDT or USDC with a $5 minimum and no minting fee, excluding network gas. The Product FAQ states a 0.1% redemption fee and a seven-day redemption period. Treat these parameters as changeable and point to the live guide.",
     docTitles: ["Minting DUSD", "Redeeming DUSD", "DUSD Product FAQ"],
@@ -232,14 +254,19 @@ export const coreKnowledgeTopics = [
       es: ["perps de standx", "futuros perpetuos", "perpetuos", "como funcionan los perps"],
       "pt-br": ["perps da standx", "futuros perpetuos", "perpetuos", "como funcionam os perps"],
       uk: ["standx perps", "безстрокові ф'ючерси", "як працюють perps"],
-      ko: ["standx perps", "무기한 선물", "perps 작동 방식"]
+      ko: ["standx perps", "무기한 선물", "perps 작동 방식"],
+      ja: [
+        "standx perps", "無期限先物", "パーペチュアル", "perpsの仕組み", "perpsとは", "perpsはどう",
+        "perps の仕組み", "perps とは", "perps はどう"
+      ]
     },
     answer: {
       en: "StandX Perps is the perpetual-futures execution layer of the protocol, with DUSD as its unified pricing and margin asset.\n\nBecause pricing, margin, PnL, fees, and risk settlement use the same unit, DUSD is integrated into the trading system rather than added as a separate yield product. Eligible unused DUSD margin can continue accruing native yield while positions are open, which is intended to make trading capital more efficient. The wider roadmap connects this engine to community-supported markets through SIP-5.\n\nYield does not remove trading risks such as leverage, funding, or liquidation. I can explain any of those mechanics next.",
       es: "StandX Perps es la capa de ejecución de futuros perpetuos del protocolo, con DUSD como activo unificado de precios y margen.\n\nComo los precios, el margen, el PnL, las comisiones y la liquidación de riesgo utilizan la misma unidad, DUSD está integrado en el sistema de trading en lugar de añadirse como un producto de rendimiento separado. El margen DUSD elegible que no esté utilizado puede seguir acumulando rendimiento nativo mientras hay posiciones abiertas, con el objetivo de hacer más eficiente el capital de trading. La hoja de ruta conecta este motor con mercados respaldados por la comunidad mediante SIP-5.\n\nEl rendimiento no elimina riesgos como el apalancamiento, el funding o la liquidación. Puedo explicarte cualquiera de esos mecanismos.",
       "pt-br": "StandX Perps é a camada de execução de futuros perpétuos do protocolo, com DUSD como ativo unificado de preços e margem.\n\nComo preços, margem, PnL, taxas e liquidação de risco usam a mesma unidade, o DUSD está integrado ao sistema de trading em vez de ser adicionado como um produto de rendimento separado. A margem DUSD elegível e não utilizada pode continuar acumulando rendimento nativo enquanto existem posições abertas, buscando tornar o capital de trading mais eficiente. O roadmap conecta esse motor a mercados apoiados pela comunidade por meio do SIP-5.\n\nO rendimento não elimina riscos como alavancagem, funding ou liquidação. Posso explicar qualquer um desses mecanismos em seguida.",
       uk: "StandX Perps — це рівень виконання безстрокових ф'ючерсів протоколу, де DUSD є єдиним активом ціноутворення та маржі.\n\nОскільки ціни, маржа, PnL, комісії та ризикові розрахунки використовують одну одиницю, DUSD інтегровано в торгову систему, а не додано як окремий дохідний продукт. Невикористана придатна маржа DUSD може й надалі накопичувати власний дохід, поки позиції відкриті, що має підвищувати ефективність торгового капіталу. Дорожня карта поєднує цей механізм із ринками, які підтримує спільнота, через SIP-5.\n\nДохід не усуває ризики плеча, funding чи ліквідації. Можу пояснити будь-який із цих механізмів далі.",
-      ko: "StandX Perps는 DUSD를 통합 가격 표시·증거금 자산으로 사용하는 프로토콜의 무기한 선물 실행 계층입니다.\n\n가격, 증거금, PnL, 수수료, 위험 정산이 같은 단위를 사용하므로 DUSD는 별도의 수익 상품으로 덧붙는 것이 아니라 거래 시스템에 통합됩니다. 포지션이 열려 있는 동안 사용되지 않는 적격 DUSD 증거금은 고유 수익을 계속 적립할 수 있어 거래 자본의 효율성을 높이도록 설계되었습니다. 더 넓은 로드맵은 SIP-5를 통해 이 엔진을 커뮤니티 지원 시장과 연결합니다.\n\n수익이 레버리지, 펀딩, 청산 같은 거래 위험을 없애는 것은 아닙니다. 원하시면 다음으로 그중 하나를 설명해 드릴게요."
+      ko: "StandX Perps는 DUSD를 통합 가격 표시·증거금 자산으로 사용하는 프로토콜의 무기한 선물 실행 계층입니다.\n\n가격, 증거금, PnL, 수수료, 위험 정산이 같은 단위를 사용하므로 DUSD는 별도의 수익 상품으로 덧붙는 것이 아니라 거래 시스템에 통합됩니다. 포지션이 열려 있는 동안 사용되지 않는 적격 DUSD 증거금은 고유 수익을 계속 적립할 수 있어 거래 자본의 효율성을 높이도록 설계되었습니다. 더 넓은 로드맵은 SIP-5를 통해 이 엔진을 커뮤니티 지원 시장과 연결합니다.\n\n수익이 레버리지, 펀딩, 청산 같은 거래 위험을 없애는 것은 아닙니다. 원하시면 다음으로 그중 하나를 설명해 드릴게요.",
+      ja: "StandX Perps はプロトコルの無期限先物の執行レイヤーで、DUSD を価格表示と証拠金を兼ねる資産として使います。\n\n価格表示、証拠金、PnL、手数料、リスク決済がすべて同じ単位なので、DUSD は別途の利回り商品としてではなく取引システムそのものに組み込まれています。使われていない対象の DUSD 証拠金は、ポジションを持っている間もネイティブ利回りを積み上げられるので、取引資金をより効率的に使えるという狙いです。より広いロードマップでは、このエンジンを SIP-5 を通じてコミュニティが支える市場につなげていきます。\n\n利回りがあっても、レバレッジ、ファンディング、清算といった取引リスクがなくなるわけではありません。どの仕組みでも次に説明できます。"
     },
     fact: "StandX Perps is the protocol's perpetual-futures execution layer. DUSD is the unified margin and quote asset. Eligible unused DUSD margin can continue accruing native yield while a trader has positions open.",
     docTitles: ["Perps Overview"],
@@ -255,14 +282,19 @@ export const coreKnowledgeTopics = [
       es: ["comision de trading", "comisiones de trading", "comision maker", "comision taker", "fees de perps"],
       "pt-br": ["taxa de trading", "taxas de trading", "taxa maker", "taxa taker", "taxas de perps"],
       uk: ["торгова комісія", "комісії за торгівлю", "комісія maker", "комісія taker"],
-      ko: ["거래 수수료", "maker 수수료", "taker 수수료", "perps 수수료"]
+      ko: ["거래 수수료", "maker 수수료", "taker 수수료", "perps 수수료"],
+      ja: [
+        "取引手数料", "手数料はいくら", "maker手数料", "taker手数料", "perpsの手数料", "maker 手数料",
+        "taker 手数料", "perps の手数料"
+      ]
     },
     answer: {
       en: "The current official schedule is 0.01% for maker orders and 0.04% for taker orders. The fee is calculated from the notional value of each matched trade; check the live fee page in case the schedule changes.",
       es: "La tarifa oficial actual es 0.01% para órdenes maker y 0.04% para órdenes taker. La comisión se calcula sobre el valor nocional de cada operación ejecutada; revisa la página vigente por si cambia.",
       "pt-br": "A tabela oficial atual é de 0,01% para ordens maker e 0,04% para ordens taker. A taxa é calculada sobre o valor nocional de cada operação executada; confira a página atual caso haja mudanças.",
       uk: "Чинна офіційна ставка становить 0,01% для maker-ордерів і 0,04% для taker-ордерів. Комісія розраховується від номінальної вартості кожної виконаної угоди; перевіряйте актуальну сторінку на випадок змін.",
-      ko: "현재 공식 수수료는 maker 주문 0.01%, taker 주문 0.04%입니다. 각 체결 거래의 명목가치를 기준으로 계산되며, 변경 가능성이 있으므로 최신 수수료 페이지를 확인하세요."
+      ko: "현재 공식 수수료는 maker 주문 0.01%, taker 주문 0.04%입니다. 각 체결 거래의 명목가치를 기준으로 계산되며, 변경 가능성이 있으므로 최신 수수료 페이지를 확인하세요.",
+      ja: "現行の公式の手数料は、maker 注文が 0.01%、taker 注文が 0.04% です。手数料は約定ごとの想定元本から計算されます。体系が変わることもあるので、最新の手数料ページで確認してください。"
     },
     fact: "The current official Perps fee schedule is 0.01% for maker orders and 0.04% for taker orders. Fees are calculated from the notional value of each matched trade. Treat the schedule as changeable.",
     docTitles: ["Trading Fee"],
@@ -312,14 +344,16 @@ export const coreKnowledgeTopics = [
         "американські акції",
         "корейські акції"
       ],
-      ko: ["주식 perps", "주식 시장", "주식 거래", "배당 조정", "미국 주식", "한국 주식"]
+      ko: ["주식 perps", "주식 시장", "주식 거래", "배당 조정", "미국 주식", "한국 주식"],
+      ja: ["equity perps", "株式perps", "株の取引", "株を取引", "配当の調整", "米国株", "韓国株"]
     },
     answer: {
       en: "StandX also lists Equity Perps — perpetual contracts that track the price of a stock. The docs are explicit that holding the contract is not the same as holding the share: no ownership, no voting, and no dividend paid to you as a shareholder.\n\nDividends are handled through a one-time funding settlement instead, so longs and shorts end up even. Longs receive a credit equal to the dividend and shorts pay it, peer to peer, with no fee taken by StandX; the rate is -D / M, the dividend per share over the mark price. Settlement runs at 20:00 ET the day before the ex-date for US stocks, and at 08:00 KST on the ex-date for Korean stocks. It is exempt from the usual hourly funding cap, so longs always receive the full value. Thirty minutes beforehand, reduce-only mode turns on and the mark-price deviation threshold tightens.\n\nWhich markets are listed changes, so the contract specifications page is the place to check.",
       es: "StandX también lista Equity Perps: contratos perpetuos que siguen el precio de una acción. La documentación es explícita en que tener el contrato no es tener la acción: no hay propiedad, ni voto, ni dividendo cobrado como accionista.\n\nLos dividendos se resuelven con una liquidación de funding puntual para que largos y cortos queden igualados. Los largos reciben un crédito equivalente al dividendo y los cortos lo pagan, entre pares, sin comisión de StandX; la tasa es -D / M, el dividendo por acción sobre el precio de marca. La liquidación ocurre a las 20:00 ET del día anterior a la fecha ex para acciones de EE. UU., y a las 08:00 KST en la fecha ex para acciones coreanas. Está exenta del tope horario de funding, así que los largos siempre reciben el valor íntegro. Treinta minutos antes se activa el modo reduce-only y se estrecha el umbral de desviación del precio de marca.\n\nQué mercados están listados cambia, así que conviene consultar la página de especificaciones de contrato.",
       "pt-br": "A StandX também lista Equity Perps: contratos perpétuos que acompanham o preço de uma ação. A documentação é explícita ao dizer que ter o contrato não é ter a ação: não há propriedade, voto nem dividendo recebido como acionista.\n\nOs dividendos são resolvidos por uma liquidação de funding pontual, para que comprados e vendidos fiquem equiparados. Os comprados recebem um crédito igual ao dividendo e os vendidos o pagam, entre pares, sem taxa da StandX; a taxa é -D / M, o dividendo por ação sobre o preço de marca. A liquidação ocorre às 20:00 ET do dia anterior à data ex para ações dos EUA, e às 08:00 KST na data ex para ações coreanas. Ela é isenta do teto horário de funding, então os comprados sempre recebem o valor integral. Trinta minutos antes, o modo reduce-only é ativado e o limite de desvio do preço de marca é estreitado.\n\nQuais mercados estão listados muda, então a página de especificações de contrato é o lugar para conferir.",
       uk: "StandX також лістить Equity Perps — безстрокові контракти, що відстежують ціну акції. Документація прямо зазначає: тримати контракт не означає тримати акцію — немає ні власності, ні голосу, ні дивіденду як акціонеру.\n\nДивіденди натомість врегульовуються одноразовим розрахунком funding, щоб лонги й шорти лишилися врівні. Лонги отримують кредит на суму дивіденду, а шорти його сплачують, напряму між собою, без комісії StandX; ставка дорівнює -D / M, дивіденд на акцію поділений на марк-ціну. Розрахунок відбувається о 20:00 ET напередодні ex-дати для акцій США і о 08:00 KST в ex-дату для корейських акцій. Він звільнений від звичайного погодинного ліміту funding, тож лонги завжди отримують повну вартість. За тридцять хвилин до цього вмикається режим reduce-only, а поріг відхилення марк-ціни звужується.\n\nПерелік доступних ринків змінюється, тому актуальні дані — на сторінці специфікацій контрактів.",
-      ko: "StandX는 주식 가격을 추종하는 무기한 계약인 Equity Perps도 상장합니다. 공식 문서는 계약을 보유하는 것이 주식을 보유하는 것과 다르다고 분명히 밝힙니다. 소유권도, 의결권도, 주주로서 받는 배당도 없습니다.\n\n배당은 대신 일회성 펀딩 정산으로 처리되어 롱과 숏이 균형을 이룹니다. 롱은 배당에 해당하는 금액을 받고 숏이 이를 지급하며, 거래자 간 직접 이전이라 StandX가 가져가는 수수료는 없습니다. 요율은 -D / M으로, 주당 배당을 마크 가격으로 나눈 값입니다. 정산 시점은 미국 주식이 배당락일 전날 20:00 ET, 한국 주식이 배당락일 당일 08:00 KST입니다. 시간당 펀딩 상한이 적용되지 않아 롱은 항상 전액을 받습니다. 정산 30분 전에는 reduce-only 모드가 켜지고 마크 가격 이탈 허용 범위가 좁아집니다.\n\n상장 시장은 바뀌므로 계약 명세 페이지에서 확인하세요."
+      ko: "StandX는 주식 가격을 추종하는 무기한 계약인 Equity Perps도 상장합니다. 공식 문서는 계약을 보유하는 것이 주식을 보유하는 것과 다르다고 분명히 밝힙니다. 소유권도, 의결권도, 주주로서 받는 배당도 없습니다.\n\n배당은 대신 일회성 펀딩 정산으로 처리되어 롱과 숏이 균형을 이룹니다. 롱은 배당에 해당하는 금액을 받고 숏이 이를 지급하며, 거래자 간 직접 이전이라 StandX가 가져가는 수수료는 없습니다. 요율은 -D / M으로, 주당 배당을 마크 가격으로 나눈 값입니다. 정산 시점은 미국 주식이 배당락일 전날 20:00 ET, 한국 주식이 배당락일 당일 08:00 KST입니다. 시간당 펀딩 상한이 적용되지 않아 롱은 항상 전액을 받습니다. 정산 30분 전에는 reduce-only 모드가 켜지고 마크 가격 이탈 허용 범위가 좁아집니다.\n\n상장 시장은 바뀌므로 계약 명세 페이지에서 확인하세요.",
+      ja: "StandX は Equity Perps も扱っています。これは株価に連動する無期限契約です。ドキュメントは、契約を保有することは株式を保有することとは違うと明記しています。所有権も議決権もなく、株主としての配当も受け取りません。\n\n配当は代わりに一度きりのファンディング決済で処理され、ロングとショートの間で釣り合うようになっています。ロングは配当と同額を受け取り、ショートがそれを支払う形で、当事者間でやり取りされ、StandX は手数料を取りません。レートは -D / M、つまり 1 株あたり配当をマーク価格で割った値です。決済は米国株では権利落ち日前日の 20:00 ET、韓国株では権利落ち日の 08:00 KST に実行されます。通常の 1 時間ごとのファンディング上限は適用されないため、ロングは常に全額を受け取ります。その 30 分前からは reduce-only モードが有効になり、マーク価格の乖離のしきい値も厳しくなります。\n\nどの銘柄が上場しているかは変わるので、契約仕様のページで確認してください。"
     },
     fact: "StandX lists Equity Perps: perpetual contracts tracking stock prices, with no share ownership, voting or shareholder dividend. Dividends settle as a one-time funding adjustment — longs receive a credit equal to the dividend, shorts pay it, peer to peer with no StandX fee, at a rate of -D / M (dividend per share over mark price). Settlement is 20:00 ET the day before the ex-date for US stocks and 08:00 KST on the ex-date for Korean stocks, and is exempt from the hourly funding cap so longs receive the full value. Reduce-only mode activates 30 minutes before settlement and the mark-price deviation threshold tightens. Listed markets change; point to Contract Specifications.",
     docTitles: [
@@ -346,6 +380,10 @@ export const coreKnowledgeTopics = [
         "sips 개요",
         "standx 개선 제안",
         "sips"
+      ],
+      ja: [
+        "sipとは", "sipって", "sipの一覧", "standx improvement proposals", "sipについて",
+        "sipはどう", "sip とは", "sip って", "sip の一覧", "sip について", "sip はどう"
       ]
     },
     answer: {
@@ -353,7 +391,8 @@ export const coreKnowledgeTopics = [
       es: "Los SIPs son las StandX Improvement Proposals: documentos públicos que explican la motivación, especificación y comportamiento esperado de cambios importantes del protocolo. Una vez implementados, funcionan como referencia canónica de cómo debe operar cada función.\n\nEn la práctica, SIP-1 cubre Block Trade; SIP-2, Position Yield; SIP-3, la expansión del rendimiento nativo de DUSD; y SIP-4, Block Options. SIP-5 es el marco más amplio de Universal Markets, con SIP-5A para Community Maker Yield y SIP-5B para Community Vaults. El índice oficial marca actualmente SIP-1 a SIP-4, SIP-5A y SIP-5B como implementados; SIP-5 sigue en progreso y SIP-5C es un borrador.\n\nEsos estados pueden cambiar. Dime qué SIP te interesa y puedo resumirte qué añade realmente.",
       "pt-br": "Os SIPs são as StandX Improvement Proposals: documentos públicos que explicam a motivação, a especificação e o comportamento esperado de mudanças importantes no protocolo. Depois de implementados, servem como referência canônica de como cada recurso deve funcionar.\n\nNa prática, o SIP-1 cobre Block Trade; o SIP-2, Position Yield; o SIP-3, a expansão do rendimento nativo do DUSD; e o SIP-4, Block Options. O SIP-5 é o framework mais amplo de Universal Markets, com o SIP-5A para Community Maker Yield e o SIP-5B para Community Vaults. O índice oficial atualmente marca SIP-1 a SIP-4, SIP-5A e SIP-5B como implementados; o SIP-5 continua em andamento e o SIP-5C é um rascunho.\n\nEsses estados podem mudar. Diga qual SIP interessa e eu resumo o que ele realmente adiciona.",
       uk: "SIP — це StandX Improvement Proposals: публічні документи, що пояснюють мотивацію, специфікацію та очікувану поведінку важливих змін протоколу. Після реалізації вони стають канонічним описом того, як має працювати функція.\n\nНа практиці SIP-1 описує Block Trade, SIP-2 — Position Yield, SIP-3 — розширення нативного доходу DUSD, а SIP-4 — Block Options. SIP-5 є ширшою рамковою системою Universal Markets, де SIP-5A стосується Community Maker Yield, а SIP-5B — Community Vaults. Офіційний індекс наразі позначає SIP-1–SIP-4, SIP-5A і SIP-5B як реалізовані; SIP-5 залишається в роботі, а SIP-5C є чернеткою.\n\nЦі статуси можуть змінюватися. Назвіть SIP, який вас цікавить, і я поясню, що саме він додає.",
-      ko: "SIP는 중요한 프로토콜 변경의 동기, 명세, 예상 동작을 설명하는 공개 문서인 StandX Improvement Proposal입니다. 구현된 뒤에는 해당 기능이 어떻게 작동해야 하는지 보여 주는 공식 기준이 됩니다.\n\n구체적으로 SIP-1은 Block Trade, SIP-2는 Position Yield, SIP-3은 DUSD 고유 수익 확장, SIP-4는 Block Options를 다룹니다. SIP-5는 더 넓은 Universal Markets 프레임워크이며, SIP-5A는 Community Maker Yield, SIP-5B는 Community Vaults에 관한 내용입니다. 공식 인덱스는 현재 SIP-1~4, SIP-5A, SIP-5B를 구현 완료로 표시하고, SIP-5는 진행 중, SIP-5C는 초안으로 표시합니다.\n\n상태는 바뀔 수 있습니다. 관심 있는 SIP를 말씀하시면 실제로 무엇이 추가되는지 요약해 드릴게요."
+      ko: "SIP는 중요한 프로토콜 변경의 동기, 명세, 예상 동작을 설명하는 공개 문서인 StandX Improvement Proposal입니다. 구현된 뒤에는 해당 기능이 어떻게 작동해야 하는지 보여 주는 공식 기준이 됩니다.\n\n구체적으로 SIP-1은 Block Trade, SIP-2는 Position Yield, SIP-3은 DUSD 고유 수익 확장, SIP-4는 Block Options를 다룹니다. SIP-5는 더 넓은 Universal Markets 프레임워크이며, SIP-5A는 Community Maker Yield, SIP-5B는 Community Vaults에 관한 내용입니다. 공식 인덱스는 현재 SIP-1~4, SIP-5A, SIP-5B를 구현 완료로 표시하고, SIP-5는 진행 중, SIP-5C는 초안으로 표시합니다.\n\n상태는 바뀔 수 있습니다. 관심 있는 SIP를 말씀하시면 실제로 무엇이 추가되는지 요약해 드릴게요.",
+      ja: "SIP は StandX Improvement Proposals のことで、重要なプロトコル変更について動機、仕様、想定される挙動を説明する公開文書です。実装されたあとは、その機能がどう動くべきかの正式なリファレンスになります。\n\n具体的には、SIP-1 が Block Trade、SIP-2 が Position Yield、SIP-3 が DUSD のネイティブ利回りの拡張、SIP-4 が Block Options です。SIP-5 はより広い Universal Markets のフレームワークで、SIP-5A が Community Maker Yield、SIP-5B が Community Vaults にあたります。公式のインデックスでは現在、SIP-1 から SIP-4、SIP-5A、SIP-5B が実装済みとされています。SIP-5 は進行中、SIP-5C はドラフトです。\n\nこれらのステータスは変わることがあります。気になる SIP を教えてもらえれば、実際に何が加わるのかをまとめます。"
     },
     fact: "SIPs are StandX Improvement Proposals, the public specifications for major protocol features. The official index currently lists SIP-1 through SIP-4 as Implemented, SIP-5 as WIP, SIP-5A and SIP-5B as Implemented, and SIP-5C as Draft. Status is time-sensitive; the live SIP index wins.",
     docTitles: ["SIPs (StandX Improvement Proposals)"],
@@ -369,14 +408,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 1", "sip-1", "block trade", "operacion en bloque"],
       "pt-br": ["sip 1", "sip-1", "block trade", "negociacao em bloco"],
       uk: ["sip 1", "sip-1", "block trade", "блокова угода"],
-      ko: ["sip 1", "sip-1", "블록 트레이드"]
+      ko: ["sip 1", "sip-1", "블록 트레이드"],
+      ja: ["sip 1", "sip-1", "block trade", "ブロックトレード"]
     },
     answer: {
       en: "SIP-1 implements Block Trade for large, privately coordinated Perps trades that settle through StandX. It isolates the negotiated price from the public order book while still applying protocol risk checks and settlement rules.",
       es: "SIP-1 implementa Block Trade para operaciones Perps grandes y coordinadas de forma privada que se liquidan mediante StandX. Aísla el precio negociado del libro público, pero mantiene los controles de riesgo y liquidación del protocolo.",
       "pt-br": "O SIP-1 implementa Block Trade para grandes operações Perps coordenadas de forma privada e liquidadas pela StandX. Ele isola o preço negociado do livro público, mantendo os controles de risco e liquidação do protocolo.",
       uk: "SIP-1 реалізує Block Trade для великих приватно узгоджених Perps-угод із розрахунком через StandX. Узгоджена ціна ізольована від публічної книги ордерів, але перевірки ризику й правила розрахунку протоколу зберігаються.",
-      ko: "SIP-1은 비공개로 조율한 대규모 Perps 거래를 StandX에서 결제하는 Block Trade를 구현합니다. 협상 가격은 공개 오더북과 분리되지만 프로토콜의 위험 검증과 결제 규칙은 그대로 적용됩니다."
+      ko: "SIP-1은 비공개로 조율한 대규모 Perps 거래를 StandX에서 결제하는 Block Trade를 구현합니다. 협상 가격은 공개 오더북과 분리되지만 프로토콜의 위험 검증과 결제 규칙은 그대로 적용됩니다.",
+      ja: "SIP-1 は Block Trade を実装するものです。大口で相対的に取り決められた Perps の取引を、StandX 上で決済できるようにします。交渉された価格を公開の板から切り離しつつ、プロトコルのリスクチェックと決済ルールは変わらず適用されます。"
     },
     fact: "SIP-1 implements Block Trade for large, privately coordinated Perps trades that settle through StandX. Negotiated pricing is isolated from the public order book while protocol risk validation and settlement still apply.",
     docTitles: ["SIP-1: Block Trade"],
@@ -392,14 +433,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 2", "sip-2", "position yield", "rendimiento de posiciones"],
       "pt-br": ["sip 2", "sip-2", "position yield", "rendimento de posicoes"],
       uk: ["sip 2", "sip-2", "position yield", "дохідність позицій"],
-      ko: ["sip 2", "sip-2", "포지션 수익"]
+      ko: ["sip 2", "sip-2", "포지션 수익"],
+      ja: ["sip 2", "sip-2", "position yield", "ポジションイールド"]
     },
     answer: {
       en: "SIP-2 adds Position Yield: a configurable share of eligible protocol fee flow can be distributed to qualifying Perps positions that remain open over time. Eligibility depends on holding duration, risk state, supported markets and other protocol controls; it is not a guaranteed return for every position.",
       es: "SIP-2 añade Position Yield: una parte configurable de los fees elegibles puede distribuirse entre posiciones Perps que permanezcan abiertas y cumplan las reglas. La elegibilidad depende de duración, estado de riesgo, mercados admitidos y otros controles; no es un retorno garantizado para toda posición.",
       "pt-br": "O SIP-2 adiciona Position Yield: uma parcela configurável das taxas elegíveis pode ser distribuída a posições Perps que permaneçam abertas e cumpram as regras. A elegibilidade depende de duração, estado de risco, mercados suportados e outros controles; não é retorno garantido para toda posição.",
       uk: "SIP-2 додає Position Yield: налаштовувана частка придатного потоку комісій може розподілятися між Perps-позиціями, що залишаються відкритими й відповідають правилам. Придатність залежить від тривалості, стану ризику, підтримуваного ринку та інших контролів; це не гарантований дохід для кожної позиції.",
-      ko: "SIP-2는 Position Yield를 추가해 적격 프로토콜 수수료 흐름의 설정 가능한 일부를 일정 기간 유지된 적격 Perps 포지션에 배분할 수 있게 합니다. 보유 기간, 위험 상태, 지원 시장 등 조건이 적용되므로 모든 포지션에 수익이 보장되는 것은 아닙니다."
+      ko: "SIP-2는 Position Yield를 추가해 적격 프로토콜 수수료 흐름의 설정 가능한 일부를 일정 기간 유지된 적격 Perps 포지션에 배분할 수 있게 합니다. 보유 기간, 위험 상태, 지원 시장 등 조건이 적용되므로 모든 포지션에 수익이 보장되는 것은 아닙니다.",
+      ja: "SIP-2 は Position Yield を追加します。対象となるプロトコル手数料の流れの一部を、設定可能な割合で、一定期間開かれたままの Perps ポジションに配分できるようにするものです。対象になるかは保有期間、リスク状態、対応市場などのプロトコル側の条件によります。すべてのポジションに保証されたリターンではありません。"
     },
     fact: "SIP-2 implements Position Yield: a configurable portion of eligible protocol fee flow can be allocated to qualifying Perps positions that remain open over time. Eligibility is subject to minimum holding, risk-valid state, enabled markets, rewardable leverage and other controls; it is not a guaranteed return for every position.",
     docTitles: ["SIP-2: Position Yield"],
@@ -415,14 +458,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 3", "sip-3", "rendimiento nativo de dusd"],
       "pt-br": ["sip 3", "sip-3", "rendimento nativo do dusd"],
       uk: ["sip 3", "sip-3", "нативна дохідність dusd"],
-      ko: ["sip 3", "sip-3", "dusd 네이티브 수익"]
+      ko: ["sip 3", "sip-3", "dusd 네이티브 수익"],
+      ja: ["sip 3", "sip-3", "dusdのネイティブ利回り", "ネイティブ利回り", "dusd のネイティブ利回り"]
     },
     answer: {
       en: "SIP-3 routes a configurable portion of net StandX Perps trading-fee revenue into the DUSD yield pool. That layer is additive to DUSD's existing staking and funding sources and is designed to benefit eligible DUSD across supported holding contexts.",
       es: "SIP-3 dirige una parte configurable de los ingresos netos por fees de StandX Perps al fondo de rendimiento de DUSD. Esta capa se suma a las fuentes existentes de staking y funding y busca beneficiar al DUSD elegible en los contextos admitidos.",
       "pt-br": "O SIP-3 direciona uma parcela configurável da receita líquida de taxas da StandX Perps para o pool de rendimento do DUSD. Essa camada se soma às fontes existentes de staking e funding e busca beneficiar DUSD elegível nos contextos suportados.",
       uk: "SIP-3 спрямовує налаштовувану частку чистого доходу від торгових комісій StandX Perps у пул дохідності DUSD. Цей рівень доповнює наявні джерела зі стейкінгу та funding і має охоплювати придатні DUSD у підтримуваних контекстах зберігання.",
-      ko: "SIP-3은 StandX Perps의 순 거래 수수료 수익 중 설정 가능한 일부를 DUSD 수익 풀로 보냅니다. 이는 기존 스테이킹·펀딩 수익원에 더해지며 지원되는 보유 환경의 적격 DUSD에 적용되도록 설계됐습니다."
+      ko: "SIP-3은 StandX Perps의 순 거래 수수료 수익 중 설정 가능한 일부를 DUSD 수익 풀로 보냅니다. 이는 기존 스테이킹·펀딩 수익원에 더해지며 지원되는 보유 환경의 적격 DUSD에 적용되도록 설계됐습니다.",
+      ja: "SIP-3 は StandX Perps の取引手数料収入のうち、設定可能な割合を DUSD の利回りプールに回します。この層は DUSD の既存のステーキング収入やファンディング収入に上乗せされるもので、対応する保有形態にある DUSD に還元される設計です。"
     },
     fact: "SIP-3 implements a configurable revenue route from net StandX Perps trading fees into the DUSD yield pool. This is additive to DUSD's staking and funding sources and applies across eligible supported holding contexts.",
     docTitles: ["SIP-3: DUSD Native Yield Expansion"],
@@ -438,14 +483,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 4", "sip-4", "block options", "opciones en bloque"],
       "pt-br": ["sip 4", "sip-4", "block options", "opcoes em bloco"],
       uk: ["sip 4", "sip-4", "block options", "блокові опціони"],
-      ko: ["sip 4", "sip-4", "블록 옵션"]
+      ko: ["sip 4", "sip-4", "블록 옵션"],
+      ja: ["sip 4", "sip-4", "block options", "ブロックオプション"]
     },
     answer: {
       en: "SIP-4 adds Block Options to position TP/SL flows. A reservation fee buys an American-style right to execute a prearranged Block Trade before expiry; V1 is position-linked protection or exit flexibility, not a general options market.",
       es: "SIP-4 añade Block Options a los flujos TP/SL de posiciones. Una reservation fee compra el derecho de estilo americano a ejecutar un Block Trade acordado antes del vencimiento; V1 ofrece protección o flexibilidad de salida ligada a una posición, no un mercado general de opciones.",
       "pt-br": "O SIP-4 adiciona Block Options aos fluxos de TP/SL de posições. Uma reservation fee compra o direito de estilo americano de executar um Block Trade combinado antes do vencimento; a V1 oferece proteção ou flexibilidade de saída ligada à posição, não um mercado geral de opções.",
       uk: "SIP-4 додає Block Options до сценаріїв TP/SL позиції. Reservation fee купує право американського типу виконати заздалегідь узгоджений Block Trade до завершення строку; V1 дає прив'язаний до позиції захист або гнучкість виходу, а не загальний ринок опціонів.",
-      ko: "SIP-4는 포지션 TP/SL 흐름에 Block Options를 추가합니다. 예약 수수료를 내면 만기 전 미리 합의한 Block Trade를 실행할 수 있는 미국식 권리를 얻으며, V1은 일반 옵션 시장이 아니라 포지션 연계 보호·청산 유연성에 한정됩니다."
+      ko: "SIP-4는 포지션 TP/SL 흐름에 Block Options를 추가합니다. 예약 수수료를 내면 만기 전 미리 합의한 Block Trade를 실행할 수 있는 미국식 권리를 얻으며, V1은 일반 옵션 시장이 아니라 포지션 연계 보호·청산 유연성에 한정됩니다.",
+      ja: "SIP-4 はポジションの TP/SL の流れに Block Options を加えます。予約手数料を払うことで、取り決め済みの Block Trade を満期前に実行するアメリカンタイプの権利を得られます。V1 はポジションに紐づいた保険や手仕舞いの柔軟性のためのもので、一般的なオプション市場ではありません。"
     },
     fact: "SIP-4 implements Block Options for position TP/SL flows. A reservation fee buys an American-style right to execute a prearranged Block Trade before expiry. V1 is intentionally position-linked and is not a general standardized options market.",
     docTitles: ["SIP-4: Block Options"],
@@ -461,14 +508,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 5", "sip-5", "universal markets", "listado sin permisos"],
       "pt-br": ["sip 5", "sip-5", "universal markets", "listagem sem permissao"],
       uk: ["sip 5", "sip-5", "universal markets", "бездозвільний лістинг"],
-      ko: ["sip 5", "sip-5", "universal markets", "무허가 상장"]
+      ko: ["sip 5", "sip-5", "universal markets", "무허가 상장"],
+      ja: ["sip 5", "sip-5", "universal markets", "パーミッションレス上場", "誰でも上場"]
     },
     answer: {
       en: "SIP-5 is the in-progress Universal Markets framework for community-driven market creation. A Market Sponsor proposes and supports a market through reward and shield capital, while public rules, liquidity and risk controls determine whether it can operate.",
       es: "SIP-5 es el marco en progreso de Universal Markets para crear mercados impulsados por la comunidad. Un Market Sponsor propone y respalda el mercado con capital de recompensa y protección, mientras reglas públicas, liquidez y controles de riesgo determinan si puede operar.",
       "pt-br": "O SIP-5 é o framework em andamento de Universal Markets para criação de mercados pela comunidade. Um Market Sponsor propõe e sustenta o mercado com capital de recompensa e proteção, enquanto regras públicas, liquidez e controles de risco determinam se ele pode operar.",
       uk: "SIP-5 — це незавершена система Universal Markets для створення ринків спільнотою. Market Sponsor пропонує й підтримує ринок капіталом винагород і захисту, а публічні правила, ліквідність та контроль ризиків визначають, чи може він працювати.",
-      ko: "SIP-5는 커뮤니티 주도 시장 생성을 위한 진행 중인 Universal Markets 프레임워크입니다. Market Sponsor가 보상·보호 자본으로 시장을 제안하고 지원하며, 공개 규칙과 유동성·위험 통제가 운영 가능 여부를 결정합니다."
+      ko: "SIP-5는 커뮤니티 주도 시장 생성을 위한 진행 중인 Universal Markets 프레임워크입니다. Market Sponsor가 보상·보호 자본으로 시장을 제안하고 지원하며, 공개 규칙과 유동성·위험 통제가 운영 가능 여부를 결정합니다.",
+      ja: "SIP-5 は進行中の Universal Markets フレームワークで、コミュニティ主導の市場づくりのためのものです。Market Sponsor が市場を提案し、報酬とシールド資本で支えます。そのうえで、公開されたルール、流動性、リスク管理が、その市場を運用できるかどうかを決めます。"
     },
     fact: "SIP-5 is the in-progress Universal Markets framework for community-driven market creation. A Market Sponsor supports a proposed market through reward and shield capital, while public qualification, liquidity and risk controls govern operation. Do not describe the full permissionless framework as completely launched until the live SIP index says so.",
     docTitles: ["SIP-5: Universal Markets Listing"],
@@ -484,14 +533,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 5a", "sip-5a", "community maker yield", "maker hours"],
       "pt-br": ["sip 5a", "sip-5a", "community maker yield", "maker hours"],
       uk: ["sip 5a", "sip-5a", "community maker yield", "maker hours"],
-      ko: ["sip 5a", "sip-5a", "community maker yield", "maker hours"]
+      ko: ["sip 5a", "sip-5a", "community maker yield", "maker hours"],
+      ja: ["sip 5a", "sip-5a", "community maker yield", "maker hours", "メイカー報酬"]
     },
     answer: {
       en: "SIP-5A implements Community Maker Yield: makers earn daily rewards for maintaining qualifying, executable two-sided liquidity near the market. Rewards follow Maker Hours and configurable market parameters, so live campaign rules—not a fixed number—determine qualification and payout.",
       es: "SIP-5A implementa Community Maker Yield: los makers reciben recompensas diarias por mantener liquidez bilateral ejecutable que cumpla las reglas cerca del mercado. Las recompensas siguen Maker Hours y parámetros configurables, así que las reglas vigentes determinan elegibilidad y pago.",
       "pt-br": "O SIP-5A implementa Community Maker Yield: makers recebem recompensas diárias por manter liquidez executável dos dois lados dentro das regras e próxima ao mercado. As recompensas seguem Maker Hours e parâmetros configuráveis, então as regras vigentes determinam elegibilidade e pagamento.",
       uk: "SIP-5A реалізує Community Maker Yield: мейкери отримують щоденні винагороди за придатну виконувану двосторонню ліквідність поблизу ринку. Винагороди залежать від Maker Hours і налаштовуваних параметрів, тому придатність і виплату визначають актуальні правила кампанії.",
-      ko: "SIP-5A는 Community Maker Yield를 구현해 시장 근처에 조건을 충족하는 실행 가능한 양방향 유동성을 유지한 maker에게 일일 보상을 제공합니다. 보상은 Maker Hours와 시장별 설정값을 따르므로 고정 수치가 아니라 최신 캠페인 규칙이 자격과 지급액을 결정합니다."
+      ko: "SIP-5A는 Community Maker Yield를 구현해 시장 근처에 조건을 충족하는 실행 가능한 양방향 유동성을 유지한 maker에게 일일 보상을 제공합니다. 보상은 Maker Hours와 시장별 설정값을 따르므로 고정 수치가 아니라 최신 캠페인 규칙이 자격과 지급액을 결정합니다.",
+      ja: "SIP-5A は Community Maker Yield を実装します。maker は、実際に約定しうる両側の流動性を市場の近くに維持することで、日次の報酬を得られます。報酬は Maker Hours と設定可能な市場パラメータに従うため、固定の数値ではなく、実施中のキャンペーンのルールが条件と支払いを決めます。"
     },
     fact: "SIP-5A implements Community Maker Yield. Makers earn daily rewards for qualifying executable two-sided liquidity, measured through Maker Hours and market-specific configurable parameters. Reward assets can include DUSD, platform-token allocation, or both; the SIP page says the platform token had not yet been issued at the time of writing.",
     docTitles: ["SIP-5A: Community Maker Yield"],
@@ -507,14 +558,16 @@ export const coreKnowledgeTopics = [
       es: ["sip 5b", "sip-5b", "community vaults", "strategy vault", "shield vault", "reward vault"],
       "pt-br": ["sip 5b", "sip-5b", "community vaults", "strategy vault", "shield vault", "reward vault"],
       uk: ["sip 5b", "sip-5b", "community vaults", "strategy vault", "shield vault", "reward vault"],
-      ko: ["sip 5b", "sip-5b", "community vaults", "strategy vault", "shield vault", "reward vault"]
+      ko: ["sip 5b", "sip-5b", "community vaults", "strategy vault", "shield vault", "reward vault"],
+      ja: ["sip 5b", "sip-5b", "community vaults", "ストラテジーvault", "シールドvault", "リワードvault"]
     },
     answer: {
       en: "SIP-5B implements three Community Vault types: Strategy Vaults delegate trading capital, Reward Vaults fund maker incentives, and Shield Vaults underwrite market-specific tail risk. Each has different return sources, risk rules and withdrawal conditions, so they should not be treated as the same product.",
       es: "SIP-5B implementa tres tipos de Community Vault: Strategy Vaults delegan capital de trading, Reward Vaults financian incentivos para makers y Shield Vaults cubren riesgo extremo por mercado. Cada uno tiene retornos, riesgos y retiros distintos; no son el mismo producto.",
       "pt-br": "O SIP-5B implementa três tipos de Community Vault: Strategy Vaults delegam capital de trading, Reward Vaults financiam incentivos a makers e Shield Vaults cobrem risco extremo por mercado. Cada tipo tem retornos, riscos e saques diferentes; não são o mesmo produto.",
       uk: "SIP-5B реалізує три типи Community Vault: Strategy Vaults делегують торговий капітал, Reward Vaults фінансують стимули мейкерів, а Shield Vaults покривають хвостовий ризик окремого ринку. Джерела доходу, ризики й умови виведення різні, тому це не один продукт.",
-      ko: "SIP-5B는 세 가지 Community Vault를 구현합니다. Strategy Vault는 거래 자본을 위임하고, Reward Vault는 maker 인센티브를 지원하며, Shield Vault는 시장별 극단 위험을 인수합니다. 수익원·위험 규칙·출금 조건이 서로 달라 같은 상품으로 보면 안 됩니다."
+      ko: "SIP-5B는 세 가지 Community Vault를 구현합니다. Strategy Vault는 거래 자본을 위임하고, Reward Vault는 maker 인센티브를 지원하며, Shield Vault는 시장별 극단 위험을 인수합니다. 수익원·위험 규칙·출금 조건이 서로 달라 같은 상품으로 보면 안 됩니다.",
+      ja: "SIP-5B は 3 種類の Community Vault を実装します。Strategy Vaults は取引資金を委任し、Reward Vaults は maker のインセンティブを賄い、Shield Vaults は市場ごとのテールリスクを引き受けます。それぞれ収益の源もリスクのルールも出金の条件も異なるので、同じ商品として扱うべきではありません。"
     },
     fact: "SIP-5B implements three Community Vault types: Strategy Vaults for delegated trading capital, Reward Vaults for maker-incentive budgets, and Shield Vaults for market-specific tail-risk capital. Their return sources, risk rules and exit conditions differ materially.",
     docTitles: ["SIP-5B: Community Vaults"],
@@ -558,14 +611,16 @@ export const coreKnowledgeTopics = [
         "рефералів",
         "запросити друзів"
       ],
-      ko: ["community builder", "network yield", "레퍼럴", "추천 프로그램", "친구 초대"]
+      ko: ["community builder", "network yield", "레퍼럴", "추천 프로그램", "친구 초대"],
+      ja: ["community builder", "network yield", "リファラル", "紹介プログラム", "紹介報酬", "友達を招待", "アフィリエイト"]
     },
     answer: {
       en: "Community Builder is a Network Yield role for people who want to run their own referral network on StandX — the closest thing the protocol has to a formal role for community organisers.\n\nNetwork Yield is the program underneath it. It activates once your cumulative personal trading volume reaches 500,000 DUSD — your whole history counts, including trades from before the program launched — and then pays a share of the trading fees your network generates: 5% at activation, rising to 10%, 15% and 20% at 2.5M, 7.5M and 15M DUSD of post-launch network volume. You choose how that share splits between yourself and a rebate to the people you invited, and both sides also get a +5% bonus on points.\n\nThe Community Builder role sits on top: one owner can invite up to 10 Builders directly, each of whom can invite unlimited end users, and organise them into Groups with their own yield configuration. You apply by contacting the StandX team, and StandX evaluates Builders against ongoing activity and volume benchmarks. These rates can change, so check the live pages before planning around them.",
       es: "Community Builder es un rol de Network Yield para quien quiera operar su propia red de referidos en StandX: lo más parecido a un rol formal para organizadores de comunidad que tiene el protocolo.\n\nNetwork Yield es el programa que hay debajo. Se activa cuando tu volumen personal acumulado alcanza 500.000 DUSD —cuenta todo tu historial, incluidas operaciones anteriores al lanzamiento del programa— y a partir de ahí paga una parte de las comisiones que genera tu red: 5% al activarse, y 10%, 15% y 20% al llegar a 2,5M, 7,5M y 15M DUSD de volumen de red posterior al lanzamiento. Tú decides cómo se reparte esa parte entre ti y un rebate para quienes invitaste, y ambos lados reciben además un +5% de bonus en puntos.\n\nEl rol de Community Builder se apoya en eso: un titular puede invitar hasta 10 Builders directamente, cada uno puede invitar usuarios finales sin límite, y se organizan en Grupos con su propia configuración de yield. Se solicita contactando al equipo de StandX, y StandX evalúa a los Builders según actividad y volumen sostenidos. Estas tasas pueden cambiar, así que conviene revisar las páginas vigentes.",
       "pt-br": "Community Builder é um papel de Network Yield para quem quer operar a própria rede de indicações na StandX: o mais próximo de um papel formal para organizadores de comunidade que o protocolo tem.\n\nO Network Yield é o programa por trás disso. Ele é ativado quando seu volume pessoal acumulado atinge 500.000 DUSD — todo o histórico conta, inclusive operações anteriores ao lançamento do programa — e passa a pagar uma parte das taxas geradas pela sua rede: 5% na ativação, subindo para 10%, 15% e 20% em 2,5M, 7,5M e 15M DUSD de volume de rede pós-lançamento. Você decide como essa parte se divide entre você e um rebate para quem convidou, e ambos os lados ainda recebem +5% de bônus em pontos.\n\nO papel de Community Builder fica em cima disso: um titular pode convidar até 10 Builders diretamente, cada um podendo convidar usuários finais sem limite, organizados em Grupos com configuração própria de yield. A inscrição é feita entrando em contato com a equipe da StandX, e a StandX avalia os Builders por atividade e volume contínuos. Essas taxas podem mudar, então confira as páginas atuais.",
       uk: "Community Builder — це роль у Network Yield для тих, хто хоче керувати власною реферальною мережею в StandX: найближче до формальної ролі організатора спільноти, що є в протоколі.\n\nNetwork Yield — програма, на якій це побудовано. Вона активується, коли ваш сукупний особистий обсяг торгівлі досягає 500 000 DUSD — враховується вся історія, зокрема угоди до запуску програми — і далі виплачує частку комісій, які генерує ваша мережа: 5% при активації, далі 10%, 15% і 20% на 2,5 млн, 7,5 млн і 15 млн DUSD мережевого обсягу після запуску. Ви самі обираєте, як ця частка ділиться між вами та рібейтом для запрошених, і обидві сторони додатково отримують +5% бонусу до балів.\n\nРоль Community Builder надбудовується згори: власник може запросити до 10 Builders напряму, кожен з них — необмежену кількість кінцевих користувачів, і організувати їх у Groups із власною конфігурацією дохідності. Заявка подається через звернення до команди StandX, і StandX оцінює Builders за поточною активністю та обсягами. Ці ставки можуть змінюватися, тому звіряйтеся з актуальними сторінками.",
-      ko: "Community Builder는 StandX에서 자신의 레퍼럴 네트워크를 운영하려는 사람을 위한 Network Yield 역할로, 프로토콜에 있는 가장 공식적인 커뮤니티 운영자 역할입니다.\n\n그 아래에 있는 프로그램이 Network Yield입니다. 누적 개인 거래량이 500,000 DUSD에 도달하면 활성화되며 — 프로그램 출시 이전 거래를 포함한 전체 기록이 반영됩니다 — 이후 네트워크가 만든 거래 수수료의 일부를 지급합니다. 활성화 시 5%이고, 출시 이후 네트워크 거래량이 250만·750만·1,500만 DUSD에 도달하면 각각 10%, 15%, 20%로 올라갑니다. 그 몫을 본인 몫과 초대한 사람에게 주는 리베이트로 어떻게 나눌지 직접 정하며, 양쪽 모두 포인트에 +5% 보너스를 받습니다.\n\nCommunity Builder 역할은 그 위에 얹힙니다. 소유자는 최대 10명의 Builder를 직접 초대할 수 있고, 각 Builder는 최종 사용자를 무제한 초대할 수 있으며, 이들을 자체 수익 설정을 가진 Group으로 묶습니다. 신청은 StandX 팀에 문의해 진행하고, StandX는 지속적인 활동과 거래량 기준으로 Builder를 평가합니다. 이 요율은 변경될 수 있으므로 최신 페이지를 확인하세요."
+      ko: "Community Builder는 StandX에서 자신의 레퍼럴 네트워크를 운영하려는 사람을 위한 Network Yield 역할로, 프로토콜에 있는 가장 공식적인 커뮤니티 운영자 역할입니다.\n\n그 아래에 있는 프로그램이 Network Yield입니다. 누적 개인 거래량이 500,000 DUSD에 도달하면 활성화되며 — 프로그램 출시 이전 거래를 포함한 전체 기록이 반영됩니다 — 이후 네트워크가 만든 거래 수수료의 일부를 지급합니다. 활성화 시 5%이고, 출시 이후 네트워크 거래량이 250만·750만·1,500만 DUSD에 도달하면 각각 10%, 15%, 20%로 올라갑니다. 그 몫을 본인 몫과 초대한 사람에게 주는 리베이트로 어떻게 나눌지 직접 정하며, 양쪽 모두 포인트에 +5% 보너스를 받습니다.\n\nCommunity Builder 역할은 그 위에 얹힙니다. 소유자는 최대 10명의 Builder를 직접 초대할 수 있고, 각 Builder는 최종 사용자를 무제한 초대할 수 있으며, 이들을 자체 수익 설정을 가진 Group으로 묶습니다. 신청은 StandX 팀에 문의해 진행하고, StandX는 지속적인 활동과 거래량 기준으로 Builder를 평가합니다. 이 요율은 변경될 수 있으므로 최신 페이지를 확인하세요.",
+      ja: "Community Builder は Network Yield の役割のひとつで、StandX で自分のリファラルネットワークを運営したい人のためのものです。コミュニティの運営者にとって、プロトコルが用意している最も正式な役割にあたります。\n\nその土台にあるのが Network Yield というプログラムです。個人の累計取引高が 500,000 DUSD に達すると有効になり (プログラム開始前の取引も含めて、これまでの履歴すべてが対象です)、そこからネットワークが生む取引手数料の一部が支払われます。有効化の時点で 5%、開始後のネットワーク取引高が 2.5M、7.5M、15M DUSD に達するごとに 10%、15%、20% と上がります。その取り分を自分と、招待した人へのリベートにどう配分するかは自分で決められます。さらに双方にポイントの +5% ボーナスが付きます。\n\nCommunity Builder の役割はその上に乗るものです。オーナー 1 人が直接 10 人まで Builder を招待でき、それぞれが無制限にエンドユーザーを招待できます。さらに、独自の利回り設定を持つ Group にまとめることもできます。応募は StandX チームへの連絡から始まり、StandX は継続的な活動量と取引高の基準で Builder を評価します。これらの数値は変わる可能性があるので、計画を立てる前に最新のページを確認してください。"
     },
     fact: "Community Builder is a Network Yield role for community creators running their own referral network on StandX. Network Yield activates at 500,000 DUSD cumulative personal trading volume (full history counts, including pre-launch trades) and pays 5% of referred trading fees, rising to 10%, 15% and 20% at 2.5M, 7.5M and 15M DUSD of post-launch network volume. Participants configure how the yield splits between themselves and a rebate to invitees; both sides also receive a +5% points bonus. A Community Builder owner invites up to 10 Builders directly, each inviting unlimited end users, organised into Groups with their own yield configuration. Applying requires contacting the StandX team, and StandX evaluates Builders against ongoing activity and volume benchmarks. Rates are changeable.",
     docTitles: ["Community Builder", "Network Yield"],
@@ -614,14 +669,19 @@ export const coreKnowledgeTopics = [
         "trader points",
         "як заробити бали"
       ],
-      ko: ["포인트", "standx 포인트", "메이커 포인트", "트레이더 포인트", "포인트 획득"]
+      ko: ["포인트", "standx 포인트", "메이커 포인트", "트레이더 포인트", "포인트 획득"],
+      ja: [
+        "ポイント", "standxのポイント", "maker points", "trader points", "loser points",
+        "holder points", "ポイントの貯め方", "standx のポイント"
+      ]
     },
     answer: {
       en: "StandX runs a points system alongside trading, tracked at standx.com/point. The official Earn docs currently describe four ways to earn.\n\nTrader Points come from trading — the more volume, the more points. Maker Points reward resting limit orders on a linear gradient: the closer the order sits to the mark price, the higher the multiplier, and it has to stay on the book for more than three seconds to count. Loser Points compensate realised losses at 5 points per 1 USD lost. Holder Points accrue at 0.6 point per DUSD per day on DUSD held in the Perps Wallet.\n\nCampaign bonuses and multipliers change often and some are time-limited, so treat those figures as the documented baseline and check the live campaigns page before planning around them.",
       es: "StandX tiene un sistema de puntos paralelo al trading, consultable en standx.com/point. La documentación oficial de Earn describe actualmente cuatro formas de ganarlos.\n\nLos Trader Points vienen del trading: a más volumen, más puntos. Los Maker Points premian las órdenes límite en el libro con un gradiente lineal: cuanto más cerca del precio de marca esté la orden, mayor el multiplicador, y debe permanecer en el libro más de tres segundos para contar. Los Loser Points compensan pérdidas realizadas a razón de 5 puntos por cada 1 USD perdido. Los Holder Points se acumulan a 0,6 puntos por DUSD y día sobre el DUSD que tengas en la Perps Wallet.\n\nLos bonus y multiplicadores de campaña cambian a menudo y algunos son temporales, así que toma esas cifras como la base documentada y revisa la página de campañas vigente antes de planificar.",
       "pt-br": "A StandX mantém um sistema de pontos paralelo ao trading, consultável em standx.com/point. A documentação oficial de Earn descreve atualmente quatro formas de ganhar.\n\nOs Trader Points vêm do trading: quanto mais volume, mais pontos. Os Maker Points premiam ordens limite no livro com um gradiente linear: quanto mais perto do preço de marca, maior o multiplicador, e a ordem precisa permanecer no livro por mais de três segundos para contar. Os Loser Points compensam perdas realizadas à razão de 5 pontos por 1 USD perdido. Os Holder Points acumulam 0,6 ponto por DUSD por dia sobre o DUSD mantido na Perps Wallet.\n\nBônus e multiplicadores de campanha mudam com frequência e alguns são temporários, então trate esses números como a base documentada e confira a página de campanhas atual antes de planejar.",
       uk: "StandX має систему балів паралельно до торгівлі, яку видно на standx.com/point. Офіційна документація Earn наразі описує чотири способи їх заробити.\n\nTrader Points нараховуються за торгівлю: більший обсяг — більше балів. Maker Points винагороджують лімітні ордери в книзі за лінійним градієнтом: що ближче ордер до марк-ціни, то вищий множник, і він має простояти в книзі понад три секунди, щоб зарахуватися. Loser Points компенсують реалізовані збитки за ставкою 5 балів за кожен 1 USD втрат. Holder Points нараховуються по 0,6 бала за DUSD на день за DUSD, що лежить у Perps Wallet.\n\nБонуси та множники кампаній часто змінюються, а деякі обмежені в часі, тож сприймайте ці цифри як задокументовану базу й звіряйтеся з актуальною сторінкою кампаній.",
-      ko: "StandX는 거래와 별도로 포인트 시스템을 운영하며 standx.com/point에서 확인할 수 있습니다. 공식 Earn 문서는 현재 네 가지 획득 방법을 설명합니다.\n\nTrader Points는 거래에서 나옵니다. 거래량이 많을수록 더 많이 받습니다. Maker Points는 호가창에 걸어 둔 지정가 주문에 선형 가중치로 보상합니다. 주문이 마크 가격에 가까울수록 배수가 높아지며, 3초를 넘겨 호가창에 남아 있어야 인정됩니다. Loser Points는 실현 손실을 보전해 1 USD 손실당 5포인트를 줍니다. Holder Points는 Perps Wallet에 보유한 DUSD에 대해 하루 DUSD당 0.6포인트가 쌓입니다.\n\n캠페인 보너스와 배수는 자주 바뀌고 일부는 기간 한정이므로, 위 수치는 문서화된 기준선으로 보고 계획 전에 최신 캠페인 페이지를 확인하세요."
+      ko: "StandX는 거래와 별도로 포인트 시스템을 운영하며 standx.com/point에서 확인할 수 있습니다. 공식 Earn 문서는 현재 네 가지 획득 방법을 설명합니다.\n\nTrader Points는 거래에서 나옵니다. 거래량이 많을수록 더 많이 받습니다. Maker Points는 호가창에 걸어 둔 지정가 주문에 선형 가중치로 보상합니다. 주문이 마크 가격에 가까울수록 배수가 높아지며, 3초를 넘겨 호가창에 남아 있어야 인정됩니다. Loser Points는 실현 손실을 보전해 1 USD 손실당 5포인트를 줍니다. Holder Points는 Perps Wallet에 보유한 DUSD에 대해 하루 DUSD당 0.6포인트가 쌓입니다.\n\n캠페인 보너스와 배수는 자주 바뀌고 일부는 기간 한정이므로, 위 수치는 문서화된 기준선으로 보고 계획 전에 최신 캠페인 페이지를 확인하세요.",
+      ja: "StandX は取引と並行してポイント制度を運用していて、standx.com/point で確認できます。公式の Earn ドキュメントでは現在、4 つの獲得方法が説明されています。\n\nTrader Points は取引から得られ、出来高が多いほど多く貯まります。Maker Points は板に置いた指値注文に報いるもので、線形の傾斜が付いています。注文がマーク価格に近いほど倍率が高くなり、3 秒より長く板に残っている必要があります。Loser Points は実現損失を補うもので、損失 1 USD あたり 5 ポイントです。Holder Points は Perps Wallet に保有している DUSD に対して、1 DUSD あたり 1 日 0.6 ポイント積み上がります。\n\nキャンペーンのボーナスや倍率は頻繁に変わり、期間限定のものもあります。これらの数値はドキュメント上の基準として捉えて、計画を立てる前に最新のキャンペーンページを確認してください。"
     },
     fact: "StandX runs a points system tracked at standx.com/point. The official Earn docs currently describe: Trader Points from trading volume; Maker Points for resting limit orders on a linear proximity gradient to the mark price, requiring the order to rest more than three seconds; Loser Points at 5 points per 1 USD of realised losses; and Holder Points at 0.6 point per DUSD per day for DUSD held in the Perps Wallet. Campaign bonuses and multipliers are frequently time-limited and change; direct visitors to the live campaigns page rather than quoting a bonus.",
     docTitles: [
@@ -641,14 +701,16 @@ export const coreKnowledgeTopics = [
       es: ["token de standx", "$standx", "tge", "tokenomics", "airdrop", "lanzamiento del token"],
       "pt-br": ["token da standx", "$standx", "tge", "tokenomics", "airdrop", "lancamento do token"],
       uk: ["токен standx", "$standx", "tge", "токеноміка", "airdrop", "запуск токена"],
-      ko: ["standx 토큰", "$standx", "tge", "토크노믹스", "에어드롭", "토큰 출시"]
+      ko: ["standx 토큰", "$standx", "tge", "토크노믹스", "에어드롭", "토큰 출시"],
+      ja: ["standxトークン", "$standx", "tge", "トークノミクス", "エアドロップ", "トークンの発行", "standx トークン"]
     },
     answer: {
       en: "The official SIP-5A page says the StandX platform token had not yet been issued at the time of writing. I do not have a verified TGE date or complete tokenomics in the approved sources, so I will not speculate; treat official docs and StandX channels as the source of truth for updates.",
       es: "La página oficial de SIP-5A indica que el token de plataforma de StandX aún no se había emitido al momento de escribirla. No tengo una fecha de TGE ni tokenomics completas verificadas en las fuentes aprobadas, así que no especularé; consulta la documentación y canales oficiales.",
       "pt-br": "A página oficial do SIP-5A informa que o token da plataforma StandX ainda não havia sido emitido quando o texto foi publicado. Não há data de TGE nem tokenomics completas verificadas nas fontes aprovadas, então não vou especular; consulte a documentação e os canais oficiais.",
       uk: "Офіційна сторінка SIP-5A зазначає, що на момент написання токен платформи StandX ще не був випущений. У схвалених джерелах немає перевіреної дати TGE чи повної токеноміки, тому я не спекулюватиму; стежте за офіційною документацією та каналами StandX.",
-      ko: "공식 SIP-5A 페이지에는 작성 당시 StandX 플랫폼 토큰이 아직 발행되지 않았다고 나옵니다. 승인된 출처에서 확인된 TGE 일정이나 전체 토크노믹스가 없으므로 추측하지 않으며, 공식 문서와 StandX 채널을 기준으로 확인해야 합니다."
+      ko: "공식 SIP-5A 페이지에는 작성 당시 StandX 플랫폼 토큰이 아직 발행되지 않았다고 나옵니다. 승인된 출처에서 확인된 TGE 일정이나 전체 토크노믹스가 없으므로 추측하지 않으며, 공식 문서와 StandX 채널을 기준으로 확인해야 합니다.",
+      ja: "公式の SIP-5A のページによると、執筆時点で StandX のプラットフォームトークンはまだ発行されていません。承認済みの情報源に確認できる TGE の日付や完全なトークノミクスがないため、推測は控えます。最新情報は公式ドキュメントと StandX の各チャンネルを、確かなソースとして扱ってください。"
     },
     fact: "The official SIP-5A page says the StandX platform token had not yet been issued at the time of writing. The approved source map does not provide a verified TGE date or complete tokenomics. Do not speculate; direct visitors to official StandX documentation and channels for updates.",
     docTitles: ["SIP-5A: Community Maker Yield"],
@@ -1002,88 +1064,107 @@ export const docPages: DocEntry[] = [
  */
 export const docAliases: ReadonlyArray<{terms: readonly string[]; title: string}> = [
   {
-    terms: ["what is standx", "que es standx", "o que e standx", "що таке standx", "standx가 무엇"],
+    terms: ["what is standx", "que es standx", "o que e standx", "що таке standx", "standx가 무엇", "standxとは"],
     title: "About StandX"
   },
   {
-    terms: ["dusd", "stablecoin", "estable", "estável", "стейблкоїн", "스테이블"],
+    terms: ["dusd", "stablecoin", "estable", "estável", "стейблкоїн", "스테이블", "ステーブル"],
     title: "$DUSD Overview"
   },
   {
     terms: [
-      "mint", "minting", "mintear", "acuñar", "cunhar", "mintar",
-      "мінт", "мінтити", "민팅", "발행"
+      "mint", "minting", "mintear", "acuñar", "cunhar", "mintar", "мінт", "мінтити",
+      "민팅", "발행", "発行", "ミント", "発行は", "発行が", "発行を", "発行の", "発行に", "発行する", "発行方法"
     ],
     title: "Minting DUSD"
   },
   {
-    terms: ["redeem", "redimir", "resgatar", "погашення", "상환"],
+    terms: [
+      "redeem", "redimir", "resgatar", "погашення", "상환", "償還", "償還は", "償還が", "償還を",
+      "償還の", "償還に", "償還する", "償還方法"
+    ],
     title: "Redeeming DUSD"
   },
   {
     terms: [
       "fee", "fees", "comision", "comisiones", "tarifa", "tarifas",
-      "taxa", "taxas", "maker", "taker", "комісія", "комісії", "수수료"
+      "taxa", "taxas", "maker", "taker", "комісія", "комісії", "수수료",
+      "手数料"
     ],
     title: "Trading Fee"
   },
   {
     terms: [
       "leverage", "margin", "apalancamiento", "margen", "alavancagem", "margem",
-      "плече", "маржа", "레버리지", "마진", "증거금"
+      "плече", "маржа", "레버리지", "마진", "증거금",
+      "レバレッジ", "証拠金", "マージン"
     ],
     title: "Margin & Leverage"
   },
   {
     terms: [
       "liquidation", "liquidate", "liquidacion", "liquidación", "liquidado",
-      "liquidação", "ліквідація", "ліквідації", "청산"
+      "liquidação", "ліквідація", "ліквідації", "청산", "清算", "強制決済", "ロスカット", "清算は",
+      "清算が", "清算を", "清算の", "清算に", "清算する", "清算方法"
     ],
     title: "Liquidation"
   },
   {
     terms: [
       "funding", "funding rate", "financiamento", "financiacion",
-      "фандинг", "ставка фінансування", "펀딩"
+      "фандинг", "ставка фінансування", "펀딩",
+      "ファンディング", "資金調達率"
     ],
     title: "Funding Rate"
   },
   {
-    terms: ["wallet", "billetera", "cartera", "carteira", "гаманець", "지갑"],
+    terms: ["wallet", "billetera", "cartera", "carteira", "гаманець", "지갑", "ウォレット"],
     title: "StandX Wallet Guide"
   },
   {
-    terms: ["withdraw", "withdrawal", "retirar", "retiro", "sacar", "saque", "виведення", "출금"],
+    terms: [
+      "withdraw", "withdrawal", "retirar", "retiro", "sacar", "saque", "виведення",
+      "출금", "出金", "引き出し", "出金は", "出金が", "出金を", "出金の", "出金に", "出金する", "出金方法"
+    ],
     title: "Withdrawal"
   },
   {
-    terms: ["referral", "network yield", "referido", "indicação", "реферал", "레퍼럴"],
+    terms: ["referral", "network yield", "referido", "indicação", "реферал", "레퍼럴", "リファラル", "紹介報酬"],
     title: "Network Yield"
   },
   {
-    terms: ["sip", "sips", "proposal", "propuesta", "proposta", "пропозиція", "제안"],
+    terms: [
+      "sip", "sips", "proposal", "propuesta", "proposta", "пропозиція", "제안", "提案",
+      "提案は", "提案が", "提案を", "提案の", "提案に", "提案する", "提案方法"
+    ],
     title: "SIPs (StandX Improvement Proposals)"
   },
   {
-    terms: ["api", "websocket", "rest", "endpoint", "엔드포인트"],
+    terms: ["api", "websocket", "rest", "endpoint", "엔드포인트", "エンドポイント"],
     title: "API Reference"
   },
   {
     terms: [
-      "points", "puntos", "pontos", "бали", "поінти", "포인트",
-      "earn", "ganar", "ganhar", "заробити"
+      "points", "puntos", "pontos", "бали", "поінти", "포인트", "earn", "ganar",
+      "ganhar", "заробити", "ポイント", "稼ぐ", "稼ぐは", "稼ぐが", "稼ぐを", "稼ぐの", "稼ぐに", "稼ぐする",
+      "稼ぐ方法"
     ],
     title: "Earn on StandX"
   },
   {
     terms: [
-      "order", "orders", "orden", "ordenes", "órdenes", "ordem", "ordens",
-      "ордер", "주문", "limit order", "market order"
+      "order", "orders", "orden", "ordenes", "órdenes", "ordem", "ordens", "ордер",
+      "주문", "limit order", "market order", "注文", "指値", "成行", "注文は", "注文が", "注文を",
+      "注文の", "注文に", "注文する", "注文方法", "指値は", "指値が", "指値を", "指値の", "指値に", "指値する",
+      "指値方法", "成行は", "成行が", "成行を", "成行の", "成行に", "成行する", "成行方法"
     ],
     title: "The Execution Panel"
   },
   {
-    terms: ["stop loss", "take profit", "tp/sl", "stop", "손절", "익절"],
+    terms: [
+      "stop loss", "take profit", "tp/sl", "stop", "손절", "익절", "損切り", "利確", "ストップロス",
+      "利確は", "利確が", "利確を", "利確の", "利確に", "利確する", "利確方法"
+    ],
     title: "Take Profit and Stop Loss (TP/SL)"
   }
 ];

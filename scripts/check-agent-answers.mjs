@@ -18,7 +18,7 @@ import ts from "typescript";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const locales = ["en", "es", "pt-br", "uk", "ko"];
+const locales = ["en", "es", "pt-br", "uk", "ko", "ja"];
 
 // `standx-knowledge.ts` imports only a type, so it transpiles standalone.
 const source = fs

@@ -128,6 +128,7 @@ const probes = [
   ["pt-br", "como faço para mintar DUSD e quais são as taxas?"],
   ["uk", "як працює ліквідація і що таке маржа?"],
   ["ko", "StandX 포인트는 어떻게 모으나요?"],
+  ["ja", "StandX のポイントはどうやって貯めますか？"],
   ["en", "tell me everything about standx, dusd, perps, sips, points, fees and the api"],
   ["es", "hola"],
   ["en", "what sections does this site have?"]
@@ -232,6 +233,9 @@ const expectations = [
   ["en", "how do I mint DUSD?", "Minting DUSD"],
   ["pt-br", "como faço para mintar DUSD?", "Minting DUSD"],
   ["ko", "DUSD를 어떻게 발행하나요?", "Minting DUSD"],
+  ["ja", "DUSD はどうやって発行しますか？", "Minting DUSD"],
+  ["ja", "ファンディングレートは何ですか？", "Funding Rate"],
+  ["ja", "取引手数料はいくらですか？", "Trading Fee"],
   ["en", "what is the API endpoint for orders?", "API Reference"],
   ["es", "¿qué es el margen y el apalancamiento?", "Margin & Leverage"]
 ];

@@ -34,11 +34,13 @@
     "languageNamePtBr": "Portugués (Brasil)",
     "languageNameUk": "Ucraniano",
     "languageNameKo": "Coreano",
+    "languageNameJa": "Japonés",
     "languageCodeEn": "EN",
     "languageCodeEs": "ES",
     "languageCodePtBr": "PT-BR",
     "languageCodeUk": "UK",
     "languageCodeKo": "KO",
+    "languageCodeJa": "JA",
     "languageSwitcherAria": "Cambiar idioma. Idioma actual: {locale}.",
     "startTradingAria": "Comenzar Trading en StandX en una nueva pestaña",
     "learnHowAria": "Abrir la página de Cómo Funciona",
@@ -75,7 +77,7 @@
     "badges": {
       "free": "Gratis",
       "noLogin": "Sin registro",
-      "languages": "EN · ES · PT-BR · UK · KO"
+      "languages": "EN · ES · PT-BR · UK · KO · JA"
     },
     "trustLabel": "Enlaces oficiales",
     "trustStandx": "StandX Oficial",

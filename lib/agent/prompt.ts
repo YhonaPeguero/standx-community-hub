@@ -17,7 +17,8 @@ const localeNames: Record<AppLocale, string> = {
   es: "Spanish (español)",
   "pt-br": "Brazilian Portuguese (português do Brasil)",
   uk: "Ukrainian (українська)",
-  ko: "Korean (한국어)"
+  ko: "Korean (한국어)",
+  ja: "Japanese (日本語)"
 };
 
 /**

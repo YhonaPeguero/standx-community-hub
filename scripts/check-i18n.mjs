@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const messagesDir = path.join(__dirname, "..", "messages");
 
-const locales = ["en", "es", "pt-br", "uk", "ko"];
+const locales = ["en", "es", "pt-br", "uk", "ko", "ja"];
 
 function flatten(obj, prefix = "") {
   const out = {};

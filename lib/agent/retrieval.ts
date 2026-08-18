@@ -164,6 +164,27 @@ const CJK =
  * `$` survives because `$DUSD` is a page title, and a token that becomes "dusd"
  * still matches the same page — dropping the sigil loses nothing and keeps the
  * two spellings interchangeable.
+ *
+ * Japanese tokenizes badly here, and that is deliberate rather than unnoticed.
+ * Two things happen to it. It has no spaces, so a whole phrase arrives as one
+ * token; and `normalizeKnowledgeText` runs NFD, which splits voiced kana into
+ * base + U+3099 — a mark outside the U+0300-U+036F strip and outside \p{L}, so
+ * the split below cuts the word there and drops the voicing (ファンディング
+ * becomes ファンテ + ィンク). Korean escapes this only by accident: its NFD
+ * output is jamo, and jamo are letters.
+ *
+ * None of that is worth fixing, because the two indexes below are built from
+ * `title + covers` and `title + fact`, which are English in every locale. There
+ * is no Japanese in the corpus for a Japanese token to match, however it is
+ * cut. Non-Latin questions reach a page through `aliasScore` instead, which is
+ * a substring match over curated per-locale terms and normalizes both sides the
+ * same way — so the mangling cancels out and the match still lands.
+ *
+ * Recomposing with NFC was measured and made things worse: Korean fell from
+ * rank 2 to rank 3 on "DUSD를 어떻게 발행하나요?" because precomposed syllables
+ * then hit the 2-character CJK floor instead of the 3-character one, and
+ * Japanese did not improve at all. Add Japanese terms to `docAliases` instead;
+ * that is the path that carries every other non-Latin locale.
  */
 function tokenize(value: string): string[] {
   const words = normalizeKnowledgeText(value)

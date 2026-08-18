@@ -86,14 +86,16 @@ function lv(
   es: string,
   ptBr: string,
   uk: string,
-  ko: string
+  ko: string,
+  ja: string
 ): LocalizedValue {
   return {
     en,
     es,
     "pt-br": ptBr,
     uk,
-    ko
+    ko,
+    ja
   };
 }
 
@@ -108,38 +110,43 @@ const sectionHeaders: Record<HubSectionSlug, SectionHeader> = {
       "Cómo empezar en StandX",
       "Como começar na StandX",
       "Як почати в StandX",
-      "StandX 시작 가이드"
+      "StandX 시작 가이드",
+      "StandX のはじめかた"
     ),
     subtitle: lv(
       "A guide for traders, creators, researchers, and curious contributors",
       "Una guía para traders, creadores, investigadores y contribuidores curiosos",
       "Um guia para traders, criadores, pesquisadores e contribuidores curiosos",
       "Гайд для трейдерів, креаторів, дослідників і всіх, хто хоче долучитись",
-      "트레이더, 크리에이터, 리서처, 그리고 기여를 원하는 모든 분들을 위한 가이드"
+      "트레이더, 크리에이터, 리서처, 그리고 기여를 원하는 모든 분들을 위한 가이드",
+      "トレーダー、クリエイター、リサーチャー、そして興味を持つすべての貢献者のためのガイド"
     ),
     notice: lv(
       "This hub is for everyone. No matter your background, you can find a clear path to join and contribute.",
       "Este hub es para todos. Sin importar tu perfil, aquí tienes una ruta clara para unirte y contribuir.",
       "Este hub é para todos. Não importa seu perfil, aqui você encontra um caminho claro para participar e contribuir.",
       "Цей хаб для всіх. Незалежно від досвіду, тут є зрозумілий шлях для участі та внеску.",
-      "이 허브는 모두를 위한 공간입니다. 배경과 상관없이 참여하고 기여할 수 있는 명확한 경로를 찾을 수 있습니다."
+      "이 허브는 모두를 위한 공간입니다. 배경과 상관없이 참여하고 기여할 수 있는 명확한 경로를 찾을 수 있습니다.",
+      "このハブは誰にでも開かれています。経歴に関係なく、参加して貢献するための明確な道筋が見つかります。"
     )
   },
   "brand-kit": {
-    title: lv("Brand Kit", "Brand Kit", "Brand Kit", "Brand Kit", "브랜드 키트"),
+    title: lv("Brand Kit", "Brand Kit", "Brand Kit", "Brand Kit", "브랜드 키트", "ブランドキット"),
     subtitle: lv(
       "Visual assets that remove creative friction and help contributors publish faster",
       "Assets visuales para reducir fricción creativa y publicar más rápido",
       "Assets visuais para reduzir fricção criativa e publicar mais rápido",
       "Візуальні ресурси, що зменшують творче тертя та прискорюють публікацію",
-      "창작 마찰을 줄이고 더 빠르게 게시할 수 있게 돕는 시각 자료"
+      "창작 마찰을 줄이고 더 빠르게 게시할 수 있게 돕는 시각 자료",
+      "制作の摩擦をなくし、貢献者がより速く発信できるようにするビジュアルアセット"
     ),
     notice: lv(
       "You focus on content quality. The visual base is already prepared.",
       "Tú te enfocas en la calidad del contenido. La base visual ya está lista.",
       "Você foca na qualidade do conteúdo. A base visual já está pronta.",
       "Ви фокусуєтесь на якості контенту, а візуальна база вже готова.",
-      "콘텐츠 품질에 집중하세요. 시각 자료 기반은 이미 준비되어 있습니다."
+      "콘텐츠 품질에 집중하세요. 시각 자료 기반은 이미 준비되어 있습니다.",
+      "あなたはコンテンツの質に集中してください。ビジュアルの土台はすでに用意されています。"
     )
   },
   templates: {
@@ -148,21 +155,24 @@ const sectionHeaders: Record<HubSectionSlug, SectionHeader> = {
       "Plantillas de contenido",
       "Templates de conteúdo",
       "Шаблони контенту",
-      "콘텐츠 템플릿"
+      "콘텐츠 템플릿",
+      "コンテンツテンプレート"
     ),
     subtitle: lv(
       "Ready structures you can adapt to your own style and voice",
       "Estructuras listas para adaptar a tu propio estilo y voz",
       "Estruturas prontas para adaptar ao seu estilo e voz",
       "Готові структури, які легко адаптувати під ваш стиль",
-      "당신의 스타일과 톤에 맞게 바로 활용할 수 있는 구조"
+      "당신의 스타일과 톤에 맞게 바로 활용할 수 있는 구조",
+      "自分のスタイルと声に合わせて使える、できあいの構成"
     ),
     notice: lv(
       "Use these templates as skeletons: replace placeholders, keep structure, and publish with consistency.",
       "Usa estas plantillas como esqueleto: reemplaza campos, mantén la estructura y publica con consistencia.",
       "Use estes templates como esqueleto: substitua campos, mantenha a estrutura e publique com consistência.",
       "Використовуйте шаблони як каркас: замінюйте поля, тримайте структуру та публікуйте стабільно.",
-      "템플릿은 뼈대입니다. 필드만 교체하고 구조를 유지해 일관성 있게 발행하세요."
+      "템플릿은 뼈대입니다. 필드만 교체하고 구조를 유지해 일관성 있게 발행하세요.",
+      "テンプレートは骨組みです。プレースホルダーを置き換え、構造は保ったまま、一貫性を持って発信してください。"
     )
   },
   references: {
@@ -171,42 +181,48 @@ const sectionHeaders: Record<HubSectionSlug, SectionHeader> = {
       "Referencias reales",
       "Referências reais",
       "Реальні приклади",
-      "실제 레퍼런스"
+      "실제 레퍼런스",
+      "実際のリファレンス"
     ),
     subtitle: lv(
       "Examples of real content created for the StandX ecosystem",
       "Ejemplos de contenido real creado para el ecosistema StandX",
       "Exemplos reais de conteúdo criado para o ecossistema StandX",
       "Приклади реального контенту, створеного для екосистеми StandX",
-      "StandX 생태계를 위해 실제로 제작된 콘텐츠 예시"
+      "StandX 생태계를 위해 실제로 제작된 콘텐츠 예시",
+      "StandX エコシステムのために実際に作られたコンテンツの例"
     ),
     notice: lv(
       "Different formats, languages, and approaches. This shows the practical range of contribution.",
       "Formatos, idiomas y enfoques distintos. Esto muestra el rango práctico de contribución.",
       "Formatos, línguas e abordagens diferentes. Isso mostra o alcance prático da contribuição.",
       "Різні формати, мови та підходи. Це показує практичний діапазон внеску.",
-      "다양한 형식, 언어, 접근 방식. 실제 기여 범위를 보여줍니다."
+      "다양한 형식, 언어, 접근 방식. 실제 기여 범위를 보여줍니다.",
+      "フォーマットも言語もアプローチもさまざま。貢献の幅がそのまま見えてきます。"
     )
   },
   community: {
-    title: lv("Community", "Comunidad", "Comunidade", "Спільнота", "커뮤니티"),
+    title: lv("Community", "Comunidad", "Comunidade", "Спільнота", "커뮤니티", "コミュニティ"),
     subtitle: lv(
       "Where everything happens and who is building together",
       "Dónde sucede todo y quiénes están construyendo juntos",
       "Onde tudo acontece e quem está construindo junto",
       "Де все відбувається і хто будує разом",
-      "모든 활동이 일어나는 곳, 그리고 함께 만드는 사람들"
+      "모든 활동이 일어나는 곳, 그리고 함께 만드는 사람들",
+      "すべてが動いている場所と、一緒に作っている人たち"
     ),
     notice: lv(
       "This section keeps the original spirit: direct Discord access, community projects, and creator recognition.",
       "Esta sección mantiene el espíritu original: acceso directo a Discord, proyectos comunitarios y reconocimiento de creadores.",
       "Esta seção preserva o espírito original: acesso direto ao Discord, projetos da comunidade e reconhecimento de criadores.",
       "Цей розділ зберігає оригінальну суть: прямий доступ до Discord, community projects і визнання креаторів.",
-      "이 섹션은 원래의 핵심을 유지합니다: Discord 진입, 커뮤니티 프로젝트, 크리에이터 인정."
+      "이 섹션은 원래의 핵심을 유지합니다: Discord 진입, 커뮤니티 프로젝트, 크리에이터 인정.",
+      "このセクションは当初の姿勢をそのまま残しています。Discord への直接の入口、コミュニティプロジェクト、そしてクリエイターへの敬意。"
     )
   },
   "standers-insights": {
     title: lv(
+      "Standers Insights",
       "Standers Insights",
       "Standers Insights",
       "Standers Insights",
@@ -218,122 +234,137 @@ const sectionHeaders: Record<HubSectionSlug, SectionHeader> = {
       "Análisis curado por contribuidores activos de la comunidad",
       "Análises curadas por contribuidores ativos da comunidade",
       "Кураторська аналітика від активних учасників спільноти",
-      "활동적인 커뮤니티 기여자들이 큐레이션한 분석"
+      "활동적인 커뮤니티 기여자들이 큐레이션한 분석",
+      "活動中のコミュニティ貢献者による厳選された分析"
     ),
     notice: lv(
       "Articles are community-made and editorially reviewed before being highlighted.",
       "Los artículos son creados por la comunidad y revisados editorialmente antes de destacarse.",
       "Os artigos são feitos pela comunidade e revisados editorialmente antes de serem destacados.",
       "Статті створюються спільнотою та проходять редакційний огляд перед публікацією.",
-      "아티클은 커뮤니티가 작성하고, 노출 전 편집 검토를 거칩니다."
+      "아티클은 커뮤니티가 작성하고, 노출 전 편집 검토를 거칩니다.",
+      "記事はコミュニティが制作し、掲載前に編集レビューを経ています。"
     )
   },
   about: {
-    title: lv("About", "Acerca de", "Sobre", "Про хаб", "소개"),
+    title: lv("About", "Acerca de", "Sobre", "Про хаб", "소개", "概要"),
     subtitle: lv(
       "Who built this hub, why it exists, and how the community initiative continues",
       "Quién construyó este hub, por qué existe y cómo continúa la iniciativa comunitaria",
       "Quem construiu este hub, por que ele existe e como a iniciativa comunitária continua",
       "Хто створив цей хаб, чому він існує та як продовжується ініціатива",
-      "이 허브를 만든 사람, 존재 이유, 그리고 커뮤니티 이니셔티브의 연속성"
+      "이 허브를 만든 사람, 존재 이유, 그리고 커뮤니티 이니셔티브의 연속성",
+      "このハブを作った人、存在する理由、そしてコミュニティの取り組みの続き"
     ),
     notice: lv(
       "Built on the original community initiative by @TARZANWEB3 and redesigned as an upgraded hub experience.",
       "Construido sobre la iniciativa comunitaria original de @TARZANWEB3 y rediseñado como una experiencia mejorada.",
       "Construído sobre a iniciativa comunitária original de @TARZANWEB3 e redesenhado como uma experiência aprimorada.",
       "Створено на основі оригінальної ініціативи @TARZANWEB3 та оновлено як сучасний хаб.",
-      "@TARZANWEB3의 원래 커뮤니티 이니셔티브를 기반으로 업그레이드된 허브 경험으로 재설계되었습니다."
+      "@TARZANWEB3의 원래 커뮤니티 이니셔티브를 기반으로 업그레이드된 허브 경험으로 재설계되었습니다.",
+      "@TARZANWEB3 による最初のコミュニティの取り組みを土台に、より良いハブ体験として再設計されました。"
     )
   }
 };
 
 const uiCopy = {
-  home: lv("Home", "Inicio", "Início", "Головна", "홈"),
+  home: lv("Home", "Inicio", "Início", "Головна", "홈", "ホーム"),
   joinDiscord: lv(
     "Join Discord",
     "Unirse a Discord",
     "Entrar no Discord",
     "Приєднатися до Discord",
-    "Discord 참여"
+    "Discord 참여",
+    "Discord に参加"
   ),
   openDocumentation: lv(
     "Open full documentation",
     "Abrir documentación completa",
     "Abrir documentação completa",
     "Відкрити повну документацію",
-    "전체 문서 열기"
+    "전체 문서 열기",
+    "ドキュメント全体を開く"
   ),
-  openDrive: lv("Open Drive", "Abrir Drive", "Abrir Drive", "Відкрити Drive", "Drive 열기"),
+  openDrive: lv("Open Drive", "Abrir Drive", "Abrir Drive", "Відкрити Drive", "Drive 열기", "Drive を開く"),
   openRootFolder: lv(
     "Open root Drive folder",
     "Abrir carpeta raíz de Drive",
     "Abrir pasta raiz no Drive",
     "Відкрити кореневу папку Drive",
-    "루트 Drive 폴더 열기"
+    "루트 Drive 폴더 열기",
+    "Drive のルートフォルダを開く"
   ),
   openReference: lv(
     "Open reference",
     "Abrir referencia",
     "Abrir referência",
     "Відкрити приклад",
-    "레퍼런스 열기"
+    "레퍼런스 열기",
+    "リファレンスを開く"
   ),
-  playNow: lv("Play now", "Jugar ahora", "Jogar agora", "Грати зараз", "지금 플레이"),
+  playNow: lv("Play now", "Jugar ahora", "Jogar agora", "Грати зараз", "지금 플레이", "今すぐプレイ"),
   openNotion: lv(
     "Open on Notion",
     "Abrir en Notion",
     "Abrir no Notion",
     "Відкрити в Notion",
-    "Notion에서 열기"
+    "Notion에서 열기",
+    "Notion で開く"
   ),
   openArticle: lv(
     "Open article",
     "Abrir artículo",
     "Abrir artigo",
     "Відкрити статтю",
-    "아티클 열기"
+    "아티클 열기",
+    "記事を開く"
   ),
   openXProfile: lv(
     "Open X profile",
     "Abrir perfil en X",
     "Abrir perfil no X",
     "Відкрити профіль X",
-    "X 프로필 열기"
+    "X 프로필 열기",
+    "X のプロフィールを開く"
   ),
   exploreSIPs: lv(
     "Explore SIPs",
     "Explorar SIPs",
     "Explorar SIPs",
     "Переглянути SIP",
-    "SIP 탐색"
+    "SIP 탐색",
+    "SIP を見る"
   )
 };
 
 const gettingStartedCopy = {
-  growthPathLabel: lv("Growth Path", "Growth Path", "Growth Path", "Growth Path", "Growth Path"),
+  growthPathLabel: lv("Growth Path", "Growth Path", "Growth Path", "Growth Path", "Growth Path", "Growth Path"),
   growthPathBody: lv(
     "The StandX Growth Path is the community progression system and everything happens in the official Discord. It values different profiles, from content creators to researchers, support members, and local builders.",
     "El Growth Path de StandX es el sistema de progresión comunitaria y todo ocurre en el Discord oficial. Valora perfiles diferentes, desde creadores de contenido hasta investigadores, soporte y builders locales.",
     "O Growth Path da StandX é o sistema de progressão da comunidade e tudo acontece no Discord oficial. Ele valoriza perfis diferentes, de criadores de conteúdo a pesquisadores, suporte e builders locais.",
     "Growth Path у StandX — це система прогресу спільноти, і все відбувається в офіційному Discord. Вона цінує різні профілі: від контент-креаторів до дослідників, сапорту та локальних ініціаторів.",
-    "StandX Growth Path는 커뮤니티 성장 시스템이며 모든 진행은 공식 Discord에서 이루어집니다. 콘텐츠 크리에이터, 리서처, 서포트, 로컬 빌더 등 다양한 기여 유형을 인정합니다."
+    "StandX Growth Path는 커뮤니티 성장 시스템이며 모든 진행은 공식 Discord에서 이루어집니다. 콘텐츠 크리에이터, 리서처, 서포트, 로컬 빌더 등 다양한 기여 유형을 인정합니다.",
+    "StandX Growth Path はコミュニティの成長システムで、すべては公式 Discord で進みます。コンテンツクリエイターからリサーチャー、サポートメンバー、各地域のビルダーまで、さまざまなタイプの貢献を評価します。"
   ),
-  stepByStepTitle: lv("Step by step", "Paso a paso", "Passo a passo", "Крок за кроком", "단계별 진행"),
-  squadsTitle: lv("Squads", "Squads", "Squads", "Squads", "Squads"),
+  stepByStepTitle: lv("Step by step", "Paso a paso", "Passo a passo", "Крок за кроком", "단계별 진행", "ステップごとに"),
+  squadsTitle: lv("Squads", "Squads", "Squads", "Squads", "Squads", "Squads"),
   squadsNotice: lv(
     "Choose based on what you enjoy doing. The best squad is the one that keeps you active and consistent.",
     "Elige según lo que disfrutas hacer. El mejor squad es el que te mantiene activo y constante.",
     "Escolha com base no que você gosta de fazer. O melhor squad é o que te mantém ativo e consistente.",
     "Обирайте те, що вам справді подобається. Найкращий squad — той, що допомагає тримати стабільну активність.",
-    "좋아하는 작업을 기준으로 선택하세요. 가장 좋은 squad는 꾸준히 활동할 수 있게 해주는 팀입니다."
+    "좋아하는 작업을 기준으로 선택하세요. 가장 좋은 squad는 꾸준히 활동할 수 있게 해주는 팀입니다.",
+    "自分が楽しめることを基準に選んでください。いちばん良い squad は、活動を続けられる squad です。"
   ),
-  sproutTitle: lv("SPROUT Criteria", "Criterios para SPROUT", "Critérios para SPROUT", "Критерії SPROUT", "SPROUT 기준"),
+  sproutTitle: lv("SPROUT Criteria", "Criterios para SPROUT", "Critérios para SPROUT", "Критерії SPROUT", "SPROUT 기준", "SPROUT の条件"),
   sproutLead: lv(
     "Engage ≥ 4,000 plus consistent activity and quality delivery in your squad.",
     "Engage ≥ 4,000 más actividad constante y calidad de entrega en tu squad.",
     "Engage ≥ 4,000 mais atividade consistente e qualidade de entrega no seu squad.",
     "Engage ≥ 4,000 плюс стабільна активність і якісний результат у вашому squad.",
-    "Engage ≥ 4,000과 함께 꾸준한 활동 및 squad 내 결과물 품질이 필요합니다."
+    "Engage ≥ 4,000과 함께 꾸준한 활동 및 squad 내 결과물 품질이 필요합니다.",
+    "Engage 4,000 以上に加えて、squad での継続的な活動と質の高い成果。"
   )
 };
 
@@ -344,14 +375,16 @@ const growthSteps: LocalizedItem[] = [
       "1) Acumula 3,000 Engage Points",
       "1) Acumule 3,000 Engage Points",
       "1) Наберіть 3,000 Engage Points",
-      "1) Engage Points 3,000점 달성"
+      "1) Engage Points 3,000점 달성",
+      "1) Engage Points を 3,000 貯める"
     ),
     description: lv(
       "Join weekly events, react to announcements, and create content on X. Share links in #content-creation to accumulate points.",
       "Participa en eventos semanales, reacciona a anuncios y crea contenido en X. Comparte enlaces en #content-creation para sumar puntos.",
       "Participe de eventos semanais, reaja aos anúncios e crie conteúdo no X. Compartilhe links em #content-creation para acumular pontos.",
       "Долучайтесь до щотижневих подій, реагуйте на анонси та створюйте контент у X. Діліться лінками в #content-creation, щоб набирати бали.",
-      "주간 이벤트 참여, 공지 반응, X 콘텐츠 제작을 진행하세요. #content-creation에 링크를 공유해 포인트를 쌓습니다."
+      "주간 이벤트 참여, 공지 반응, X 콘텐츠 제작을 진행하세요. #content-creation에 링크를 공유해 포인트를 쌓습니다.",
+      "週次イベントに参加し、アナウンスにリアクションし、X でコンテンツを作りましょう。#content-creation にリンクを共有するとポイントが貯まります。"
     )
   },
   {
@@ -360,14 +393,16 @@ const growthSteps: LocalizedItem[] = [
       "2) Postula para @SEED",
       "2) Aplique para @SEED",
       "2) Подайте заявку на @SEED",
-      "2) @SEED 신청"
+      "2) @SEED 신청",
+      "2) @SEED に応募する"
     ),
     description: lv(
       "After obtaining @Stander, apply in #seed-application. If not accepted, improve activity and reapply later.",
       "Después de obtener @Stander, aplica en #seed-application. Si no te aceptan, mejora la actividad y vuelve a aplicar.",
       "Depois de obter @Stander, aplique em #seed-application. Se não for aceito, melhore sua atividade e reaplique.",
       "Після отримання @Stander подайте заявку в #seed-application. Якщо не прийняли, покращуйте активність і подавайтеся знову.",
-      "@Stander 획득 후 #seed-application에서 신청하세요. 미승인 시 활동을 강화해 다시 신청하면 됩니다."
+      "@Stander 획득 후 #seed-application에서 신청하세요. 미승인 시 활동을 강화해 다시 신청하면 됩니다.",
+      "@Stander を獲得したら #seed-application で応募します。通らなかった場合は活動を増やして、後から再応募してください。"
     )
   },
   {
@@ -376,14 +411,16 @@ const growthSteps: LocalizedItem[] = [
       "3) Elige tu Squad",
       "3) Escolha seu Squad",
       "3) Оберіть свій Squad",
-      "3) Squad 선택"
+      "3) Squad 선택",
+      "3) squad を選ぶ"
     ),
     description: lv(
       "Open a ticket in #support-ticket and choose the squad that best matches your strengths.",
       "Abre un ticket en #support-ticket y elige el squad que mejor encaja con tus fortalezas.",
       "Abra um ticket em #support-ticket e escolha o squad que melhor combina com seus pontos fortes.",
       "Відкрийте тікет у #support-ticket та оберіть squad, який найкраще відповідає вашим сильним сторонам.",
-      "#support-ticket에서 티켓을 열고 자신의 강점에 맞는 squad를 선택하세요."
+      "#support-ticket에서 티켓을 열고 자신의 강점에 맞는 squad를 선택하세요.",
+      "#support-ticket でチケットを開き、自分の強みに一番合う squad を選びます。"
     )
   },
   {
@@ -392,14 +429,16 @@ const growthSteps: LocalizedItem[] = [
       "4) Completa tareas y sube a @SPROUT",
       "4) Complete tarefas e suba para @SPROUT",
       "4) Виконуйте задачі та переходьте до @SPROUT",
-      "4) 과제를 완료하고 @SPROUT로 승급"
+      "4) 과제를 완료하고 @SPROUT로 승급",
+      "4) タスクをこなして @SPROUT に上がる"
     ),
     description: lv(
       "Tasks are posted in #task-board and submitted in #task-submission. Moderators also evaluate consistency.",
       "Las tareas se publican en #task-board y se entregan en #task-submission. Los moderadores también evalúan constancia.",
       "As tarefas são publicadas em #task-board e enviadas em #task-submission. Moderadores também avaliam consistência.",
       "Завдання публікуються в #task-board, а здача відбувається в #task-submission. Модератори також оцінюють стабільність участі.",
-      "과제는 #task-board에 게시되고 #task-submission에 제출합니다. 운영진은 꾸준함도 함께 평가합니다."
+      "과제는 #task-board에 게시되고 #task-submission에 제출합니다. 운영진은 꾸준함도 함께 평가합니다.",
+      "タスクは #task-board に掲示され、#task-submission で提出します。モデレーターは継続性も見ています。"
     )
   },
   {
@@ -408,14 +447,16 @@ const growthSteps: LocalizedItem[] = [
       "5) Llega a @FLOWER",
       "5) Alcance @FLOWER",
       "5) Досягніть @FLOWER",
-      "5) @FLOWER 달성"
+      "5) @FLOWER 달성",
+      "5) @FLOWER に到達する"
     ),
     description: lv(
       "Reserved for members who lead initiatives and raise standards with proactive work.",
       "Reservado para miembros que lideran iniciativas y elevan el nivel con trabajo proactivo.",
       "Reservado para membros que lideram iniciativas e elevam o nível com trabalho proativo.",
       "Рівень для учасників, які ведуть ініціативи та підвищують стандарти через проактивну роботу.",
-      "주도적으로 이니셔티브를 이끌고 기준을 끌어올리는 멤버를 위한 단계입니다."
+      "주도적으로 이니셔티브를 이끌고 기준을 끌어올리는 멤버를 위한 단계입니다.",
+      "自ら動いて基準を引き上げ、取り組みを引っぱるメンバーのための位置づけです。"
     )
   }
 ];
@@ -427,6 +468,7 @@ const squadItems: LocalizedItem[] = [
       "Content / Research",
       "Content / Research",
       "Content / Research",
+      "Content / Research",
       "Content / Research"
     ),
     description: lv(
@@ -434,21 +476,24 @@ const squadItems: LocalizedItem[] = [
       "Artículos, tutoriales, FAQ, análisis de mercado y desgloses educativos.",
       "Artigos, tutoriais, FAQ, análises de mercado e materiais educativos.",
       "Статті, туторіали, FAQ, ринкова аналітика та освітні розбори.",
-      "아티클, 튜토리얼, FAQ, 시장 분석, 교육형 해설 콘텐츠를 담당합니다."
+      "아티클, 튜토리얼, FAQ, 시장 분석, 교육형 해설 콘텐츠를 담당합니다.",
+      "記事、チュートリアル、FAQ、市場分析、そして解説コンテンツ。"
     )
   },
   {
-    title: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
+    title: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
     description: lv(
       "Posters, stickers, videos, and visual assets used by the community.",
       "Pósters, stickers, videos y assets visuales usados por la comunidad.",
       "Pôsteres, stickers, vídeos e assets visuais usados pela comunidade.",
       "Постери, стікери, відео та візуальні ресурси для спільноти.",
-      "포스터, 스티커, 영상 등 커뮤니티에서 사용하는 시각 자산을 만듭니다."
+      "포스터, 스티커, 영상 등 커뮤니티에서 사용하는 시각 자산을 만듭니다.",
+      "ポスター、ステッカー、動画、そしてコミュニティで使われるビジュアルアセット。"
     )
   },
   {
     title: lv(
+      "Tech Support Squad",
       "Tech Support Squad",
       "Tech Support Squad",
       "Tech Support Squad",
@@ -460,27 +505,30 @@ const squadItems: LocalizedItem[] = [
       "Soporte técnico, ayuda de onboarding y tutoriales completos del producto.",
       "Suporte técnico, ajuda de onboarding e tutoriais completos do produto.",
       "Технічний сапорт, допомога з онбордингом та повні туторіали по продукту.",
-      "기술 지원, 온보딩 도움, 제품 사용 튜토리얼을 담당합니다."
+      "기술 지원, 온보딩 도움, 제품 사용 튜토리얼을 담당합니다.",
+      "技術サポート、オンボーディングの手助け、そしてプロダクトの完全なチュートリアル。"
     )
   },
   {
-    title: lv("Outreach Squad", "Outreach Squad", "Outreach Squad", "Outreach Squad", "Outreach Squad"),
+    title: lv("Outreach Squad", "Outreach Squad", "Outreach Squad", "Outreach Squad", "Outreach Squad", "Outreach Squad"),
     description: lv(
       "Local KOL outreach, partner communities, and collaboration channels.",
       "Relación con KOL locales, comunidades aliadas y canales de colaboración.",
       "Relacionamento com KOLs locais, comunidades parceiras e canais de colaboração.",
       "Робота з локальними KOL, партнерськими спільнотами та каналами співпраці.",
-      "로컬 KOL 및 파트너 커뮤니티와의 협업 채널을 확장합니다."
+      "로컬 KOL 및 파트너 커뮤니티와의 협업 채널을 확장합니다.",
+      "各地域の KOL への働きかけ、パートナーコミュニティ、コラボレーションの窓口。"
     )
   },
   {
-    title: lv("Offline Squad", "Offline Squad", "Offline Squad", "Offline Squad", "Offline Squad"),
+    title: lv("Offline Squad", "Offline Squad", "Offline Squad", "Offline Squad", "Offline Squad", "Offline Squad"),
     description: lv(
       "Meetups, local operations, and ambassador-led community presence.",
       "Meetups, operaciones locales y presencia comunitaria liderada por embajadores.",
       "Meetups, operações locais e presença comunitária liderada por embaixadores.",
       "Міт-апи, локальні активності та розвиток присутності через амбасадорів.",
-      "밋업, 로컬 운영, 앰배서더 중심의 오프라인 커뮤니티 활동을 이끕니다."
+      "밋업, 로컬 운영, 앰배서더 중심의 오프라인 커뮤니티 활동을 이끕니다.",
+      "ミートアップ、各地でのオペレーション、アンバサダーが率いるコミュニティの現場。"
     )
   }
 ];
@@ -491,35 +539,40 @@ const sproutCriteria: LocalizedValue[] = [
     "Content / Research: 2 piezas profundas aprobadas",
     "Content / Research: 2 peças aprofundadas aprovadas",
     "Content / Research: 2 затверджені поглиблені матеріали",
-    "Content / Research: 승인된 심화 콘텐츠 2개"
+    "Content / Research: 승인된 심화 콘텐츠 2개",
+    "Content / Research: 掘り下げた記事 2 本の承認"
   ),
   lv(
     "Creative: 4 visuals or videos adopted by community",
     "Creative: 4 visuales o videos adoptados por la comunidad",
     "Creative: 4 visuais ou vídeos adotados pela comunidade",
     "Creative: 4 візуальні матеріали або відео, які використала спільнота",
-    "Creative: 커뮤니티가 채택한 비주얼/영상 4개"
+    "Creative: 커뮤니티가 채택한 비주얼/영상 4개",
+    "Creative: コミュニティに採用されたビジュアルまたは動画 4 点"
   ),
   lv(
     "Tech Support: 25 solved questions plus 1 full tutorial",
     "Tech Support: 25 preguntas resueltas más 1 tutorial completo",
     "Tech Support: 25 dúvidas resolvidas mais 1 tutorial completo",
     "Tech Support: 25 вирішених запитань плюс 1 повний туторіал",
-    "Tech Support: 해결 질문 25건 + 전체 튜토리얼 1개"
+    "Tech Support: 해결 질문 25건 + 전체 튜토리얼 1개",
+    "Tech Support: 解決した質問 25 件と完全なチュートリアル 1 本"
   ),
   lv(
     "Outreach: 3 local KOL or community activations",
     "Outreach: 3 activaciones con KOL o comunidades locales",
     "Outreach: 3 ativações com KOLs ou comunidades locais",
     "Outreach: 3 активації з локальними KOL або спільнотами",
-    "Outreach: 로컬 KOL/커뮤니티 활성화 3건"
+    "Outreach: 로컬 KOL/커뮤니티 활성화 3건",
+    "Outreach: 各地域の KOL またはコミュニティ施策 3 件"
   ),
   lv(
     "Offline: 2 events (100+ participants total) plus 1 report",
     "Offline: 2 eventos (100+ participantes en total) más 1 reporte",
     "Offline: 2 eventos (100+ participantes no total) mais 1 relatório",
     "Offline: 2 події (100+ учасників загалом) плюс 1 звіт",
-    "Offline: 오프라인 이벤트 2회(총 100명+) + 보고서 1개"
+    "Offline: 오프라인 이벤트 2회(총 100명+) + 보고서 1개",
+    "Offline: イベント 2 回 (参加者は合計 100 名以上) とレポート 1 本"
   )
 ];
 
@@ -529,21 +582,24 @@ const brandKitCopy = {
     "Kit completo (carpeta raíz)",
     "Kit completo (pasta raiz)",
     "Повний набір (коренева папка)",
-    "풀 키트 (루트 폴더)"
+    "풀 키트 (루트 폴더)",
+    "フルキット (ルートフォルダ)"
   ),
   rootBody: lv(
     "All categories in one location when you need complete browsing or bulk download.",
     "Todas las categorías en un solo lugar cuando necesitas navegar todo o descargar por lote.",
     "Todas as categorias em um único lugar quando você precisa navegar tudo ou baixar em lote.",
     "Усі категорії в одному місці, коли потрібен повний перегляд або масове завантаження.",
-    "전체 카테고리를 한 곳에서 확인하고 일괄 다운로드할 수 있습니다."
+    "전체 카테고리를 한 곳에서 확인하고 일괄 다운로드할 수 있습니다.",
+    "全カテゴリを一か所に。まとめて見たいときや一括ダウンロードに。"
   ),
   warning: lv(
     "Assets are community-created and do not represent official StandX communication. Do not use them to simulate official announcements.",
     "Los assets son creados por la comunidad y no representan comunicación oficial de StandX. No los uses para simular anuncios oficiales.",
     "Os assets são criados pela comunidade e não representam comunicação oficial da StandX. Não os use para simular anúncios oficiais.",
     "Ці матеріали створені спільнотою і не є офіційною комунікацією StandX. Не використовуйте їх для імітації офіційних анонсів.",
-    "이 자료는 커뮤니티 제작물이며 StandX 공식 커뮤니케이션이 아닙니다. 공식 공지를 가장하는 용도로 사용하지 마세요."
+    "이 자료는 커뮤니티 제작물이며 StandX 공식 커뮤니케이션이 아닙니다. 공식 공지를 가장하는 용도로 사용하지 마세요.",
+    "アセットはコミュニティが制作したもので、StandX の公式な発信ではありません。公式アナウンスを装う用途では使わないでください。"
   )
 };
 
@@ -554,21 +610,24 @@ const brandKitItems: BrandKitItem[] = [
       "Modular · Transparente",
       "Modular · Transparente",
       "Модульні · Прозорі",
-      "모듈형 · 투명 배경"
+      "모듈형 · 투명 배경",
+      "モジュラー · 背景透過"
     ),
     title: lv(
       "Mascot Assets (Base)",
       "Assets de mascota (base)",
       "Assets de mascote (base)",
       "Ресурси маскота (база)",
-      "마스코트 에셋 (베이스)"
+      "마스코트 에셋 (베이스)",
+      "マスコットアセット (ベース)"
     ),
     body: lv(
       "Full-body, half-body, head-only, and utility poses in PNG format. Ideal for custom compositions.",
       "Full-body, half-body, solo cabeza y poses funcionales en PNG. Ideal para composiciones personalizadas.",
       "Full-body, half-body, só cabeça e poses funcionais em PNG. Ideal para composições personalizadas.",
       "Повний зріст, половина, лише голова та службові пози у PNG. Ідеально для власних композицій.",
-      "전신/반신/헤드 전용/유틸 포즈 PNG로 제공되며 커스텀 합성에 적합합니다."
+      "전신/반신/헤드 전용/유틸 포즈 PNG로 제공되며 커스텀 합성에 적합합니다.",
+      "全身、半身、頭部のみ、実用ポーズを PNG 形式で。自由な組み合わせに最適です。"
     ),
     link: "https://drive.google.com/drive/folders/1ToCqBkjKhASrsp6_ZmK2BbqwLXpmXpww?usp=drive_link"
   },
@@ -578,21 +637,24 @@ const brandKitItems: BrandKitItem[] = [
       "Reacción · Expresión rápida",
       "Reação · Expressão rápida",
       "Реакції · Швидкі емоції",
-      "리액션 · 빠른 감정 표현"
+      "리액션 · 빠른 감정 표현",
+      "リアクション · 素早い表現"
     ),
     title: lv(
       "Emotions & Reactions",
       "Emociones y reacciones",
       "Emoções e reações",
       "Емоції та реакції",
-      "감정 & 리액션"
+      "감정 & 리액션",
+      "感情とリアクション"
     ),
     body: lv(
       "Quick emotion packs including Bullish, Bearish, GG, Loss, Alert, and Idea variants.",
       "Packs de emociones rápidas con variantes Bullish, Bearish, GG, Loss, Alert e Idea.",
       "Packs de emoções rápidas com variantes Bullish, Bearish, GG, Loss, Alert e Idea.",
       "Швидкі набори емоцій із варіантами Bullish, Bearish, GG, Loss, Alert та Idea.",
-      "Bullish, Bearish, GG, Loss, Alert, Idea 등 빠른 반응용 감정 세트를 제공합니다."
+      "Bullish, Bearish, GG, Loss, Alert, Idea 등 빠른 반응용 감정 세트를 제공합니다.",
+      "Bullish、Bearish、GG、Loss、Alert、Idea などをそろえた感情パック。"
     ),
     link: "https://drive.google.com/drive/folders/1iO8iKhDP_QJAWZ1az3PPUevsGl-HabBX?usp=drive_link"
   },
@@ -602,39 +664,44 @@ const brandKitItems: BrandKitItem[] = [
       "Storytelling · Educación visual",
       "Storytelling · Educação visual",
       "Сторітелінг · Візуальна освіта",
-      "스토리텔링 · 비주얼 교육"
+      "스토리텔링 · 비주얼 교육",
+      "ストーリーテリング · ビジュアル解説"
     ),
     title: lv(
       "Mascot Scenes & Illustrations",
       "Escenas e ilustraciones de mascota",
       "Cenas e ilustrações de mascote",
       "Сцени та ілюстрації з маскотом",
-      "마스코트 씬 & 일러스트"
+      "마스코트 씬 & 일러스트",
+      "マスコットのシーンとイラスト"
     ),
     body: lv(
       "Complete non-modular illustrations for long educational narratives and conceptual content.",
       "Ilustraciones completas no modulares para narrativas educativas largas y contenido conceptual.",
       "Ilustrações completas não modulares para narrativas educativas longas e conteúdo conceitual.",
       "Повні немодульні ілюстрації для довгих освітніх матеріалів і концептуального контенту.",
-      "장문 교육형 스토리와 콘셉트 콘텐츠에 적합한 완성형 일러스트 세트입니다."
+      "장문 교육형 스토리와 콘셉트 콘텐츠에 적합한 완성형 일러스트 세트입니다.",
+      "長めの解説や概念的な内容のための、分割しない完成イラスト。"
     ),
     link: "https://drive.google.com/drive/folders/1lXJ2A_tSld00dq4eP50n1g55eVLwpG3D?usp=drive_link"
   },
   {
-    eyebrow: lv("Ready to post", "Listo para publicar", "Pronto para publicar", "Готово до публікації", "즉시 게시"),
+    eyebrow: lv("Ready to post", "Listo para publicar", "Pronto para publicar", "Готово до публікації", "즉시 게시", "そのまま投稿できる"),
     title: lv(
       "Marketing Support Assets",
       "Assets de soporte de marketing",
       "Assets de suporte de marketing",
       "Маркетингові допоміжні матеріали",
-      "마케팅 지원 에셋"
+      "마케팅 지원 에셋",
+      "マーケティング用アセット"
     ),
     body: lv(
       "Final assets with composition and background ready for immediate social publication.",
       "Assets finales con composición y fondo listos para publicar de inmediato.",
       "Assets finais com composição e fundo prontos para publicar imediatamente.",
       "Готові матеріали з композицією та фоном для швидкої публікації в соцмережах.",
-      "구도와 배경이 완성된 최종 에셋으로 바로 소셜 게시가 가능합니다."
+      "구도와 배경이 완성된 최종 에셋으로 바로 소셜 게시가 가능합니다.",
+      "構図と背景まで仕上がった、SNS にすぐ投稿できる完成アセット。"
     ),
     link: "https://drive.google.com/drive/folders/13cLiJ2XjHvHLzx_44ZVqI4tNPFVJqN0m?usp=drive_link"
   }
@@ -648,7 +715,8 @@ const templatesNotice = lv(
   "Las plantillas son esqueletos. Reemplaza campos, conserva la estructura y adapta el tono a tu estilo.",
   "Templates são esqueletos. Substitua campos, mantenha a estrutura e adapte o tom ao seu estilo.",
   "Шаблони — це каркас. Замінюйте поля, зберігайте структуру та адаптуйте тон під свій стиль.",
-  "템플릿은 골격입니다. 자리표시자를 바꾸고 구조를 유지한 채 본인 톤으로 조정하세요."
+  "템플릿은 골격입니다. 자리표시자를 바꾸고 구조를 유지한 채 본인 톤으로 조정하세요.",
+  "テンプレートは骨組みです。プレースホルダーを置き換え、構造は保ち、トーンは自分のスタイルに合わせてください。"
 );
 
 const templateBlocks: TemplateBlock[] = [
@@ -658,7 +726,8 @@ const templateBlocks: TemplateBlock[] = [
       "Articulo educativo",
       "Artigo educativo",
       "Освітня стаття",
-      "교육형 아티클"
+      "교육형 아티클",
+      "解説記事"
     ),
     body: `[TITLE]\n\n[CONTEXT - why this matters for StandX traders]\n1 direct paragraph, no generic intro.\n\n---\n\n[MAIN CONCEPT - explained simply]\nNo unnecessary jargon.\n\n---\n\n[HOW IT WORKS IN PRACTICE]\nUse one real or hypothetical scenario.\n\n---\n\n[COMMON MISTAKE]\nWhat most people misunderstand.\n\n---\n\n[CONCLUSION]\nClose with insight, not platform praise.`
   },
@@ -668,7 +737,8 @@ const templateBlocks: TemplateBlock[] = [
       "Hilo de X (bilingue)",
       "Thread no X (bilingue)",
       "X-тред (двомовний)",
-      "X 스레드 (이중 언어)"
+      "X 스레드 (이중 언어)",
+      "X スレッド (バイリンガル)"
     ),
     body: `1/ [HOOK]\n2/ [CONTEXT]\n3/ [MECHANISM]\n4/ [IMPLICATION]\n5/ [CONCLUSION]\n\n---\nPT-BR:\n[Portuguese version]`
   },
@@ -678,12 +748,13 @@ const templateBlocks: TemplateBlock[] = [
       "Radar competitivo mensual",
       "Radar competitivo mensal",
       "Щомісячний конкурентний радар",
-      "월간 경쟁 레이더"
+      "월간 경쟁 레이더",
+      "月次の競合レーダー"
     ),
     body: `COMPETITIVE RADAR - [MONTH/YEAR]\n\n[PLATFORM 1] -> [Change] -> [Practical impact]\n[PLATFORM 2] -> [Change] -> [Practical impact]\n[PLATFORM 3] -> [Change] -> [Practical impact]\n\nWHERE STANDX STANDS\n[Neutral analysis]\n\nMONTHLY TAKEAWAY\n[What a trader should know now]`
   },
   {
-    title: lv("Glossary Entry", "Entrada de glosario", "Entrada de glossario", "Елемент глосарію", "용어집 항목"),
+    title: lv("Glossary Entry", "Entrada de glosario", "Entrada de glossario", "Елемент глосарію", "용어집 항목", "用語集エントリ"),
     body: `[TERM]\n\nSimple definition:\n[1 sentence]\n\nHow it works:\n[2-3 sentences]\n\nIn StandX context:\n[Where this appears]\n\nExample:\n[Practical scenario]\n\nDo not confuse with:\n[Related confusing term]`
   }
 ];
@@ -695,7 +766,8 @@ const referenceItems: ReferenceItem[] = [
       "Artículo · X Articles · EN",
       "Artigo · X Articles · EN",
       "Стаття · X Articles · EN",
-      "아티클 · X Articles · EN"
+      "아티클 · X Articles · EN",
+      "記事 · X Articles · EN"
     ),
     title: "Why StandX? The structural answer for traders who take execution seriously",
     excerpt: lv(
@@ -703,7 +775,8 @@ const referenceItems: ReferenceItem[] = [
       "La mayoría de las plataformas perp responde mal una pregunta: ¿qué pasa con tu capital cuando no tienes posición? StandX parte de otra premisa.",
       "A maioria das plataformas perp responde errado à mesma pergunta: o que acontece com seu capital quando você não está posicionado? A StandX parte de outra premissa.",
       "Більшість perp-платформ неправильно відповідають на одне питання: що з вашим капіталом, коли ви поза позицією? StandX стартує з іншої логіки.",
-      "대부분의 perp 플랫폼은 포지션이 없을 때 자본이 어떻게 되는지에 대한 질문에 잘못 답합니다. StandX는 다른 전제에서 출발합니다."
+      "대부분의 perp 플랫폼은 포지션이 없을 때 자본이 어떻게 되는지에 대한 질문에 잘못 답합니다. StandX는 다른 전제에서 출발합니다.",
+      "多くの perp プラットフォームは、ある問いに間違った答え方をしています。ポジションを持っていないとき、あなたの資金はどうなっているのか。StandX はそこの前提から違います。"
     ),
     link: "https://x.com/victordesouza96/status/2034354336025690256"
   },
@@ -713,7 +786,8 @@ const referenceItems: ReferenceItem[] = [
       "Creación manual · Pintura a mano",
       "Criação manual · Pintura à mão",
       "Ручне створення · Розпис вручну",
-      "수작업 제작 · 핸드 페인팅"
+      "수작업 제작 · 핸드 페인팅",
+      "手作業の制作 · 手描き"
     ),
     title: "Stander drawn and painted by hand — from imagination to paper",
     excerpt: lv(
@@ -721,7 +795,8 @@ const referenceItems: ReferenceItem[] = [
       "Una pieza de identidad comunitaria que conecta storytelling visual con cultura de producto.",
       "Uma peça de identidade comunitária que conecta storytelling visual com cultura de produto.",
       "Матеріал ідентичності спільноти, що поєднує візуальний сторітелінг із культурою продукту.",
-      "비주얼 스토리텔링과 제품 문화를 연결한 커뮤니티 아이덴티티 작업입니다."
+      "비주얼 스토리텔링과 제품 문화를 연결한 커뮤니티 아이덴티티 작업입니다.",
+      "ビジュアルの物語とプロダクトの文化をつなぐ、コミュニティのアイデンティティ作品。"
     ),
     link: "https://x.com/victordesouza96/status/2033978427724771711"
   },
@@ -731,7 +806,8 @@ const referenceItems: ReferenceItem[] = [
       "Video educativo · Producción con IA",
       "Vídeo educativo · Produção com IA",
       "Освітнє відео · AI-виробництво",
-      "교육형 영상 · AI 제작"
+      "교육형 영상 · AI 제작",
+      "解説動画 · AI 制作"
     ),
     title: "Technical video content with narration and explanatory captions",
     excerpt: lv(
@@ -739,7 +815,8 @@ const referenceItems: ReferenceItem[] = [
       "Un formato que combina profundidad técnica con accesibilidad visual para audiencias amplias.",
       "Um formato que combina profundidade técnica com acessibilidade visual para audiências amplas.",
       "Формат, що поєднує технічну глибину та візуальну доступність для ширшої аудиторії.",
-      "기술적 깊이와 시각적 접근성을 함께 제공하는 형식입니다."
+      "기술적 깊이와 시각적 접근성을 함께 제공하는 형식입니다.",
+      "技術的な深さと、幅広い層への見やすさを両立させたフォーマット。"
     ),
     link: "https://x.com/victordesouza96/status/2033601219533344977"
   },
@@ -749,7 +826,8 @@ const referenceItems: ReferenceItem[] = [
       "Creación en el mundo real",
       "Criação no mundo real",
       "Реальне створення",
-      "현실 세계 제작"
+      "현실 세계 제작",
+      "現実世界での制作"
     ),
     title: "Stander Girl with official StandX shirt in real setting",
     excerpt: lv(
@@ -757,7 +835,8 @@ const referenceItems: ReferenceItem[] = [
       "Un puente entre la identidad digital y la expresión comunitaria en el mundo físico.",
       "Uma ponte entre identidade digital e expressão comunitária no mundo físico.",
       "Міст між цифровою ідентичністю та фізичним вираженням спільноти.",
-      "디지털 아이덴티티와 오프라인 커뮤니티 표현을 연결한 작업입니다."
+      "디지털 아이덴티티와 오프라인 커뮤니티 표현을 연결한 작업입니다.",
+      "デジタル上のアイデンティティと、現実のコミュニティ表現をつなぐ橋。"
     ),
     link: "https://x.com/victordesouza96/status/2023790192625066264"
   },
@@ -767,7 +846,8 @@ const referenceItems: ReferenceItem[] = [
       "Análisis de mercado en vivo",
       "Análise de mercado ao vivo",
       "Живий ринковий аналіз",
-      "실시간 시장 분석"
+      "실시간 시장 분석",
+      "ライブ相場分析"
     ),
     title: "Market analysis on StandX narrated by the trader",
     excerpt: lv(
@@ -775,7 +855,8 @@ const referenceItems: ReferenceItem[] = [
       "Contenido enfocado en la ejecución directamente sobre la interfaz, mostrando uso práctico.",
       "Conteúdo focado em execução diretamente na interface, mostrando uso prático.",
       "Контент, сфокусований на виконанні, прямо в інтерфейсі платформи з практичним застосуванням.",
-      "실제 플랫폼 인터페이스에서 실행 중심으로 제작된 실전형 콘텐츠입니다."
+      "실제 플랫폼 인터페이스에서 실행 중심으로 제작된 실전형 콘텐츠입니다.",
+      "プラットフォームの画面上で執行そのものを見せる、実践重視のコンテンツ。"
     ),
     link: "https://x.com/victordesouza96/status/2023113800002793878"
   },
@@ -785,7 +866,8 @@ const referenceItems: ReferenceItem[] = [
       "Infraestructura comunitaria",
       "Infraestrutura comunitária",
       "Community infrastructure",
-      "커뮤니티 인프라"
+      "커뮤니티 인프라",
+      "コミュニティインフラ"
     ),
     title: "StandX Community Brand Kit launch",
     excerpt: lv(
@@ -793,7 +875,8 @@ const referenceItems: ReferenceItem[] = [
       "Una contribución creada para quitar fricción creativa y facilitar publicaciones comunitarias.",
       "Uma contribuição criada para remover fricção criativa e facilitar publicações da comunidade.",
       "Внесок, створений для зняття творчого тертя та спрощення публікацій у спільноті.",
-      "창작 마찰을 줄이고 커뮤니티 발행을 쉽게 만들기 위해 구축된 기여물입니다."
+      "창작 마찰을 줄이고 커뮤니티 발행을 쉽게 만들기 위해 구축된 기여물입니다.",
+      "制作の摩擦をなくし、コミュニティの発信をやりやすくするために作られた貢献。"
     ),
     link: "https://x.com/victordesouza96/status/2008660667973120158"
   }
@@ -805,7 +888,8 @@ const communityCopy = {
     "Creadores que inspiran",
     "Criadores que inspiram",
     "Креатори, що надихають",
-    "영감을 주는 크리에이터"
+    "영감을 주는 크리에이터",
+    "刺激をくれるクリエイターたち"
   )
 };
 
@@ -813,14 +897,15 @@ const communityCopy = {
 // (lime / sky / pink) plus Discord blurple as the one brand exception.
 const communityProjects: CommunityProjectItem[] = [
   {
-    label: lv("Official server", "Servidor oficial", "Servidor oficial", "Офіційний сервер", "공식 서버"),
-    title: lv("StandX Discord", "Discord de StandX", "Discord da StandX", "StandX Discord", "StandX Discord"),
+    label: lv("Official server", "Servidor oficial", "Servidor oficial", "Офіційний сервер", "공식 서버", "公式サーバー"),
+    title: lv("StandX Discord", "Discord de StandX", "Discord da StandX", "StandX Discord", "StandX Discord", "StandX Discord"),
     description: lv(
       "Tasks, events, discussions, and Growth Path progression all happen in Discord.",
       "Las tareas, eventos, discusiones y el progreso del Growth Path suceden en Discord.",
       "Tarefas, eventos, discussões e progresso do Growth Path acontecem no Discord.",
       "Усі задачі, події, дискусії та прогрес Growth Path відбуваються в Discord.",
-      "과제, 이벤트, 토론, Growth Path 진행은 모두 Discord에서 이루어집니다."
+      "과제, 이벤트, 토론, Growth Path 진행은 모두 Discord에서 이루어집니다.",
+      "タスク、イベント、議論、そして Growth Path の進行は、すべて Discord で行われます。"
     ),
     cta: uiCopy.joinDiscord,
     link: "https://discord.gg/standx",
@@ -828,8 +913,9 @@ const communityProjects: CommunityProjectItem[] = [
     accent: {hex: "#5865f2", rgb: "88,101,242", ink: "#ffffff"}
   },
   {
-    label: lv("Community project", "Proyecto comunitario", "Projeto comunitário", "Community project", "커뮤니티 프로젝트"),
+    label: lv("Community project", "Proyecto comunitario", "Projeto comunitário", "Community project", "커뮤니티 프로젝트", "コミュニティプロジェクト"),
     title: lv(
+      "StandX Flappy Candle",
       "StandX Flappy Candle",
       "StandX Flappy Candle",
       "StandX Flappy Candle",
@@ -841,7 +927,8 @@ const communityProjects: CommunityProjectItem[] = [
       "Navega el mercado como la mascota de StandX, junta DUSD, esquiva velas y sube en el ranking global.",
       "Navegue pelo mercado como a mascote da StandX, colete DUSD, desvie de candles e suba no ranking global.",
       "Керуйте маскотом StandX, збирайте DUSD, уникайте свічок і піднімайтесь у глобальному рейтингу.",
-      "StandX 마스코트로 시장을 탐험하며 DUSD를 모으고 캔들을 피해서 글로벌 랭킹을 올리세요."
+      "StandX 마스코트로 시장을 탐험하며 DUSD를 모으고 캔들을 피해서 글로벌 랭킹을 올리세요.",
+      "StandX のマスコットになって相場を進み、DUSD を集め、ローソク足をかわして世界ランキングを駆け上がろう。"
     ),
     cta: uiCopy.playNow,
     link: "https://standx-flappy.vercel.app/",
@@ -849,8 +936,9 @@ const communityProjects: CommunityProjectItem[] = [
     accent: {hex: "#00ff87", rgb: "0,255,135", ink: "#0a0a0a"}
   },
   {
-    label: lv("Community game", "Juego comunitario", "Jogo comunitário", "Гра спільноти", "커뮤니티 게임"),
+    label: lv("Community game", "Juego comunitario", "Jogo comunitário", "Гра спільноти", "커뮤니티 게임", "コミュニティゲーム"),
     title: lv(
+      "StandX Growth Path RPG",
       "StandX Growth Path RPG",
       "StandX Growth Path RPG",
       "StandX Growth Path RPG",
@@ -862,7 +950,8 @@ const communityProjects: CommunityProjectItem[] = [
       "Vive el Growth Path como una historia: misiones, zonas y progresión de New Stander a Flower en un RPG hecho por la comunidad.",
       "Viva o Growth Path como uma história: missões, zonas e progressão de New Stander a Flower em um RPG feito pela comunidade.",
       "Пройдіть Growth Path як історію: квести, зони та шлях від New Stander до Flower у RPG, створеній спільнотою.",
-      "커뮤니티가 만든 RPG에서 Growth Path를 스토리로 경험하세요. 퀘스트와 존을 지나 New Stander에서 Flower까지 성장합니다."
+      "커뮤니티가 만든 RPG에서 Growth Path를 스토리로 경험하세요. 퀘스트와 존을 지나 New Stander에서 Flower까지 성장합니다.",
+      "Growth Path を物語として体験。クエスト、ゾーン、New Stander から Flower までの成長を、コミュニティ制作の RPG で。"
     ),
     cta: uiCopy.playNow,
     link: "https://rpg-standx-game.vercel.app/",
@@ -870,50 +959,54 @@ const communityProjects: CommunityProjectItem[] = [
     accent: {hex: "#f472b6", rgb: "244,114,182", ink: "#0a0a0a"}
   },
   {
-    label: lv("Community tool", "Herramienta comunitaria", "Ferramenta comunitária", "Інструмент спільноти", "커뮤니티 도구"),
-    title: lv("StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats"),
+    label: lv("Community tool", "Herramienta comunitaria", "Ferramenta comunitária", "Інструмент спільноти", "커뮤니티 도구", "コミュニティツール"),
+    title: lv("StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats", "StandX Stats"),
     description: lv(
       "Upload your StandX trade export and get your full perps stats: realized PnL, win rate, profit factor, and a shareable card. Parsed 100% locally in your browser.",
       "Sube tu export de trades de StandX y obtén tus stats completas de perps: PnL realizado, win rate, profit factor y una tarjeta para compartir. Se procesa 100% local en tu navegador.",
       "Envie seu export de trades da StandX e veja suas stats completas de perps: PnL realizado, win rate, profit factor e um card compartilhável. Processado 100% localmente no navegador.",
       "Завантажте експорт угод StandX і отримайте повну статистику perps: реалізований PnL, win rate, profit factor і картку для шерингу. Обробка на 100% локальна у браузері.",
-      "StandX 거래 내역을 업로드하면 실현 PnL, 승률, 프로핏 팩터와 공유 카드까지 perps 통계를 확인할 수 있습니다. 모든 처리는 브라우저에서 100% 로컬로 이루어집니다."
+      "StandX 거래 내역을 업로드하면 실현 PnL, 승률, 프로핏 팩터와 공유 카드까지 perps 통계를 확인할 수 있습니다. 모든 처리는 브라우저에서 100% 로컬로 이루어집니다.",
+      "StandX の取引履歴をアップロードすると、perps の成績がまるごと出ます。実現 PnL、勝率、プロフィットファクター、そして共有用カード。解析は 100% ブラウザ内で完結します。"
     ),
-    cta: lv("View stats", "Ver stats", "Ver stats", "Статистика", "통계 보기"),
+    cta: lv("View stats", "Ver stats", "Ver stats", "Статистика", "통계 보기", "成績を見る"),
     link: "https://standx-stats.vercel.app/",
     ariaLabel: "Open StandX Stats in a new tab",
     accent: {hex: "#5ec2ff", rgb: "94,194,255", ink: "#0a0a0a"}
   },
   {
-    label: lv("Community event", "Evento comunitario", "Evento comunitário", "Подія спільноти", "커뮤니티 이벤트"),
+    label: lv("Community event", "Evento comunitario", "Evento comunitário", "Подія спільноти", "커뮤니티 이벤트", "コミュニティイベント"),
     title: lv(
       "StandCup · World Cup 2026",
       "StandCup · Mundial 2026",
       "StandCup · Copa 2026",
       "StandCup · ЧС-2026",
-      "StandCup · 2026 월드컵"
+      "StandCup · 2026 월드컵",
+      "StandCup · World Cup 2026"
     ),
     description: lv(
       "Predict World Cup 2026 matches, pick an asset, set your risk mode, and climb the community leaderboard.",
       "Predice los partidos del Mundial 2026, elige un activo, define tu modo de riesgo y sube en el ranking de la comunidad.",
       "Preveja os jogos da Copa 2026, escolha um ativo, defina seu modo de risco e suba no ranking da comunidade.",
       "Прогнозуйте матчі ЧС-2026, обирайте актив, налаштовуйте рівень ризику та підіймайтеся в рейтингу спільноти.",
-      "2026 월드컵 경기를 예측하고 자산을 선택해 리스크 모드를 설정하며 커뮤니티 리더보드에 도전하세요."
+      "2026 월드컵 경기를 예측하고 자산을 선택해 리스크 모드를 설정하며 커뮤니티 리더보드에 도전하세요.",
+      "World Cup 2026 の試合を予想し、資産を選び、リスクモードを決めて、コミュニティのリーダーボードを駆け上がろう。"
     ),
-    cta: lv("View matches", "Ver partidos", "Ver partidas", "Дивитися матчі", "경기 보기"),
+    cta: lv("View matches", "Ver partidos", "Ver partidas", "Дивитися матчі", "경기 보기", "試合を見る"),
     link: "https://stand-cup.vercel.app/matches",
     ariaLabel: "Open StandCup World Cup 2026 matches in a new tab",
     accent: {hex: "#00ff87", rgb: "0,255,135", ink: "#0a0a0a"}
   },
   {
-    label: lv("Community resource", "Recurso comunitario", "Recurso comunitário", "Community resource", "커뮤니티 리소스"),
-    title: lv("StandX SIP Visual Guide", "Guía Visual de SIPs", "Guia Visual de SIPs", "Візуальний гайд по SIP", "SIP 비주얼 가이드"),
+    label: lv("Community resource", "Recurso comunitario", "Recurso comunitário", "Community resource", "커뮤니티 리소스", "コミュニティリソース"),
+    title: lv("StandX SIP Visual Guide", "Guía Visual de SIPs", "Guia Visual de SIPs", "Візуальний гайд по SIP", "SIP 비주얼 가이드", "StandX SIP Visual Guide"),
     description: lv(
       "A community-driven educational experience designed to make StandX SIPs easier to understand. Visual, interactive, and built to help you grasp each proposal clearly.",
       "Una experiencia educativa impulsada por la comunidad que hace más fácil entender los SIPs de StandX. Visual, interactiva y diseñada para que comprendas cada propuesta con claridad.",
       "Uma experiência educacional criada pela comunidade para tornar os SIPs da StandX mais fáceis de entender. Visual, interativa e feita para você compreender cada proposta com clareza.",
       "Освітній досвід від спільноти, що робить SIP StandX простішими для розуміння. Візуальний, інтерактивний і створений, щоб ви чітко розуміли кожну пропозицію.",
-      "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다."
+      "StandX SIP를 더 쉽게 이해할 수 있도록 커뮤니티가 만든 교육 경험. 각 제안을 명확하게 파악할 수 있도록 시각적이고 인터랙티브하게 구성되었습니다.",
+      "StandX の SIP をもっと分かりやすくするために作られた、コミュニティ発の学習体験。視覚的でインタラクティブ、それぞれの提案をはっきりつかめます。"
     ),
     cta: uiCopy.exploreSIPs,
     link: "https://standx-sip-guide.vercel.app/",
@@ -927,52 +1020,56 @@ const creatorItems: CreatorItem[] = [
     name: "Jovan",
     handle: "@JovanNeves",
     link: "https://x.com/JovanNeves",
-    squad: lv("Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad"),
+    squad: lv("Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad"),
     bio: lv(
       "Versatile and present contributor who moves across formats with strong execution consistency.",
       "Contribuidor versátil y presente que trabaja en múltiples formatos con ejecución consistente.",
       "Contribuidor versátil e presente que atua em vários formatos com execução consistente.",
       "Універсальний і активний учасник, який стабільно працює в різних форматах.",
-      "다양한 포맷을 오가며 꾸준한 실행력을 보여주는 멀티형 기여자입니다."
+      "다양한 포맷을 오가며 꾸준한 실행력을 보여주는 멀티형 기여자입니다.",
+      "フォーマットを横断して動ける、実行の安定した多才な貢献者。"
     )
   },
   {
     name: "RyuDex",
     handle: "@RyuuDefi",
     link: "https://x.com/RyuuDefi",
-    squad: lv("Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad"),
+    squad: lv("Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad", "Content Squad"),
     bio: lv(
       "A consistent content voice who breaks StandX down clearly and keeps the community informed.",
       "Una voz de contenido constante que explica StandX con claridad y mantiene informada a la comunidad.",
       "Uma voz de conteúdo constante que explica a StandX com clareza e mantém a comunidade informada.",
       "Стабільний голос контенту, який зрозуміло пояснює StandX і тримає спільноту в курсі.",
-      "StandX를 명확하게 풀어내며 커뮤니티에 꾸준히 정보를 전하는 콘텐츠 크리에이터입니다."
+      "StandX를 명확하게 풀어내며 커뮤니티에 꾸준히 정보를 전하는 콘텐츠 크리에이터입니다.",
+      "StandX を分かりやすく噛み砕き、コミュニティに情報を届け続ける一貫した発信者。"
     )
   },
   {
     name: "Victor",
     handle: "@victordesouza96",
     link: "https://x.com/victordesouza96",
-    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
+    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
     bio: lv(
       "Builder-creator behind community games and visual pieces, turning ideas into things people actually use.",
       "Creador y builder detrás de juegos y piezas visuales de la comunidad, que convierte ideas en cosas que la gente realmente usa.",
       "Criador e builder por trás de jogos e peças visuais da comunidade, transformando ideias em coisas que as pessoas realmente usam.",
       "Креатор і білдер, що стоїть за спільнотними іграми та візуальними роботами — перетворює ідеї на те, чим справді користуються.",
-      "커뮤니티 게임과 비주얼 작업을 만들어내는 크리에이터이자 빌더로, 아이디어를 실제로 쓰이는 결과물로 만듭니다."
+      "커뮤니티 게임과 비주얼 작업을 만들어내는 크리에이터이자 빌더로, 아이디어를 실제로 쓰이는 결과물로 만듭니다.",
+      "コミュニティのゲームやビジュアルを手がけるビルダー兼クリエイター。アイデアを実際に使われるものに変えていきます。"
     )
   },
   {
     name: "Dias",
     handle: "@diaserdropes",
     link: "https://x.com/diaserdropes",
-    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
+    squad: lv("Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad", "Creative Squad"),
     bio: lv(
       "Recognized for presence, resilience, and community support inside and outside the server.",
       "Reconocido por presencia, resiliencia y soporte comunitario dentro y fuera del servidor.",
       "Reconhecido por presença, resiliência e suporte comunitário dentro e fora do servidor.",
       "Відомий за активність, стійкість і підтримку спільноти всередині та поза сервером.",
-      "서버 안팎에서 꾸준함과 회복력, 커뮤니티 지원으로 인정받는 크리에이터입니다."
+      "서버 안팎에서 꾸준함과 회복력, 커뮤니티 지원으로 인정받는 크리에이터입니다.",
+      "サーバーの内外での存在感、粘り強さ、そしてコミュニティへの支えで知られています。"
     )
   }
 ];
@@ -983,21 +1080,24 @@ const insightsCopy = {
     "Base completa de Standers Insights",
     "Base completa do Standers Insights",
     "Повна база Standers Insights",
-    "Standers Insights 전체 데이터베이스"
+    "Standers Insights 전체 데이터베이스",
+    "Standers Insights データベース全体"
   ),
   databaseDescription: lv(
     "Curated community articles and research archive.",
     "Archivo curado de artículos e investigaciones de la comunidad.",
     "Arquivo curado de artigos e pesquisas da comunidade.",
     "Кураторський архів статей і досліджень спільноти.",
-    "커뮤니티 큐레이션 아티클과 리서치 아카이브입니다."
+    "커뮤니티 큐레이션 아티클과 리서치 아카이브입니다.",
+    "厳選されたコミュニティ記事とリサーチのアーカイブ。"
   ),
   englishNotice: lv(
     "This section stays mostly in English to preserve the original editorial format of the community archive.",
     "Esta sección se mantiene mayormente en inglés para preservar el formato editorial original del archivo comunitario.",
     "Esta seção permanece majoritariamente em inglês para preservar o formato editorial original do arquivo da comunidade.",
     "Цей розділ переважно залишено англійською, щоб зберегти оригінальний редакційний формат архіву спільноти.",
-    "이 섹션은 커뮤니티 아카이브의 원본 편집 형식을 유지하기 위해 대부분 영어로 유지됩니다."
+    "이 섹션은 커뮤니티 아카이브의 원본 편집 형식을 유지하기 위해 대부분 영어로 유지됩니다.",
+    "このセクションはコミュニティアーカイブ本来の編集フォーマットを保つため、大部分を英語のままにしています。"
   )
 };
 
@@ -1046,56 +1146,64 @@ const aboutCopy = {
     "Investigador y creador comunitario",
     "Pesquisador e criador comunitário",
     "Дослідник і креатор спільноти",
-    "커뮤니티 리서처 & 크리에이터"
+    "커뮤니티 리서처 & 크리에이터",
+    "コミュニティのリサーチャー兼クリエイター"
   ),
   bio: lv(
     "Trader navigating market cycles and creator of educational technical content for DeFi and perp DEX users. Focus areas include execution mechanics, DUSD, market analysis, and practical onboarding.",
     "Trader que navega ciclos de mercado y creador de contenido técnico educativo para usuarios DeFi y perp DEX. Sus focos incluyen mecánicas de ejecución, DUSD, análisis de mercado y onboarding práctico.",
     "Trader que navega ciclos de mercado e criador de conteúdo técnico educativo para usuários DeFi e perp DEX. Os focos incluem mecânicas de execução, DUSD, análise de mercado e onboarding prático.",
     "Трейдер, що проходить ринкові цикли, і автор технічного освітнього контенту для DeFi та perp DEX. Фокус: механіка виконання, DUSD, ринкова аналітика та практичний онбординг.",
-    "시장 사이클을 분석하는 트레이더이자 DeFi/perp DEX 사용자를 위한 기술 교육 콘텐츠 제작자입니다. 실행 메커니즘, DUSD, 시장 분석, 실전 온보딩에 집중합니다."
+    "시장 사이클을 분석하는 트레이더이자 DeFi/perp DEX 사용자를 위한 기술 교육 콘텐츠 제작자입니다. 실행 메커니즘, DUSD, 시장 분석, 실전 온보딩에 집중합니다.",
+    "相場のサイクルを渡り歩くトレーダーであり、DeFi と perp DEX のユーザーに向けた技術解説コンテンツの作り手。執行の仕組み、DUSD、市場分析、そして実践的なオンボーディングを中心に扱っています。"
   ),
   whyTitle: lv(
     "Why this hub exists",
     "Por qué existe este hub",
     "Por que este hub existe",
     "Чому існує цей хаб",
-    "이 허브가 존재하는 이유"
+    "이 허브가 존재하는 이유",
+    "このハブが存在する理由"
   ),
   whyBodyOne: lv(
     "StandX has an active community and a deep technical ecosystem, but newcomers needed a free, no-login, no-barrier reference point.",
     "StandX tiene una comunidad activa y un ecosistema técnico profundo, pero los nuevos necesitaban un punto de referencia gratuito, sin login y sin barreras.",
     "A StandX tem uma comunidade ativa e um ecossistema técnico profundo, mas os novos usuários precisavam de um ponto de referência gratuito, sem login e sem barreiras.",
     "StandX має активну спільноту та глибоку технічну екосистему, але новачкам був потрібен безкоштовний, безлогінний і доступний орієнтир.",
-    "StandX는 활발한 커뮤니티와 깊은 기술 생태계를 갖추고 있지만, 신규 사용자를 위한 무료/무로그인/무장벽 기준점이 필요했습니다."
+    "StandX는 활발한 커뮤니티와 깊은 기술 생태계를 갖추고 있지만, 신규 사용자를 위한 무료/무로그인/무장벽 기준점이 필요했습니다.",
+    "StandX には活発なコミュニティと厚い技術エコシステムがあります。それでも新しく来た人には、無料でログイン不要、ハードルのない参照点が必要でした。"
   ),
   whyBodyTwo: lv(
     "This upgraded hub keeps the original mission alive: open access to brand kit, templates, references, and onboarding flows.",
     "Este hub mejorado mantiene viva la misión original: acceso abierto al brand kit, plantillas, referencias y flujos de onboarding.",
     "Este hub aprimorado mantém viva a missão original: acesso aberto ao brand kit, templates, referências e fluxos de onboarding.",
     "Оновлений хаб зберігає початкову місію: відкритий доступ до brand kit, шаблонів, прикладів і онбординг-флоу.",
-    "업그레이드된 이 허브는 원래 미션을 유지합니다: brand kit, 템플릿, 레퍼런스, 온보딩 플로우에 대한 개방형 접근."
+    "업그레이드된 이 허브는 원래 미션을 유지합니다: brand kit, 템플릿, 레퍼런스, 온보딩 플로우에 대한 개방형 접근.",
+    "刷新されたこのハブは当初の目的をそのまま引き継いでいます。ブランドキット、テンプレート、リファレンス、オンボーディングへの開かれたアクセス。"
   ),
   warning: lv(
     "This material does not represent official StandX communications. It is a community initiative.",
     "Este material no representa comunicación oficial de StandX. Es una iniciativa comunitaria.",
     "Este material não representa comunicação oficial da StandX. É uma iniciativa comunitária.",
     "Ці матеріали не є офіційною комунікацією StandX. Це ініціатива спільноти.",
-    "이 자료는 StandX의 공식 커뮤니케이션이 아닙니다. 커뮤니티 이니셔티브입니다."
+    "이 자료는 StandX의 공식 커뮤니케이션이 아닙니다. 커뮤니티 이니셔티브입니다.",
+    "この資料は StandX の公式な発信ではありません。コミュニティによる取り組みです。"
   ),
   yhonRole: lv(
     "Software Engineer & Community Contributor",
     "Ingeniero de Software & Colaborador Comunitario",
     "Engenheiro de Software & Colaborador Comunitário",
     "Інженер-програміст & учасник спільноти",
-    "소프트웨어 엔지니어 & 커뮤니티 기여자"
+    "소프트웨어 엔지니어 & 커뮤니티 기여자",
+    "ソフトウェアエンジニア兼コミュニティ貢献者"
   ),
   yhonBio: lv(
     "Software Engineer behind the Next.js redesign of the StandX Community Hub. Focused on premium UX, multilingual accessibility, and building a space where anyone can understand, participate, and contribute to the StandX ecosystem.",
     "Ingeniero de Software detrás del rediseño en Next.js del StandX Community Hub. Enfocado en UX premium, accesibilidad multilingüe y en construir un espacio donde cualquiera pueda entender, participar y contribuir al ecosistema StandX.",
     "Engenheiro de Software por trás do redesign em Next.js do StandX Community Hub. Focado em UX premium, acessibilidade multilíngue e em criar um espaço onde qualquer pessoa possa entender, participar e contribuir com o ecossistema StandX.",
     "Інженер-програміст, який розробив редизайн StandX Community Hub на Next.js. Фокус — преміальний UX, багатомовна доступність та створення простору, де кожен може зрозуміти, долучитись і зробити внесок в екосистему StandX.",
-    "StandX Community Hub의 Next.js 리디자인을 담당한 소프트웨어 엔지니어. 프리미엄 UX, 다국어 접근성, 그리고 누구나 StandX 생태계를 이해하고 참여하며 기여할 수 있는 공간 구축에 집중합니다."
+    "StandX Community Hub의 Next.js 리디자인을 담당한 소프트웨어 엔지니어. 프리미엄 UX, 다국어 접근성, 그리고 누구나 StandX 생태계를 이해하고 참여하며 기여할 수 있는 공간 구축에 집중합니다.",
+    "StandX Community Hub の Next.js リデザインを手がけたソフトウェアエンジニア。上質な UX、多言語でのアクセシビリティ、そして誰もが StandX エコシステムを理解し、参加し、貢献できる場づくりに取り組んでいます。"
   )
 };
 

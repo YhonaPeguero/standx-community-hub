@@ -259,7 +259,8 @@ const QUOTA_NOTICE: Record<AppLocale, string> = {
   "pt-br":
     "Você atingiu o limite de perguntas de hoje, então respondo a partir das minhas notas básicas em vez de raciocinar. Os links abaixo continuam sendo as fontes reais.\n\n",
   uk: "Ви вичерпали денний ліміт запитань, тож я відповідаю з базових нотаток, а не міркую над відповіддю. Посилання нижче лишаються справжніми джерелами.\n\n",
-  ko: "오늘의 질문 한도에 도달해서 추론 대신 기본 노트를 바탕으로 답변합니다. 아래 링크는 그대로 실제 출처입니다.\n\n"
+  ko: "오늘의 질문 한도에 도달해서 추론 대신 기본 노트를 바탕으로 답변합니다. 아래 링크는 그대로 실제 출처입니다.\n\n",
+  ja: "本日の質問の上限に達したので、考えて答える代わりに手元の基本ノートからお答えします。下のリンクは変わらず実際の出典です。\n\n"
 };
 
 /** Emits the offline answer over the same SSE contract the model path uses. */

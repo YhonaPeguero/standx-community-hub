@@ -92,7 +92,16 @@ export default function HeroSection({locale}: HeroSectionProps) {
         </div>
 
         <h1
-          className="animate-rise-lg mt-10 max-w-5xl text-balance text-display-2xl uppercase text-text-primary"
+          // break-keep matters only to the CJK locales, and there it is the
+          // difference between a headline and a mistake: without it the browser
+          // is free to break between any two kana or hangul syllables, and it
+          // did — Japanese wrapped as あ / なたの and Korean as 당 / 신의, each
+          // splitting a word down the middle. keep-all confines breaks to the
+          // spaces. Latin and Cyrillic are unaffected by it, and the headline
+          // measured the same height and no overflow in every locale, down to
+          // 375px, where the widest unbreakable run (あなたの, 224px) still has
+          // 119px to spare.
+          className="animate-rise-lg mt-10 max-w-5xl text-balance break-keep text-display-2xl uppercase text-text-primary"
           style={{animationDelay: "120ms"}}
         >
           {t("titlePartOne")} {t("titlePartTwo")}{" "}

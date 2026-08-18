@@ -63,6 +63,15 @@ const sectionLabels: Record<AppLocale, Record<HubSectionSlug, string>> = {
     community: "커뮤니티",
     "standers-insights": "Standers Insights",
     about: "소개"
+  },
+  ja: {
+    "getting-started": "はじめかた",
+    "brand-kit": "ブランドキット",
+    templates: "テンプレート",
+    references: "リファレンス",
+    community: "コミュニティ",
+    "standers-insights": "Standers Insights",
+    about: "概要"
   }
 };
 

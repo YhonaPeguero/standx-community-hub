@@ -58,7 +58,8 @@ const speechLocales: Record<AppLocale, string> = {
   es: "es-ES",
   "pt-br": "pt-BR",
   uk: "uk-UA",
-  ko: "ko-KR"
+  ko: "ko-KR",
+  ja: "ja-JP"
 };
 
 interface UseSpeechOptions {
