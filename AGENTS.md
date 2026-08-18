@@ -45,11 +45,11 @@ see `.claude/skills/character-motion/SKILL.md`.
 
 ## Routing + i18n (non-obvious)
 
-- Locales: `en`, `es`, `pt-br`, `uk`, `ko` (see `i18n/request.ts`). `localePrefix: "always"` in `middleware.ts` — every route is `/{locale}/...`.
+- Locales: `en`, `es`, `pt-br`, `uk`, `ko`, `ja` (see `i18n/request.ts`). `localePrefix: "always"` in `middleware.ts` — every route is `/{locale}/...`.
 - Locale cookie/localStorage key: `standx-hub-locale`. `app/layout.tsx` reads the cookie to set `<html lang>` before hydration; do not remove that read without a replacement or the language will flash.
-- Message files: `messages/{locale}.json`. All five files MUST keep identical key structure; `next-intl` falls back to `en` on import failure, not on missing keys.
+- Message files: `messages/{locale}.json`. All six files MUST keep identical key structure (`node scripts/check-i18n.mjs` proves it); `next-intl` falls back to `en` on import failure, not on missing keys.
 - Hub sections live at `app/[locale]/[section]/page.tsx`. Valid slugs are the `hubSections` tuple in `lib/hub-navigation.ts`; `isHubSectionSlug` guards them and `generateStaticParams` builds the full locale x section matrix. Adding a section requires updating `hubSections`, `sectionLabels` in that file, AND the large `sectionHeaders` / per-section data blocks in `[section]/page.tsx`.
-- Per-section copy inside `[section]/page.tsx` is NOT in `messages/*.json`. It uses the local `lv(en, es, ptBr, uk, ko)` helper to build `LocalizedValue` objects. When editing section text, update all five language arguments in place — do not route it through `next-intl`.
+- Per-section copy inside `[section]/page.tsx` is NOT in `messages/*.json`. It uses the local `lv(en, es, ptBr, uk, ko, ja)` helper to build `LocalizedValue` objects. When editing section text, update all six language arguments in place — do not route it through `next-intl`.
 
 ## Styling system (source of truth)
 

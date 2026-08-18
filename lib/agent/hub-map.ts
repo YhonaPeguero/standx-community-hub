@@ -15,7 +15,7 @@ export interface HubSectionEntry {
   summary: string;
   /** Concrete things the page contains — used for "where do I find X". */
   contains: string[];
-  /** Lowercase match terms across all five locales for the offline fallback. */
+  /** Lowercase match terms across every locale, for the offline fallback. */
   keywords: string[];
   /** External destinations reachable from the section. */
   links?: Array<{label: string; url: string}>;

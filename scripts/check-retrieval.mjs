@@ -18,7 +18,7 @@
 //
 //   1. The prompt stays inside its token budget for real questions.
 //   2. Retrieval still puts the right page and the right fact in that budget —
-//      in all five locales, which is the part a size check alone would happily
+//      in every locale, which is the part a size check alone would happily
 //      let rot to nothing.
 
 import fs from "node:fs";

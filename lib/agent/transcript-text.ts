@@ -302,8 +302,17 @@ export function createTranscriptFilter(): TranscriptFilter {
  * There is no minimum-length guard, and that is deliberate: the only case where
  * trimming could swallow the answer is one with no complete sentence in it at
  * all, and that case already falls through to the untouched text.
+ *
+ * Japanese ends sentences with 。！？ rather than the ASCII marks, so with only
+ * `[.!?]` here it had no complete sentence to fall back to and every truncated
+ * Japanese answer fell through untouched — the exact half-clause this exists to
+ * prevent, in the one locale where it never fired. Korean and Ukrainian were
+ * fine because both write the ASCII period. The fullwidth closers are here for
+ * the same reason as the ASCII ones: a sentence can end inside a quotation.
+ * Adding characters to the class only creates more places to cut, so the Latin
+ * and Cyrillic locales behave exactly as before.
  */
 export function trimToLastSentence(text: string): string {
-  const match = /^[\s\S]*[.!?]["')\]]?/.exec(text.trimEnd());
+  const match = /^[\s\S]*[.!?。！？]["')\]」』）]?/.exec(text.trimEnd());
   return match ? match[0] : text;
 }

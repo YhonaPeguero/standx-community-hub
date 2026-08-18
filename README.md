@@ -2,7 +2,7 @@
 
 A premium, mobile-first, multilingual Community Hub for **StandX Perpetuals DEX**.
 
-This version is rebuilt with Next.js App Router, TypeScript, Tailwind CSS, Framer Motion, Three.js hero visuals, and next-intl locale routing across English, Spanish, Portuguese (Brazil), Ukrainian, and Korean.
+This version is rebuilt with Next.js App Router, TypeScript, Tailwind CSS, Framer Motion, Three.js hero visuals, and next-intl locale routing across English, Spanish, Portuguese (Brazil), Ukrainian, Korean, and Japanese.
 
 ## Attribution
 
@@ -35,6 +35,7 @@ Supported locales:
 - `pt-br`
 - `uk`
 - `ko`
+- `ja`
 
 ## Locale persistence
 
@@ -66,4 +67,4 @@ npm run start
 
 - Hero canvas is decorative and includes graceful fallback when WebGL is unavailable.
 - All user-facing copy is sourced from locale messages files.
-- All locale files keep identical key structure (`en`, `es`, `pt-br`, `uk`, `ko`).
+- All locale files keep identical key structure (`en`, `es`, `pt-br`, `uk`, `ko`, `ja`).

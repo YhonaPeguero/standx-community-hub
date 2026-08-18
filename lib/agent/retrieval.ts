@@ -33,7 +33,7 @@ import {
  * latency is the scarcest thing we have.
  *
  * The scoring is lexical — no embeddings, no vector store, no second API to
- * pay for or key to rotate. Three signals, because no one of them survives five
+ * pay for or key to rotate. Three signals, because no one of them survives six
  * languages alone:
  *
  *   1. Curated aliases, per locale. The only signal that understands that
@@ -135,8 +135,12 @@ const ANCHOR_DOC_TITLES = ["About StandX"];
 
 /**
  * Function words carry no topical signal but appear everywhere, so they would
- * otherwise dominate a short question. Five languages, only the high-frequency
- * ones — this is a noise filter, not a linguistic model.
+ * otherwise dominate a short question. Only the high-frequency ones — this is a
+ * noise filter, not a linguistic model.
+ *
+ * There is no Japanese section, and adding one would be dead code: Japanese
+ * arrives as a single token because it has no spaces, so no entry here could
+ * ever equal one. See `tokenize` below for why that is left alone.
  */
 const STOPWORDS = new Set([
   // en
